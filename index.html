@@ -240,6 +240,7 @@ function toast(t,s){const el=document.getElementById('toast');if(!el)return;cons
 
 /* ---------- STATE ---------- */
 let S=null;
+const TUNE={hp:.52,atk:.46,batk:.76,curse:.23,boss:108};
 function newGame(cls){
  const P=M.perks,pk=P.pack||0;
  S={cls,day:1,cycle:0,screen:'intro',maxhp:100+(P.hp||0)*10,hp:0,food:80,wat:80,sta:100,san:100,curse:0,power:18,
@@ -369,7 +370,7 @@ function afterDisrupt(){
 /* ---------- COMBAT ---------- */
 function startCombat(id,opt){
  const b=EN[id];
- const sc=.75+S.day/55+S.cycle*.35;
+ const sc=TUNE.hp+S.day/55+S.cycle*.35;
  const hp=Math.round(b.hp*(id==='queen'?1+S.cycle*.3:sc));
  S.combat={id,hp,max:hp,turn:0,stun:0,log:[],after:opt.after,loc:opt.loc};
  S.screen='combat';
@@ -378,7 +379,7 @@ function startCombat(id,opt){
 }
 function startBoss(){
  const B=boss();
- const hp=Math.round(170+S.power*1.4-S.relics.length*22+S.cycle*45);
+ const hp=Math.round(TUNE.boss+S.power*1.4-S.relics.length*22+S.cycle*45);
  S.combat={id:'boss',hp,max:hp,turn:0,stun:0,boss:1,after:'boss',log:[[B.d+` ข้างหลังมันคือ${B.v}ที่ถูกมัดในชุดเจ้าสาวสีขาว`,''],[S.relics.length?`ของขลัง ${S.relics.length} ชิ้นในย่ามส่องแสงวาบ หมอผีสะดุ้ง`:'มึงไม่มีของขลังสักชิ้น หมอผีหัวเราะก้องถ้ำ',S.relics.length?'gold':'bad']]};
  S.screen='combat';
 }
@@ -416,13 +417,13 @@ function cAct(a){
  C.turn++;
  if(C.stun){C.stun=0;lg.push([`${b.n}ยังชะงักอยู่`,''])}
  else{
-  let d=Math.round(R(b.atk[0],b.atk[1])*(big?1:.75))+Math.floor(S.day/12)+S.cycle*2;
+  let d=Math.round(R(b.atk[0],b.atk[1])*(big?TUNE.batk:TUNE.atk))+Math.floor(S.day/12)+S.cycle*2;
   if(C.boss&&C.turn%3===0){d+=8;stat('curse',curseGain(12));lg.push(['หมอผีพ่นไสยดำ หนอนไต่ออกจากแผลมึง! คำสาปพุ่ง','bad'])}
   if(C.id==='queen'&&C.turn%3===0){d+=6;stat('food',-15);lg.push(['เจ้าแม่ยื่นลิ้นยาวเป็นวามาดูดเลือด −15 อิ่ม','bad'])}
   d=Math.max(1,d-S.armor*2-(has('takrud')?3:0));
   stat('hp',-d);
   lg.push([`${enemyName()}โจมตี −${d} ชีวิต`,'bad']);
-  if(b.curse)stat('curse',curseGain(Math.ceil(b.curse*.4)));
+  if(b.curse)stat('curse',curseGain(Math.ceil(b.curse*TUNE.curse)));
   if(b.san)stat('san',-Math.ceil(b.san*.5));
   if(b.sp==='drain'){stat('food',-8);lg.push(['มันดูดเลือดจนตัวเบาหวิว −8 อิ่ม','bad'])}
   if(b.sp==='hex'&&ch(.4)){stat('curse',curseGain(7));lg.push(['มันเป่ามนต์ใส่หน้า คำสาปเพิ่ม','bad'])}
