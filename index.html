@@ -127,6 +127,19 @@ const RELICS={
  pod:{n:'เงินพดด้วงผี',fx:'เล่นพนันชนะทุกครั้ง',loc:['bamboo'],st:'เงินที่ผีพนันใช้วางเดิมพัน ไม่มีใครเคยชนะมัน เพราะมันโกงไม่เป็นเลย'},
  rod:{n:'พระรอดเนื้อดิน',fx:'ชีวิตสูงสุด +15',loc:['temple'],st:'พระเครื่องเล็กเท่าเม็ดข้าวโพด ห้อยแล้วรถคว่ำไม่ตาย แต่ที่นี่ไม่มีรถให้คว่ำ'},
  fang:{n:'เขี้ยวเสือสมิง',fx:'คริติคอล +10%',loc:['bamboo'],st:'เขี้ยวที่หักคาคอผีหัวขาด ยังมีกลิ่นคาวเลือดติดอยู่'},
+ mirror:{n:'กระจกเงาบานแตก',fx:'สติลดช้าลงตอนกลางคืน',loc:['hospital'],st:'กระจกในห้องผ่าตัด เงาในกระจกขยับช้ากว่าตัวจริงครึ่งวินาทีเสมอ'},
+ mahaud:{n:'ตะกรุดมหาอุด',fx:'โดนตีเบาลง 1',loc:['temple'],st:'ปืนยิงไม่ออก มีดฟันไม่เข้า แต่กับผีมันได้แค่ทำให้เจ็บน้อยลงนิดหน่อย'},
+ lotus:{n:'ดอกบัวสัตตบงกช',fx:'ฟื้นชีวิต +2 ทุกคืน',loc:['swamp'],st:'ดอกบัวที่ไม่เคยเหี่ยว บานกลางบึงตรงจุดที่บัวลอยจมน้ำตาย'},
+ bell:{n:'กระดิ่งวัดร้าง',fx:'ผีบุกตอนกลางคืนน้อยลงอีก',loc:['temple'],st:'ห้อยอยู่ที่ชายคาโบสถ์ ไม่มีลมก็ดังเองทุกครั้งที่มีผีเข้าใกล้'},
+ rope:{n:'เชือกผูกคอผีตายโหง',fx:'ฟันผี +4',loc:['market'],st:'เชือกป่านที่แม่ค้าคนหนึ่งใช้ผูกคอตายกลางตลาด ผีทุกตัวกลัวมันเพราะจำความเจ็บได้'},
+ skull:{n:'กะโหลกผีเฝ้าทรัพย์',fx:'โอกาสเจอของ +4%',loc:['grave'],st:'กะโหลกที่ถูกฝังพร้อมไหทอง มันยังกระซิบบอกว่าของมีค่าซ่อนอยู่ตรงไหน'},
+ needle:{n:'เข็มเย็บผ้าห่อศพ',fx:'ใช้ยาฟื้นเพิ่ม +5',loc:['hospital'],st:'เย็บศพมาแล้วสามร้อยศพ ตอนนี้เย็บแผลคนเป็นแทน'},
+ tusk:{n:'งาช้างดำ',fx:'ชีวิตสูงสุด +10',loc:['bamboo'],st:'งาของช้างเผือกดำที่ตายกลางป่าไผ่ ปอบทุกตัวไม่กล้าเข้าใกล้'},
+ flute:{n:'ขลุ่ยผีพราย',fx:'ศัตรู 15% เผลอเสียเทิร์น',loc:['swamp'],st:'เป่าแล้วไม่มีเสียง แต่ผีทุกตัวในรัศมีจะหยุดฟัง'},
+ incense:{n:'ธูปเก้าดอกไม่มีวันมอด',fx:'สวดมนต์ได้สติเพิ่ม +4',loc:['shrine'],st:'หมอผีจุดไว้บูชาครู มันไหม้มาสามชั่วคน ยังไม่สั้นลงเลยสักนิ้ว'},
+ third:{n:'ตาที่สามจากโลกเงา',fx:'คริติคอล +8% และไม่โดนซุ่ม',mad:1,st:'ของที่ติดมือกลับมาจากโลกคนบ้า มันมองเห็นสิ่งที่คนปกติไม่เห็น'},
+ laugh:{n:'เสียงหัวเราะในหัว',fx:'ฟันแล้ว 20% ศัตรูชะงัก',mad:1,st:'มันยังหัวเราะอยู่ในหัวมึง แต่ตอนนี้มันหัวเราะใส่ศัตรูแทน'},
+ silver:{n:'เศษสติสีเงิน',fx:'ผีกินสติได้น้อยลงครึ่งหนึ่ง',mad:1,st:'ชิ้นส่วนของความเป็นคนที่มึงเก็บกลับมาได้ เย็นเหมือนน้ำแข็งแต่อุ่นใจ'},
  rahu:{n:'พระราหูอมจันทร์กะลาตาเดียว',fx:'??? ปาฏิหาริย์',secret:1,st:'กะลามะพร้าวตาเดียวที่ราหูกลืนจันทร์ไว้ครึ่งดวง ตำนานว่าทั้งแผ่นดินมีอยู่องค์เดียว หมอผีทุกตนที่เห็นจะสิ้นฤทธิ์ทันที (โอกาสเจอ 0.001%)'}
 };
 const EN={
@@ -146,6 +159,10 @@ const EN={
  nurse:{n:'ผีพยาบาล',i:'💉',hp:48,atk:[8,13],g:1,curse:4,san:7,d:'ชุดขาวเปื้อนเลือดแห้ง เข็นรถเข็นเปล่าเสียงเอี๊ยดๆ "ถึงคิวคุณแล้วค่ะ"'},
  butcher:{n:'หมอเถื่อนคลั่ง',i:'🪚',hp:62,atk:[11,16],g:0,d:'ผู้ชายใส่ผ้าปิดปากถือเลื่อยตัดกระดูก หัวเราะไม่หยุด'},
  queen:{n:'ปอบเจ้าแม่ทองคำ',i:'👑',hp:150,atk:[13,20],g:1,curse:6,san:5,sp:'boss2',d:'หญิงงามในชุดไทยทองคำ ลิ้นยาวเป็นวา ข้างหลังมีปอบลูกหลานนับสิบคลานตาม'},
+ mother:{n:'แม่ที่ไม่ใช่แม่',i:'👵',hp:50,atk:[7,12],g:1,curse:0,san:10,d:'แม่ของมึงยืนยิ้มอยู่หน้าประตู แต่ปากยิ้มกว้างเกินไป "ลูก... ทำไมไม่เปิดประตูให้แม่"'},
+ faceless:{n:'คนไร้หน้า',i:'😶',hp:44,atk:[6,11],g:1,curse:0,san:9,d:'ใบหน้าเรียบเหมือนไข่ แต่มึงได้ยินมันหายใจ'},
+ bride:{n:'เจ้าสาวในฝันร้าย',i:'👰',hp:56,atk:[8,13],g:1,curse:0,san:11,d:'หญิงสาวที่มึงมาช่วย แต่ตาของเธอเป็นรูดำ "ทำไมมาช้า... ฉันตายไปแล้ว"'},
+ self:{n:'ตัวมึงอีกคน',i:'🪞',hp:95,atk:[10,16],g:1,curse:0,san:12,d:'มันคือมึงทุกอย่าง แต่ยิ้มอยู่ตลอดเวลา "ปล่อยให้ข้าอยู่ข้างนอกแทนเถอะ ข้าเก่งกว่าเอ็ง"'},
  boss:{n:'',i:'☠️',hp:200,atk:[14,23],g:.5,curse:7,san:6,sp:'boss',d:''}
 };
 const BOSSES=[{n:'อาจารย์เขม่า หมอผีเขาดำ',v:'ดาว',d:'ชายชราหนังเหี่ยวติดกระดูก นัยน์ตาแดงก่ำ'},{n:'แม่หมอจันทร์ดำ',v:'ใบเตย',d:'หญิงสาวหน้าสวยแต่ครึ่งหน้าเน่าเปื่อย ถือหุ่นขี้ผึ้งหน้าเหมือนมึง'},{n:'เจ้าพ่อเสือสมิง',v:'น้ำฝน',d:'ร่างคนครึ่งเสือ เขี้ยวยาวเปื้อนเลือด หางฟาดพื้นถ้ำ'},{n:'หลวงพ่อคงปลอม',v:'แพรว',d:'ห่มจีวรดำ ลูกประคำทำจากฟันคน สวดถอยหลังไม่หยุด'},{n:'ราชาปอบเขาแก้ว',v:'มิ้นท์',d:'ร่างอ้วนพองเท่าช้าง ท้องเต็มไปด้วยหน้าคนที่มันกินเข้าไป'}];
@@ -202,7 +219,7 @@ function takeBoon(k){S.boons=S.boons||[];S.boons.push(k);if(k==='dream'&&S.weapo
 const today=()=>{const d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate()};
 let M=store.get('meta',null);
 if(!M){M={merit:0,earned:0,perks:{},classes:['villager'],ach:{},st:{kills:{},total:0,runs:0,wins:0,maxDay:store.get('best',0),crafts:0,disrupts:0,bossKills:0,queen:0,endlessMax:0,buaNight:0,endings:store.get('endings',[]),played:[]},daily:null,codex:[]}}
-if(!M.codex)M.codex=[];
+if(!M.codex)M.codex=[];if(!M.shattered)M.shattered=[];
 function saveM(){store.set('meta',M)}
 const QPOOL=[
  {id:'kill',t:'ฆ่าศัตรู 10 ตัว',n:10},{id:'k_krasue',t:'ฆ่ากระสือ 2 ตัว',n:2},{id:'k_pob',t:'ฆ่าผีปอบ 2 ตัว',n:2},{id:'disrupt',t:'ขัดพิธีหมอผี 2 ครั้ง',n:2},
@@ -256,9 +273,13 @@ const ACH=[
  ['e_all','🏆','ครบทุกชะตา','ปลดล็อกฉากจบครบ 7 แบบ',st=>st.endings.length>=7,st=>[st.endings.length,7]],
  ['relic5','✨','คลังของขลัง','มีของขลัง 8 ชิ้นในรอบเดียว',(st,S)=>S&&S.relics.length>=8],
  ['codex10','📜','นักสะสมของขลัง','บันทึกของขลังในตำนาน 10 ชิ้น',()=>M.codex.length>=10,()=>[M.codex.length,10]],
- ['codex21','📚','ตำราครบเล่ม','บันทึกของขลังครบ 21 ชิ้น (ไม่นับของลับ)',()=>M.codex.filter(k=>!RELICS[k].secret).length>=21,()=>[M.codex.filter(k=>!RELICS[k].secret).length,21]],
+ ['codex21','📚','ตำราครบเล่ม','บันทึกของขลังครบ 34 ชิ้น (ไม่นับของลับ)',()=>M.codex.filter(k=>!RELICS[k].secret).length>=34,()=>[M.codex.filter(k=>!RELICS[k].secret).length,34]],
  ['rahu','🌕','ปาฏิหาริย์ 0.001%','เจอพระราหูอมจันทร์กะลาตาเดียว',st=>st.rahu],
  ['boon6','🎁','ผู้ถูกเลือก','มีพร 6 อย่างในรอบเดียว',(st,S)=>S&&(S.boons||[]).length>=6],
+ ['madback','🪞','กลับจากโลกเงา','เข้าโลกคนบ้าแล้วกลับมาได้',st=>st.madBack],
+ ['spiritback','👻','ร่างใครร่างมัน','เป็นวิญญาณแล้วหาร่างตัวเองเจอ',st=>st.spiritBack],
+ ['yama','⚖️','ต่อรองกับยมบาล','รอดจากความตายด้วยการต่อรองที่ประตูยมโลก',st=>st.yama],
+ ['shatter','💔','ของขลังสละชีพ','ของขลังแตกสลายเพื่อปกป้องมึง',st=>st.shatter],
  ['arcs','🎬','เรื่องเล่าหนองผี','จบเส้นเรื่องรองครบ 4 เรื่อง',st=>(st.arcs||[]).length>=4,st=>[(st.arcs||[]).length,4]],
  ['rush','⚡','บุกสายฟ้าแลบ','ฆ่าบอสก่อนคืนที่ 20',st=>st.rush],
  ['noholy','🚱','ไม่ง้อน้ำมนต์','ฆ่าบอสโดยไม่สาดน้ำมนต์เลยทั้งรอบ',st=>st.noholy],
@@ -291,7 +312,7 @@ function toast(t,s){const el=document.getElementById('toast');if(!el)return;cons
 
 /* ---------- STATE ---------- */
 let S=null;
-const TUNE={hp:1.12,atk:1.02,batk:1.32,curse:.61,boss:268};
+const TUNE={hp:1.04,atk:.97,batk:1.25,curse:.57,boss:251};
 function newGame(cls){
  const P=M.perks,pk=P.pack||0;
  S={cls,day:1,cycle:0,screen:'intro',maxhp:100+(P.hp||0)*10,hp:0,food:80,wat:80,sta:100,san:100,curse:0,power:18,
@@ -299,6 +320,7 @@ function newGame(cls){
  weapon:P.smith?2:1,armor:0,relics:[],allies:{monk:0,yod:0,bua:0},aff:0,buaHostile:0,
  flags:{},visits:{},disrupts:0,act:'search',loc:'market',night:'sleep',queue:[],log:[],combat:null,event:null,ending:null,
  r:{kills:0,holy:0,merit:0},boons:[]};
+ rollSavers();
  if(cls==='villager'){add('rice',2);add('water',2)}
  if(cls==='mordham'){S.maxhp-=10;add('holy',2);add('candle',3)}
  if(cls==='nakleng'){S.maxhp+=25;S.san=80}
@@ -315,16 +337,18 @@ function L(t,c){S.log.push([t,c||''])}
 function inv(k){return S.inv[k]||0}
 function add(k,n){S.inv[k]=Math.max(0,inv(k)+n)}
 function has(r){return S.relics.includes(r)||(r==='eye'&&S.flags.innateEye)}
+function saverHeld(t){return (S.savers&&S.savers[t]||[]).find(r=>S.relics.includes(r))}
+function rollSavers(){const pool=Object.keys(RELICS).filter(k=>!RELICS[k].core&&!RELICS[k].secret&&!RELICS[k].mad&&!M.shattered.includes(k));for(let i=pool.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[pool[i],pool[j]]=[pool[j],pool[i]]}S.savers={mad:pool.slice(0,4),curse:pool.slice(4,8),death:pool.slice(8,11)}}
 function hb(b){return (S.boons||[]).includes(b)}
 function curseGain(n){let f=1-S.armor*.15-(M.perks.ward||0)*.07;if(has('yan'))f-=.3;if(has('bia'))f-=.15;if(hb('pure'))f-=.2;if(S.cls==='rangsong')f-=.25;return Math.max(1,Math.round(n*Math.max(.2,f)))}
 function stat(k,n){S[k]=clamp(S[k]+n,0,k==='hp'?S.maxhp:100)}
-function gotRelic(r,txt){if(S.relics.includes(r))return;S.relics.push(r);qInc('relic');if(!M.codex.includes(r)){M.codex.push(r);saveM()}if(r==='rod'){S.maxhp+=15;stat('hp',15)}L((txt?txt+' ':'')+'✨ ได้ของขลัง: '+RELICS[r].n+' — '+RELICS[r].fx,'gold');L('📜 '+RELICS[r].st,'gold');if(RELICS[r].secret){M.st.rahu=1;toast('🌕 ปาฏิหาริย์!','เจอพระราหูอมจันทร์ โอกาส 0.001%')}}
+function gotRelic(r,txt){if(S.relics.includes(r))return;S.relics.push(r);qInc('relic');if(!M.codex.includes(r)){M.codex.push(r);saveM()}if(r==='rod'){S.maxhp+=15;stat('hp',15)}if(r==='tusk'){S.maxhp+=10;stat('hp',10)}L((txt?txt+' ':'')+'✨ ได้ของขลัง: '+RELICS[r].n+' — '+RELICS[r].fx,'gold');L('📜 '+RELICS[r].st,'gold');if(RELICS[r].secret){M.st.rahu=1;toast('🌕 ปาฏิหาริย์!','เจอพระราหูอมจันทร์ โอกาส 0.001%')}}
 function secretRoll(){if(!S.relics.includes('rahu')&&Math.random()<0.00001)gotRelic('rahu','แสงจันทร์สาดลงมาจุดเดียวกลางความมืด ใต้ใบไม้แห้งมีกะลาตาเดียวที่ส่องแสงนวล...')}
-function relicFind(loc){if(!ch(.13+luck()*.5))return;const pool=Object.keys(RELICS).filter(k=>(RELICS[k].loc||[]).includes(loc)&&!S.relics.includes(k));if(pool.length)gotRelic(pick(pool),'')}
-const luck=()=>(M.perks.luck||0)*.06+(has('phong')?.05:0)+(hb('scav')?.1:0);
+function relicFind(loc){if(!ch(.13+luck()*.5))return;const pool=Object.keys(RELICS).filter(k=>(RELICS[k].loc||[]).includes(loc)&&!S.relics.includes(k)&&!M.shattered.includes(k));if(pool.length)gotRelic(pick(pool),'')}
+const luck=()=>(M.perks.luck||0)*.06+(has('phong')?.05:0)+(has('skull')?.04:0)+(hb('scav')?.1:0);
 
 /* ---------- DAY FLOW ---------- */
-function startDay(){S.log=[];S.queue=['act','event','night','upkeep'];advance()}
+function startDay(){S.log=[];S.queue=S.mode==='mad'?['madact','madend']:S.mode==='spirit'?['spiritact','spiritend']:['act','event','night','upkeep'];advance()}
 function advance(){
  save();
  if(checkDeath())return;
@@ -371,19 +395,23 @@ const STEP={
  },
  night(){
   const n=S.night;
-  if(n==='pray'&&(inv('candle')>0||hb('monk'))){if(!hb('monk'))add('candle',-1);stat('curse',-8);stat('san',9);stat('sta',15);qInc('pray');L('จุดเทียนสวดอิติปิโสจนตีสอง คำสาปบนตัวเบาลง','good')}
+  if(n==='pray'&&(inv('candle')>0||hb('monk'))){if(!hb('monk'))add('candle',-1);stat('curse',-8);stat('san',9+(has('incense')?4:0));stat('sta',15);qInc('pray');L('จุดเทียนสวดอิติปิโสจนตีสอง คำสาปบนตัวเบาลง','good')}
   else if(n==='guard'){stat('sta',10);L('นั่งเฝ้ายามกำมีดไว้แน่นทั้งคืน ตาแทบปิด')}
   else{if(n==='pray')L('ไม่มีเทียนเหลือ เลยได้แต่นอน','bad');stat('sta',30);stat('hp',6);L('นอนหลับไปทั้งที่ใจยังเต้นแรง')}
   if(S.allies.monk)stat('curse',-3);
   if(S.allies.bua)stat('san',4);
   if(has('comb'))stat('san',3);
   if(has('balm'))stat('hp',3);
-  let p=.14+S.power/260+S.day/150+S.cycle*.04-(n==='guard'?.12:0)-(has('sai')?.1:0)-(S.allies.bua?.06:0)-(hb('cat')?.1:0);
+  if(has('lotus'))stat('hp',2);
+  if(has('mirror'))stat('san',2);
+  if(S.san<20&&saverHeld('mad'))L('บางอย่างในย่ามสั่นเบาๆ เหมือนกำลังรอเวลา...','pink');
+  if(S.curse>85&&saverHeld('curse'))L('ของขลังชิ้นหนึ่งในย่ามอุ่นขึ้นอย่างประหลาด...','pink');
+  let p=.14+S.power/260+S.day/150+S.cycle*.04-(n==='guard'?.12:0)-(has('sai')?.1:0)-(S.allies.bua?.06:0)-(hb('cat')?.1:0)-(has('bell')?.07:0);
   if(ch(clamp(p,.05,.75))){
    const pool=S.day<10?['pret','tayhong','kuman','phong']:S.day<25?['zombie','krasue','kuman','tayhong','pob','nurse']:['krasue','zombie','disciple','phrai','pob','headless'];
    const e=pick(pool);
    L('ตีสาม... มีบางอย่างเคาะประตู','bad');
-   startCombat(e,{after:'none',ambush:!(n==='guard'||has('eye')||hb('cat'))});
+   startCombat(e,{after:'none',ambush:!(n==='guard'||has('eye')||hb('cat')||has('third'))});
    return 'wait';
   }
  },
@@ -456,12 +484,13 @@ function cAct(a){
   else lg.push(['วิ่งหนีไม่พ้น มันขวางทางไว้','bad']);
  } else if(shaky){lg.push(['มือสั่นจนทำอะไรไม่ถูก เสียงกระซิบในหัวดังเกินไป (สติต่ำ)','bad'])}
  else if(a==='hit'){
-  const W=WEAPONS[S.weapon];dmg=R(W.d[0],W.d[1])+(S.cls==='nakleng'?4:0)+(has('beads')?3:0)+(hb('fire')?5:0);
+  const W=WEAPONS[S.weapon];dmg=R(W.d[0],W.d[1])+(S.cls==='nakleng'?4:0)+(has('beads')?3:0)+(hb('fire')?5:0)+(b.g&&has('rope')?4:0);
   if(S.sta<15)dmg=Math.round(dmg/2);
   if(b.g===1&&!W.holy&&!hb('fire'))dmg=Math.round(dmg*.65);
   if(hb('rage')&&S.hp<S.maxhp*.4)dmg=Math.round(dmg*1.4);
   if(C.boss&&has('knife'))dmg+=8;
-  if(ch(.12+(has('fang')?.1:0)+(hb('crit')?.13:0))){dmg=Math.round(dmg*(hb('crit')?2.2:1.8));txt=' คริติคอล!'}
+  if(has('laugh')&&ch(.2))C.stun=1;
+  if(ch(.12+(has('fang')?.1:0)+(has('third')?.08:0)+(hb('crit')?.13:0))){dmg=Math.round(dmg*(hb('crit')?2.2:1.8));txt=' คริติคอล!'}
   if(hb('vamp')){stat('hp',Math.ceil(dmg*.3))}
   stat('sta',-4);
   lg.push([`ฟันด้วย${W.n} −${dmg}${txt}${b.g===1&&!W.holy&&!hb('fire')?' (อาวุธธรรมดาตีผีเบาลง)':''}`,'good']);
@@ -469,26 +498,27 @@ function cAct(a){
  else if(a==='holy'){add('holy',-1);S.r.holy++;qInc('holyUse');dmg=b.g?Math.round(gm(R(30,42)+(has('oil')?10:0)+(hb('holy')?15:0))):R(4,8);lg.push([`สาดน้ำมนต์ ควันขาวพวยพุ่ง −${dmg}`,'good'])}
  else if(a==='chant'){const md=S.cls==='mordham';if(!hb('chant'))stat('san',md?-6:-10);dmg=Math.round(gm(R(12,20))*(md?1.7:1)*(has('staff')?1.5:1));stat('curse',-5);lg.push([dmg?`ท่องคาถาพระเจ้าห้าพระองค์ −${dmg} คำสาปบนตัว −5`:'ท่องคาถาใส่คน มันไม่สะทกสะท้าน แต่คำสาปบนตัวลดลง −5',dmg?'good':''])}
  else if(a==='black'){dmg=R(24,36);stat('curse',curseGain(7));lg.push([`ท่องคาถาไสยดำ เลือดพุ่งออกจากตาศัตรู −${dmg} แต่คำสาปกัดกินมึงเพิ่ม`,'pink'])}
- else if(a==='band'){add('band',-1);qInc('heal');stat('hp',Math.round(22*(has('yadong')?1.5:1)));lg.push(['พันแผลห้ามเลือด +'+Math.round(22*(has('yadong')?1.5:1))+' ชีวิต','good'])}
+ else if(a==='band'){add('band',-1);qInc('heal');stat('hp',(Math.round(22*(has('yadong')?1.5:1))+(has('needle')?5:0)));lg.push(['พันแผลห้ามเลือด +'+(Math.round(22*(has('yadong')?1.5:1))+(has('needle')?5:0))+' ชีวิต','good'])}
  else if(a==='herb'){add('herb',-1);qInc('heal');stat('hp',10);stat('curse',-4);lg.push(['เคี้ยวสมุนไพรขมปี๋ +10 ชีวิต −4 คำสาป','good'])}
- else if(a==='med'){add('med',-1);qInc('heal');stat('hp',Math.round(30*(has('yadong')?1.5:1)));stat('curse',-10);lg.push(['กรอกยาผีบอกลงคอ +'+Math.round(30*(has('yadong')?1.5:1))+' ชีวิต −10 คำสาป','good'])}
+ else if(a==='med'){add('med',-1);qInc('heal');stat('hp',(Math.round(30*(has('yadong')?1.5:1))+(has('needle')?5:0)));stat('curse',-10);lg.push(['กรอกยาผีบอกลงคอ +'+(Math.round(30*(has('yadong')?1.5:1))+(has('needle')?5:0))+' ชีวิต −10 คำสาป','good'])}
  C.hp-=dmg;
  if(S.allies.yod&&C.hp>0&&a!=='flee'){const y=R(6,13)*(hb('ally')?2:1)+(S.flags.yodStrong?5:0);C.hp-=y;lg.push([`เสือยอดเหวี่ยงขวานใส่ "ตายซะไอ้เหี้ย!" −${y}`,'good'])}
  if(has('kuman')&&C.hp>0&&a!=='flee'){const y=R(5,10);C.hp-=y;lg.push([`กุมารทองกระโดดกัดข้อเท้ามัน −${y}`,'pink'])}
  if(S.allies.bua&&C.hp>0&&a!=='flee'&&ch(.3)){const y=R(8,14)*(hb('ally')?2:1);C.hp-=y;lg.push([`บัวลอยโผล่จากเงามืด ข่วนหน้ามันเป็นทางยาว −${y}`,'pink'])}
  if(C.hp<=0)return winCombat();
  C.turn++;
+ if(!C.stun&&has('flute')&&ch(.15)){C.stun=1;lg.push(['เสียงขลุ่ยผีพรายดังในหัวมัน มันหยุดฟังเหม่อลอย','pink'])}
  if(C.stun){C.stun=0;lg.push([`${b.n}ยังชะงักอยู่`,''])}
  else{
   let d=Math.round(R(b.atk[0],b.atk[1])*(big?TUNE.batk:TUNE.atk))+Math.floor(S.day/12)+S.cycle*2;
   if(C.boss&&C.turn%3===0){d+=8;stat('curse',curseGain(12));lg.push(['หมอผีพ่นไสยดำ หนอนไต่ออกจากแผลมึง! คำสาปพุ่ง','bad'])}
   if(C.id==='queen'&&C.turn%3===0){d+=6;stat('food',-15);lg.push(['เจ้าแม่ยื่นลิ้นยาวเป็นวามาดูดเลือด −15 อิ่ม','bad'])}
-  d=Math.max(1,d-S.armor*2-(has('takrud')?3:0)-(has('kong')?2:0)-(hb('iron')?3:0));
+  d=Math.max(1,d-S.armor*2-(has('takrud')?3:0)-(has('kong')?2:0)-(has('mahaud')?1:0)-(hb('iron')?3:0));
   if(has('pracheat')&&!C.blocked){C.blocked=1;d=0;lg.push(['ผ้าประเจียดแดงสะบัดรับการโจมตีแทน!','gold'])}
   stat('hp',-d);
   lg.push([`${enemyName()}โจมตี −${d} ชีวิต`,'bad']);
   if(b.curse)stat('curse',curseGain(Math.ceil(b.curse*TUNE.curse)));
-  if(b.san)stat('san',-Math.ceil(b.san*(hb('calm')?.25:.5)));
+  if(b.san)stat('san',-Math.ceil(b.san*(hb('calm')?.25:.5)*(has('silver')?.5:1)*(S.mode==='mad'?2:1)));
   if(b.sp==='drain'){stat('food',-8);lg.push(['มันดูดเลือดจนตัวเบาหวิว −8 อิ่ม','bad'])}
   if(b.sp==='hex'&&ch(.4)){stat('curse',curseGain(7));lg.push(['มันเป่ามนต์ใส่หน้า คำสาปเพิ่ม','bad'])}
  }
@@ -510,6 +540,7 @@ function winCombat(){
  if(C.id==='kuman'&&ch(.15))gotRelic('kuman','วิญญาณกุมารที่มึงปลดปล่อยไม่ยอมไปไหน');
  if(C.id==='headless'&&ch(.15))gotRelic('fang','');
  secretRoll();
+ if(C.after==='mad'){S.combat=null;S.screen='plan';madLoot(C.loc);return advance()}
  if(C.id==='queen'){M.st.queen++;S.flags.queenDead=1;add('med',3);add('holy',2);S.maxhp+=15;stat('hp',15);L('ร่างเจ้าแม่สลายเป็นแผ่นทองคำ มึงกลืนลูกแก้วปอบเข้าไป ชีวิตสูงสุด +15 ได้ยาผีบอก 3 น้ำมนต์ 2','gold')}
  if(C.id==='bandit'&&ch(.5)){add('rice',1);add('band',1);L('ค้นตัวโจรได้ข้าวกับผ้าพันแผล','good')}
  if(C.id==='butcher'&&ch(.5)){add('band',2);L('ในกระเป๋าหมอเถื่อนมีผ้าพันแผล 2 ม้วน','good')}
@@ -522,12 +553,60 @@ function winCombat(){
 }
 function checkDeath(){
  if(S.screen==='end')return true;
- let e=null;
+ if(S.mode==='spirit')return false;
  if(S.hp<=0&&hb('second')&&!S.flags.usedSecond){S.flags.usedSecond=1;S.hp=1;toast('ไม่ตายง่าย!','รอดมาได้ด้วยชีวิต 1');}
- if(S.hp<=0)e='dead';else if(S.curse>=100)e='ghost';else if(S.san<=0)e='mad';else if(S.power>=100)e='wedding';
- if(e){endGame(e);return true}
+ if(S.hp<=0){
+  const d=saverHeld('death');
+  if(d&&!S.flags.yamaUsed){S.flags.yamaUsed=d;S.combat=null;S.hp=1;S.event={id:'yama'};S.screen='event';save();render();return true}
+  endGame('dead');return true}
+ if(S.curse>=100&&S.mode!=='mad'){
+  const c=saverHeld('curse');
+  if(c){S.relics=S.relics.filter(r=>r!==c);if(!M.shattered.includes(c))M.shattered.push(c);M.st.shatter=1;saveM();S.curse=40;
+   L(`คำสาปพุ่งทะลุร่าง มึงรู้สึกว่าวิญญาณกำลังถูกกระชากออก... แต่${RELICS[c].n}ในย่ามร้อนจนลุกเป็นไฟ มันรับคำสาปทั้งหมดไว้แทน แล้วแตกสลายเป็นผงต่อหน้าต่อตา 💔 (หายไปตลอดกาล)`,'gold');toast('💔 '+RELICS[c].n,'สละตัวเองปกป้องมึงจากคำสาป');save();return false}
+  S.combat=null;S.queue=[];S.mode='spirit';S.sp={night:1,body:R(0,4),wrong:[],haunt:0};S.log=[];S.screen='spiritIntro';save();render();return true}
+ if(S.san<=0){
+  if(S.mode==='mad'){endGame('mad');return true}
+  const m=saverHeld('mad');
+  if(m&&!S.flags.madUsed){S.flags.madUsed=m;S.combat=null;S.queue=[];S.mode='mad';S.san=60;S.md={day:1,shards:0};S.log=[];S.screen='madIntro';save();render();return true}
+  endGame('mad');return true}
+ if(S.power>=100){endGame('wedding');return true}
  return false;
 }
+const MADLOC={market:{n:'ตลาดคนไร้หน้า',i:'😶',d:'แม่ค้าทุกคนหน้าเรียบเหมือนไข่'},temple:{n:'วัดสวดถอยหลัง',i:'🛕',d:'พระสวดย้อนจากท้ายมาหน้า'},home:{n:'บ้านแม่',i:'🏠',d:'บ้านที่มึงเกิด ประตูเปิดทิ้งไว้'},cave:{n:'ถ้ำในหัว',i:'🧠',d:'ต้องมีเศษสติ 2 ชิ้นก่อน · เจอตัวมึงอีกคน'}};
+const SPLOC=['ป่าช้า','บึงบัว','ศาลหมอผี','อนามัยร้าง','ป่าไผ่'];
+STEP.madact=()=>{
+ const loc=S.loc2||'market',P=MADLOC[loc];
+ L(`เดินเข้าไปใน${P.n} ${P.i}`,'pink');
+ stat('power',3);stat('food',-8);stat('wat',-10);
+ if(loc==='cave'){if(S.md.shards<2){L('ถ้ำปิดตาย ต้องมีเศษสติมากกว่านี้','bad');return}startCombat('self',{after:'mad',loc});return 'wait'}
+ if(ch(.5)){startCombat(pick(loc==='home'?['mother','faceless']:loc==='temple'?['bride','faceless']:['faceless','mother','bride']),{after:'mad',loc});return 'wait'}
+ madLoot(loc);
+};
+function madLoot(loc){
+ if(loc==='cave'){S.md.shards=3;L('ตัวมึงอีกคนแตกเป็นเศษกระจก หนึ่งในนั้นคือเศษสติชิ้นสุดท้าย','gold');return}
+ if(S.md.shards<2&&ch(.38)){S.md.shards++;L(`เจอเศษสติสีเงิน ${S.md.shards}/3 ✨ ${pick(['มันซ่อนอยู่ในปากของแม่ค้าไร้หน้า','มันอยู่ในบาตรพระที่สวดถอยหลัง','มันอยู่ในเปลเด็กที่บ้านแม่ เปลยังไกวเอง'])}`,'gold')}
+ else{stat('san',R(-4,6));L(pick(['เสียงหัวเราะดังมาจากทุกทิศ แต่ไม่มีใครอยู่','มึงเห็นตัวเองนอนตายอยู่ข้างทาง แล้วศพนั้นก็ลืมตา','ฝนตกขึ้นฟ้า ปลาว่ายในอากาศ ทุกอย่างดูสมเหตุสมผลจนน่ากลัว']),'pink')}
+}
+STEP.madend=()=>{
+ S.md.day++;stat('san',-6);
+ if(S.md.shards>=3){
+  S.mode=null;S.san=50;S.curse=Math.min(S.curse,95);M.st.madBack=1;saveM();
+  const pool=['third','laugh','silver'].filter(k=>!S.relics.includes(k));
+  L('เศษสติสามชิ้นต่อกันเป็นกระจกบานเดียว มึงเห็นหน้าตัวเองชัดๆ เป็นครั้งแรกในรอบหลายวัน... แล้วก็ตื่นขึ้นมาบนเสื่อในกระต๊อบ','gold');
+  if(pool.length)gotRelic(pick(pool),'มีบางอย่างติดมือกลับมาจากโลกเงา');
+  return}
+ if(S.md.day>7){endGame('mad');return 'wait'}
+};
+STEP.spiritact=()=>{
+ const a=S.spAct;
+ stat('power',3);
+ if(a==='haunt'){S.sp.haunt++;stat('power',-12);L('มึงลอยเข้าไปในศาลหมอผี เป่าเทียนดับทีละเล่ม ลูกศิษย์หมอผีวิ่งหนีป่าราบ พลังหมอผี −12','gold');return}
+ const i=+a;
+ if(i===S.sp.body){S.mode=null;S.curse=60;S.hp=Math.max(S.hp,Math.round(S.maxhp*.4));M.st.spiritBack=1;saveM();L(`ที่${SPLOC[i]} ร่างของมึงนอนแข็งทื่ออยู่ในโลงไม้ วิญญาณมึงพุ่งกลับเข้าร่าง หายใจเฮือกใหญ่ ปอดแสบเหมือนโดนไฟ... มึงกลับมาแล้ว`,'gold');return}
+ S.sp.wrong.push(i);L(`ไม่มีร่างของมึงอยู่ที่${SPLOC[i]} มีแต่ผีตัวอื่นหันมามองอย่างหิวกระหาย`,'bad');
+ if(ch(.5)){const cand=[0,1,2,3,4].filter(k=>k!==S.sp.body&&!S.sp.wrong.includes(k));if(cand.length){const w=pick(cand);S.sp.wrong.push(w);L(`วิญญาณเร่ร่อนตนหนึ่งกระซิบว่า "ร่างเอ็งไม่ได้อยู่ที่${SPLOC[w]}หรอก"`,'pink')}}
+};
+STEP.spiritend=()=>{S.spAct=null;if(S.mode!=='spirit')return;S.sp.night++;if(S.sp.night>3){S.mode=null;endGame('ghost');return 'wait'}};
 const ENDINGS={
  dead:{t:'ศพไร้ญาติ',i:'⚰️',s:()=>'มึงล้มลงบนดินเย็นเฉียบ เลือดไหลซึมลงไปในดิน เสียงหัวเราะแหบๆ ของหมอผีดังมาจากที่ไกล ศพมึงจะเป็นผีดิบตัวต่อไปของมัน'},
  ghost:{t:'ผีรับใช้',i:'👁️',s:()=>'คำสาปกินมึงจนหมด ผิวหนังเริ่มลอก วิญญาณมึงถูกดึงออกจากร่างเข้าไปในขวดดินเผาของหมอผี จากนี้ไปมึงคือทาสของมันตลอดกาล'},
@@ -585,12 +664,20 @@ const EVENTS=[
  {id:'baA1',w:5,when:()=>S.aff>=3&&!S.buaHostile&&!S.flags.ba,run:()=>({t:'อดีตของบัวลอย',s:`บัวลอยนอนหนุนตักมึง เล่าด้วยเสียงเรียบๆ "ร้อยปีก่อนข้าก็เคยเป็นเจ้าสาวในพิธีแบบเดียวกับ${victim()} หมอผีพวกนี้สืบทอดวิชากันมา ทุกตนมีจุดตายเหมือนกัน คือแผลเป็นใต้ราวนม ที่ข้าแทงไว้ก่อนตาย"`,o:[['จูบหน้าผากนางแล้วขอบคุณ',()=>{S.flags.ba=1;S.flags.bossWeak=1;arcDone('ba');S.aff=Math.min(5,S.aff+1);L('มึงรู้จุดตายของหมอผีแล้ว บอสจะเลือดน้อยลง 20%','gold')}],['ถามว่านางเคยมีผัวไหม',()=>{S.flags.ba=1;S.flags.bossWeak=1;arcDone('ba');L('นางหัวเราะจนน้ำตาไหล "มีสิ... ตอนนี้ก็กำลังจะมี" แล้วบอกจุดตายของหมอผีให้ (บอสเลือด −20%)','pink')}]]})}
 ];
 const SPECIAL_EV={
+ yama:()=>{const o=[];
+  if(S.relics.filter(r=>r!==S.flags.yamaUsed).length)o.push(['แลกของขลังหนึ่งชิ้น (สุ่ม)',()=>{const pool=S.relics.filter(r=>r!==S.flags.yamaUsed);const r=pick(pool);S.relics=S.relics.filter(x=>x!==r);yamaBack(`ยมบาลหยิบ${RELICS[r].n}ไปพลิกดูแล้วยิ้ม "พอใช้ได้"`)}]);
+  if((S.boons||[]).length)o.push([`แลกพรทั้งหมด (${S.boons.length} ข้อ)`,()=>{S.boons=[];yamaBack('แสงพรทั้งหมดถูกดูดออกจากตัวมึงเข้าไปในสมุดดำของยมบาล')}]);
+  if(S.aff>0||S.allies.bua)o.push(['แลกความทรงจำเรื่องบัวลอย',()=>{S.aff=0;S.allies.bua=0;S.flags.metBua=1;S.buaHostile=1;yamaBack('มึงจำไม่ได้แล้วว่าเคยรู้จักผู้หญิงที่บึง... มีแค่กลิ่นดอกบัวที่ทำให้น้ำตาไหลโดยไม่รู้สาเหตุ')}]);
+  if(S.maxhp>60)o.push(['แลกอายุขัย (ชีวิตสูงสุด −30)',()=>{S.maxhp-=30;yamaBack('ยมบาลขีดเส้นในบัญชีชีวิตของมึงให้สั้นลง ผมของมึงหงอกขาวทันทีครึ่งหัว')}]);
+  o.push(['ไม่ต่อรอง ยอมตาย',()=>endGame('dead')]);
+  return {t:'ประตูยมโลก',s:`ความมืดกลืนทุกอย่าง แล้วมึงก็ยืนอยู่หน้าบัลลังก์หินสีดำ ยมบาลหน้าเขียวเปิดสมุดบัญชีคนตาย "ชื่อเอ็งยังไม่ถึงคิว ${RELICS[S.flags.yamaUsed].n}ในย่ามเอ็งพาเอ็งมาถึงนี่ได้... แต่ทุกอย่างมีราคา เอ็งจะจ่ายด้วยอะไร"`,o}},
  bua1:()=>({t:'หญิงสาวที่บึงบัว',s:'ใต้แสงจันทร์ หญิงสาวผมยาวนั่งอาบน้ำอยู่ริมบึง เนื้อตัวขาวซีดเหมือนกลีบบัว ผ้าซิ่นผืนเดียวแนบลำตัวเปียกโชก นางเหลียวมามองแล้วยิ้มมุมปาก "หลงทางมาหรือตั้งใจมาดูข้าล่ะพ่อหนุ่ม" ... เท้าของนางไม่แตะพื้นน้ำ',o:[['เข้าไปทักทาย',()=>{S.aff=1;stat('san',-3);L('นางชื่อบัวลอย นางจับมือมึงด้วยมือที่เย็นเหมือนน้ำแข็ง "แล้วเจอกันนะ" ความรักบัวลอย +1','pink')}],['สาดเกลือใส่',()=>{S.buaHostile=1;L('นางกรีดร้องเป็นเสียงผี "เจ้าจะต้องเสียใจ!" นางพรายที่บึงจะออกมาล่ามึง','bad')}],['ถอยหนีเงียบๆ',()=>L('มึงค่อยๆ ถอยออกมา ได้ยินเสียงหัวเราะเบาๆ ตามหลัง')]]}),
  final:()=>{const v=victim(),o=[['ไล่ล่าหมอผีตัวต่อไป ♾️ (โหมดไม่รู้จบ)',()=>{nextCycle();return 'stop'}],[`อุ้ม${v}กลับบ้าน (จบเกม)`,()=>endGame('hero')]];
   if(S.allies.bua)o.push([`ส่ง${v}กลับ แล้วกลับไปหาบัวลอยที่บึง`,()=>endGame('bua')]);
   o.push(['เลียเลือดหมอผี ยึดพลังมันมาเป็นของตัวเอง',()=>endGame('dark')]);
   return {t:`${boss().n} ตายแล้ว`,s:`หมอผีล้มลงขาดใจ ร่างมันเหี่ยวแห้งเป็นฝุ่นต่อหน้าต่อตา เชือกที่มัด${v}ขาดเอง เธอวิ่งมาซบอกมึงทั้งน้ำตา ชุดเจ้าสาวขาดวิ่น แต่ข่าวลือว่ามีหมอผีอีกตนกำลังตื่นขึ้นที่หมู่บ้านถัดไป... ส่วนเลือดดำที่นองพื้นถ้ำ ยังส่งเสียงกระซิบเรียกมึงอยู่`,o}}
 };
+function yamaBack(t){S.hp=Math.round(S.maxhp*.5);M.st.yama=1;saveM();L(t,'gold');L('มึงสะดุ้งตื่นกลางดินเย็นเฉียบ ยังหายใจอยู่ ('+RELICS[S.flags.yamaUsed].n+' หมดฤทธิ์ในรอบนี้)','gold')}
 function arcDone(id){M.st.arcs=M.st.arcs||[];if(!M.st.arcs.includes(id))M.st.arcs.push(id);saveM()}
 function getEvent(){const id=S.event.id;return SPECIAL_EV[id]?SPECIAL_EV[id]():EVENTS.find(e=>e.id===id).run()}
 let curEv=null;
@@ -615,7 +702,7 @@ let craftMsg='';
 function doCraft(i){const c=CRAFT[i];if(!c.ok())return;c.do();M.st.crafts++;qInc('craft');craftMsg='ทำ'+c.n+'แล้ว';save();checkAch();render();const d=document.querySelector('details');if(d)d.open=true}
 
 /* ---------- RENDER ---------- */
-function barH(k,col){const v=S[k],mx=k==='hp'?S.maxhp:100;return `<div class="bar"><div class="lab"><span>${STATN[k]}</span><b>${v}${k==='hp'?'/'+mx:''}</b></div><div class="track"><div class="fill" style="width:${v/mx*100}%;background:${col}"></div></div></div>`}
+function barH(k,col){const v=S[k],mx=k==='hp'?S.maxhp:100;return `<div class="bar"><div class="lab"><span>${k==='san'&&S.mode==='mad'?'ความจริง':STATN[k]}</span><b>${v}${k==='hp'?'/'+mx:''}</b></div><div class="track"><div class="fill" style="width:${v/mx*100}%;background:${col}"></div></div></div>`}
 function statsH(){
  return `<div class="card"><div class="top"><div><div class="day">คืนที่ ${Math.min(S.day,49)} / 49${S.cycle?` <span style="font-size:14px">· ♾️ รอบ ${S.cycle+1}</span>`:''}</div><span class="muted">เหลือ ${Math.max(0,49-S.day)} คืนก่อนวิวาห์ผี · ${CLASSES[S.cls].i} ${CLASSES[S.cls].n}</span></div><div class="muted" style="text-align:right">${WEAPONS[S.weapon].n}<br>ผ้ายันต์ ${S.armor}/3</div></div>
  <div class="bars">${barH('hp','var(--red)')}${barH('sta','var(--gold)')}${barH('food','#c98a3c')}${barH('wat','var(--blue)')}${barH('san','var(--green)')}${barH('curse','var(--purple)')}</div>
@@ -642,7 +729,7 @@ function homeH(){
  }
  if(view==='codex'){
   const ks=Object.keys(RELICS);
-  return nav()+`<div class="card"><h2>ตำราของขลัง ${M.codex.filter(k=>!RELICS[k].secret).length}/${ks.length-1}</h2><p class="muted">ของขลังทุกชิ้นที่เคยเจอจะถูกบันทึกไว้ที่นี่พร้อมตำนาน</p>${ks.map(k=>{const R_=RELICS[k],got=M.codex.includes(k);if(R_.secret&&!got)return `<div class="ach lock"><div class="ai">❔</div><div><b>??? ของลับ</b><span>มีบางอย่างซ่อนอยู่... โอกาสเจอหนึ่งในแสน</span></div></div>`;return `<div class="ach ${got?'':'lock'}"><div class="ai">${got?(R_.secret?'🌕':'✨'):'🔒'}</div><div><b>${got?R_.n:'???'}</b><span>${got?R_.fx+'<br>'+R_.st:(R_.core?'ของขลังหลัก':'แหล่งที่พบ: '+(R_.loc||[]).map(l=>LOC[l].n).join(', '))}</span></div></div>`}).join('')}</div>`;
+  return nav()+`<div class="card"><h2>ตำราของขลัง ${M.codex.filter(k=>!RELICS[k].secret).length}/${ks.length-1}</h2><p class="muted">ของขลังทุกชิ้นที่เคยเจอจะถูกบันทึกไว้ที่นี่ ในแต่ละรอบจะมีของขลังบางชิ้นที่ช่วยชีวิตมึงได้แบบลับๆ ไม่มีใครรู้ว่าชิ้นไหน จนกว่าจะถึงเวลา</p>${ks.map(k=>{const R_=RELICS[k],got=M.codex.includes(k);if(R_.secret&&!got)return `<div class="ach lock"><div class="ai">❔</div><div><b>??? ของลับ</b><span>มีบางอย่างซ่อนอยู่... โอกาสเจอหนึ่งในแสน</span></div></div>`;const sh=M.shattered.includes(k);return `<div class="ach ${got&&!sh?'':'lock'}"><div class="ai">${sh?'💔':got?(R_.secret?'🌕':R_.mad?'🪞':'✨'):'🔒'}</div><div><b>${got?R_.n:'???'}${sh?' (แตกสลายตลอดกาล)':''}</b><span>${got?R_.fx+'<br>'+R_.st:(R_.core?'ของขลังหลัก':R_.mad?'ได้จากโลกคนบ้าเท่านั้น':'แหล่งที่พบ: '+(R_.loc||[]).map(l=>LOC[l].n).join(', '))}</span></div></div>`}).join('')}</div>`;
  }
  if(view==='daily'){
   const D=daily();
@@ -680,6 +767,21 @@ function render(){
  }
  else if(sc==='cycle'){
   h=`<div class="card story"><h2>♾️ รอบที่ ${S.cycle+1}</h2><p>สามวันหลังงานศพหมอผี มีคนวิ่งมาจากหมู่บ้านถัดไป หน้าซีดเหมือนกระดาษ "<b>${boss().n}</b> ตื่นแล้ว มันเอาตัว<b>${victim()}</b>ไป!"</p><p>${boss().d}</p><p>ของขลังเก่าแตกสลายไปหมดหลังศึกครั้งก่อน มึงต้องเริ่มหาใหม่ และหมอผีตัวนี้แข็งกว่าเดิม</p><p class="merit">+40 บุญจากการปราบหมอผี</p></div><button class="btn pri" onclick="S.screen='plan';save();render()">ออกล่า</button>`;
+ }
+ else if(sc==='madIntro'){
+  h=`<div class="card story" style="border-color:var(--purple)"><div style="font-size:44px;text-align:center">🪞</div><h2>โลกคนบ้า</h2><p>สติของมึงแตกเป็นเสี่ยงๆ... แต่ก่อนจะจมหายไป <b>${RELICS[S.flags.madUsed].n}</b> ในย่ามเรืองแสงขึ้นมา มันดึงมึงไว้ไม่ให้หลุดไปจนสุด</p><p>มึงลืมตาขึ้นในหมู่บ้านที่บิดเบี้ยว ทุกอย่างคุ้นตาแต่ผิดเพี้ยน หลอด<b>สติ</b>กลายเป็น<b>ความจริง</b> ถ้าหมด มึงจะบ้าไปตลอดกาล</p><p>เก็บ<b>เศษสติ 3 ชิ้น</b>ภายใน 7 คืนเพื่อกลับไป แต่ระหว่างนี้หมอผีในโลกจริงก็แข็งขึ้นทุกคืน</p></div><button class="btn pri" onclick="S.screen='plan';save();render()">ก้าวเข้าไป</button>`;
+ }
+ else if(sc==='spiritIntro'){
+  h=`<div class="card story" style="border-color:var(--blue)"><div style="font-size:44px;text-align:center">👻</div><h2>โลกวิญญาณ</h2><p>คำสาปกระชากวิญญาณมึงออกจากร่าง มึงลอยอยู่เหนือกระต๊อบ มองลงไปเห็นพื้นว่างเปล่า... <b>ร่างของมึงหายไป</b> ลูกศิษย์หมอผีลากมันไปซ่อนแล้ว</p><p>มึงมีเวลา <b>3 คืน</b> ก่อนวิญญาณจะถูกดูดเข้าขวดดินเผา ร่างซ่อนอยู่ที่ไหนสักแห่งใน 5 ที่ หรือจะใช้คืนนั้นไปหลอกหลอนศาลหมอผีก็ได้</p></div><button class="btn pri" onclick="S.screen='plan';save();render()">ออกตามหาร่าง</button>`;
+ }
+ else if(sc==='plan'&&S.mode==='mad'){
+  h=`<div class="sticky"><div class="sb-row"><div class="sb-info"><b style="color:#d4b5ef">🪞 โลกคนบ้า · คืน ${S.md.day}/7</b><span>เศษสติ ${S.md.shards}/3 · พลังหมอผีในโลกจริง ${S.power}%</span></div><button class="btn pri go" onclick="startDay()">ไปต่อ ▶</button></div></div>
+  <div class="card"><div class="bars">${barH('hp','var(--red)')}${barH('san','var(--purple)')}${barH('food','#c98a3c')}${barH('wat','var(--blue)')}</div></div>
+  <div class="card"><h3>ไปที่ไหน</h3><div class="grid2">${Object.entries(MADLOC).map(([k,P])=>`<button class="btn tile loc" aria-pressed="${(S.loc2||'market')===k}" ${k==='cave'&&S.md.shards<2?'disabled':''} onclick="S.loc2='${k}';render()"><span class="li">${P.i}</span>${P.n}<small>${P.d}</small></button>`).join('')}</div></div>${invH()}`;
+ }
+ else if(sc==='plan'&&S.mode==='spirit'){
+  h=`<div class="sticky"><div class="sb-row"><div class="sb-info"><b style="color:#9ec3ea">👻 วิญญาณ · คืน ${S.sp.night}/3</b><span>${S.spAct==null?'เลือกที่ตามหา':S.spAct==='haunt'?'หลอกหลอนศาลหมอผี':'ไป'+SPLOC[+S.spAct]} · พลังหมอผี ${S.power}%</span></div><button class="btn pri go" ${S.spAct==null?'disabled':''} onclick="startDay()">ลอยไป ▶</button></div></div>
+  <div class="card"><h3>ร่างของมึงอยู่ที่ไหน</h3><div class="grid2">${SPLOC.map((n,i)=>`<button class="btn tile" aria-pressed="${S.spAct===String(i)}" ${S.sp.wrong.includes(i)?'disabled':''} onclick="S.spAct='${i}';render()">${S.sp.wrong.includes(i)?'✖️':'❔'} ${n}</button>`).join('')}<button class="btn tile" aria-pressed="${S.spAct==='haunt'}" onclick="S.spAct='haunt';render()">🕯️ หลอกหลอนศาล<small>พลังหมอผี −12 แต่เสียคืนนี้</small></button></div></div>`;
  }
  else if(sc==='plan'){
   const coreN=S.relics.filter(r=>RELICS[r].core).length,final=S.day>=49,canCave=coreN>=3||S.relics.length>=6||final;
