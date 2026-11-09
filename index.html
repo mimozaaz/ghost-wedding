@@ -959,6 +959,23 @@ function allCases(){return CASES.concat(S&&S.genCases||[])}
 function startAct3(){S.act3=1;const cs=[genCase(1),genCase(1),genCase(1),genCase(1)];cs.forEach(c=>{c.n=c.n.replace('คดีสุ่ม','สำนักเงาจันทร์');c.intro='สาวกสำนักเงาจันทร์ปลุกผีที่'+c.place+'ให้คลั่ง เพื่อเก็บความแค้นไปเปิดประตูนรก หลักฐานถูกจัดฉากมากกว่าปกติ และพยานถูกข่มขู่ให้โกหก';regGen(c)});S.act3Cases=cs.map(c=>c.id);S.genCases=(S.genCases||[]).concat(cs);S.mode='hub';stat('hp',50);stat('san',30);stat('curse',-30);add('jar',1);M.st.act3=1;saveM();S.screen='act3Intro';save();render()}
 function startAct2(){S.ch2={solved:[],peace:0,wrong:0};S.genCases=[genCase(0),genCase(0)];S.genCases.forEach(regGen);S.mode='hub';S.power=25;S.cycle=1;S.combat=null;S.queue=[];stat('hp',40);stat('san',30);stat('curse',-30);stat('sta',100);add('jar',1);M.st.act2=1;saveM();S.screen='act2Intro';save();render()}
 function qteResolve(ok){const q=S.qte;S.qte=null;if(!q)return;if(ok){M.st.qte=(M.st.qte||0)+1;saveM();L(q.type==='lr'?'มึงวิ่งหนีไปอีกทางได้ทัน เสียงฝีเท้าค่อยๆ หายไป':'มึงกลั้นหายใจจนปอดแทบระเบิด... มันเดินผ่านไปแล้ว','good');S.screen='plan';advance()}else{L(q.type==='lr'?'มึงวิ่งไปผิดทาง... ชนเข้ากับมันเต็มๆ':'มึงหลุดหายใจออกมา มันหันขวับมาทันที','bad');startCombat(q.e,{after:'none',ambush:true});save();render()}}
+
+let actx=null;function beat(v){try{actx=actx||new (window.AudioContext||window.webkitAudioContext)();const o=actx.createOscillator(),g=actx.createGain();o.type='sine';o.frequency.value=55;g.gain.setValueAtTime(.0001,actx.currentTime);g.gain.exponentialRampToValueAtTime(.6*v+.2,actx.currentTime+.02);g.gain.exponentialRampToValueAtTime(.0001,actx.currentTime+.18);o.connect(g);g.connect(actx.destination);o.start();o.stop(actx.currentTime+.2)}catch(e){}try{navigator.vibrate&&navigator.vibrate(40)}catch(e){}}
+function qteHold(){const b=document.getElementById('holdb'),bar=document.getElementById('hbar'),zone=document.getElementById('hzone'),wh=document.getElementById('whis'),card=document.getElementById('qcard');if(!b)return;
+ const dur=1600+Math.random()*1300,zw=13+Math.random()*6,base=40+Math.random()*35,amp=8+Math.random()*14,spd=.8+Math.random()*1.6;
+ const W=['ได้กลิ่นคนนะ...','ฮื่อออ... ใครอยู่ตรงนั้น','เจอแล้ว...','หันมาสิ... หันมามองหน้ากู','ลมหายใจอุ่นๆ... แถวนี้แหละ','ฮี่ๆๆๆ','อย่าซ่อนเลย กูได้ยินหัวใจมึง'];
+ let t0=0,raf=0,done=false,lastBeat=0,nextW=0,zl=base;
+ const zoneAt=t=>Math.max(2,Math.min(98-zw,base+Math.sin(t/1000*spd*Math.PI)*amp));
+ const loop=()=>{const now=performance.now(),t=now-(t0||now);zl=zoneAt(now);zone.style.left=zl+'%';zone.style.width=zw+'%';
+  if(t0){const f=Math.min(100,t/dur*100);bar.style.width=f+'%';const gap=Math.max(160,620-f*4.6);if(now-lastBeat>gap){lastBeat=now;beat(f/100);card.classList.remove('shake');void card.offsetWidth;if(f>60)card.classList.add('shake')}
+   if(now>nextW){nextW=now+500+Math.random()*900;if(ch(.55)){wh.textContent='"'+pick(W)+'"'}else wh.textContent=''}
+   if(f>=100){finish(false);return}}
+  raf=requestAnimationFrame(loop)};
+ const finish=ok=>{if(done)return;done=true;cancelAnimationFrame(raf);try{navigator.vibrate&&navigator.vibrate(ok?[30]:[200,80,200])}catch(e){}qteResolve(ok)};
+ const st=e=>{e.preventDefault();if(t0||done)return;t0=performance.now();wh.textContent=''};
+ const en=e=>{e.preventDefault();if(!t0||done)return;const f=(performance.now()-t0)/dur*100;finish(f>=zl&&f<=zl+zw)};
+ b.addEventListener('pointerdown',st);b.addEventListener('pointerup',en);b.addEventListener('pointercancel',en);b.addEventListener('contextmenu',e=>e.preventDefault());
+ raf=requestAnimationFrame(loop)}
 let holdT=0;
 function caseOf(){return allCases().find(c=>c.id===S.cs.id)}
 function startCase(id){const c=allCases().find(x=>x.id===id);S.mode='case';S.cycle=1+S.ch2.solved.length;S.cs={id,day:1,clues:[],talked:[],rage:10,act:'loc:'+Object.keys(c.locs)[0],ans:[null,null,null],perm:c.qs.map(q=>sh(q.o.map((x,i)=>i)))};S.log=[];S.screen='caseIntro';save();render()}
@@ -1156,8 +1173,10 @@ function render(){
   const q=S.qte;
   if(q.type==='lr'){h=`<div class="card story" style="text-align:center;border-color:var(--red)"><div style="font-size:48px">👣</div><h2>วิ่ง!</h2><p>เสียงฝีเท้าลากพื้นดังมาจากทาง<b>${q.side?'ขวา':'ซ้าย'}</b> มึงต้องหนีไปอีกทาง ภายใน 3 วินาที!</p><div class="track" style="height:10px"><div id="qbar" class="fill" style="width:100%;background:var(--red);transition:width 3s linear"></div></div></div><div class="grid2"><button class="btn pri" onclick="qteResolve(${q.side?1:0})">⬅️ ซ้าย</button><button class="btn pri" onclick="qteResolve(${q.side?0:1})">ขวา ➡️</button></div>`;
    setTimeout(()=>{const b=document.getElementById('qbar');if(b)b.style.width='0%'},30);clearTimeout(window._qt);window._qt=setTimeout(()=>{if(S&&S.screen==='qte')qteResolve(false)},3200)}
-  else{h=`<div class="card story" style="text-align:center;border-color:var(--red)"><div style="font-size:48px">🫁</div><h2>กลั้นหายใจ!</h2><p>มันเดินเข้ามาในกระต๊อบ... <b>กดปุ่มค้างไว้ 2 วินาที</b> แล้วปล่อยตอนแถบเต็ม ถ้าปล่อยเร็วหรือช้าเกินไป มันจะได้ยิน</p><div class="track" style="height:10px"><div id="hbar" class="fill" style="width:0%;background:var(--gold)"></div></div></div><button class="btn pri" id="holdb" style="min-height:80px;touch-action:none">🤫 กดค้าง</button>`;
-   setTimeout(()=>{const b=document.getElementById('holdb'),bar=document.getElementById('hbar');if(!b)return;let iv;const st=e=>{e.preventDefault();holdT=Date.now();iv=setInterval(()=>{const t=(Date.now()-holdT)/2000;bar.style.width=Math.min(100,t*100)+'%';bar.style.background=t>1.25?'var(--red)':'var(--gold)'},30)},en=e=>{e.preventDefault();clearInterval(iv);if(!holdT)return;const t=(Date.now()-holdT)/1000;holdT=0;qteResolve(t>=1.8&&t<=2.6)};b.addEventListener('pointerdown',st);b.addEventListener('pointerup',en);b.addEventListener('pointerleave',en)},30)}
+  else{h=`<div class="card story" id="qcard" style="text-align:center;border-color:var(--red)"><div style="font-size:48px">🫁</div><h2>กลั้นหายใจ!</h2><p>มันเดินเข้ามาในกระต๊อบ... <b>กดค้าง</b> ให้หลอดขึ้นไปหยุดใน<b style="color:#6fd86a">ขีดเขียว</b> แล้วปล่อย ขีดจะเลื่อนไปมา ถ้าปล่อยพลาด มันจะได้ยิน</p>
+  <div style="position:relative;height:22px;background:#000;border-radius:6px;overflow:hidden;margin-top:6px"><div id="hzone" style="position:absolute;top:0;bottom:0;background:rgba(80,200,90,.45);border-left:2px solid #6fd86a;border-right:2px solid #6fd86a"></div><div id="hbar" style="position:absolute;left:0;top:0;bottom:0;width:0%;background:var(--gold);opacity:.85"></div></div>
+  <p id="whis" style="min-height:26px;color:#f1b7b7;font-family:var(--display);margin-top:8px"></p></div><button class="btn pri" id="holdb" style="min-height:90px;touch-action:none;user-select:none;-webkit-user-select:none">🤫 กดค้างไว้</button>`;
+   setTimeout(()=>qteHold(),30)}
  }
  else if(sc==='act3Intro'){
   h=`<div class="card story" style="border-color:#8a8fbf"><div style="font-size:48px;text-align:center">🌘</div><h2>ภาค 3: สำนักเงาจันทร์</h2><p>พระครูไสยดำเป็นแค่ศิษย์คนหนึ่ง เบื้องหลังคือ<b>สำนักเงาจันทร์</b> ลัทธิที่ปลุกผีให้คลั่งทั่วแผ่นดิน เพื่อเก็บความแค้นไปเปิดประตูนรกในคืนจันทร์เต็มดวง</p><p>ไขคดีของสำนักให้ครบ 4 คดีเพื่อหาที่ซ่อนของ<b>มหาปุโรหิต</b> คดีพวกนี้ยากกว่าเดิม หลักฐานถูกจัดฉากมากขึ้น และความแค้นของผีขึ้นเร็วกว่าเดิม</p></div><button class="btn pri" onclick="S.screen='plan';save();render()">เริ่มล่า</button>`;
