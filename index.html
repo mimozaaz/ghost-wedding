@@ -405,6 +405,7 @@ const ACH=[
  ['runs50','🕯️','วนเวียนในหนองผี','เล่น 50 รอบ',st=>st.runs>=50,st=>[st.runs,50]],
  ['daily','📅','ขยันล่าผี','ทำภารกิจรายวันครบ 3 ข้อในวันเดียว',st=>st.dailyFull],
  ['broke','💥','ใจสลาย','อัปเกรดแตกรวม 10 ครั้ง',st=>(st.broke||0)>=10,st=>[st.broke||0,10]],
+ ['wipe','💀','หมดตัว','อัปเกรดแตกสลายจนเหลือ Lv0',st=>st.wipe],
  ['rich','💰','บุญหนัก','สะสมบุญรวม 1000',()=>M.earned>=1000,()=>[M.earned,1000]],
  ['shopper','🛍️','ลงทุนกับชีวิต','อัปเกรดถาวรทุกอย่างถึงระดับสูงสุด (Lv10)',()=>Object.keys(PERKS).every(k=>(M.perks[k]||0)>=PERKS[k].max)]
 ];
@@ -993,7 +994,7 @@ function homeH(){
  }
  if(view==='shop'){
   return nav()+`<div class="card"><h2>ทำบุญ <span class="merit">🪷 ${M.merit}</span></h2><p class="muted">บุญได้จากทุกครั้งที่ตายหรือชนะ รวมถึง achievement และภารกิจรายวัน ใช้ซื้อของถาวรติดตัวทุกรอบ</p></div>
-  <div class="card"><h3>อัปเกรดถาวร</h3><p class="muted" style="font-size:13px">ทุกการอัปมีโอกาสพลาด ยิ่งเลเวลสูงยิ่งเสี่ยง ถ้าพลาดอาจ<b>แตก</b>และลดเลเวลลง ซื้อ 🧧 ยันต์กันแตกไว้ก่อนได้ (มี ${M.ward||0} ใบ)</p>${Object.entries(PERKS).map(([k,p])=>{const lv=M.perks[k]||0,mx=lv>=p.max,c=perkCost(k),r=perkRate(k);return `<button class="btn" ${mx||M.merit<c?'disabled':''} onclick="buyPerk('${k}')">${p.n} <span class="merit">Lv${lv}/${p.max}</span><small>ตอนนี้: ${p.d(p.v(lv))}${mx?' · เต็มแล้ว':` → ${p.d(p.v(lv+1))}<br>โอกาสสำเร็จ ${Math.round(r*100)}% · 🪷 ${c}`}</small></button>`}).join('')}
+  <div class="card"><h3>อัปเกรดถาวร</h3><p class="muted" style="font-size:13px">ทุกการอัปมีโอกาสพลาด ยิ่งเลเวลสูงยิ่งเสี่ยง ถ้าพลาดอาจ<b>แตก</b>และลดเลเวลลง ตั้งแต่ Lv3 ขึ้นไปมีโอกาส <b>💀 แตกสลายเหลือ Lv0</b> ซื้อ 🧧 ยันต์กันแตกไว้ก่อนได้ (มี ${M.ward||0} ใบ)</p>${Object.entries(PERKS).map(([k,p])=>{const lv=M.perks[k]||0,mx=lv>=p.max,c=perkCost(k),r=perkRate(k);return `<button class="btn" ${mx||M.merit<c?'disabled':''} onclick="buyPerk('${k}')">${p.n} <span class="merit">Lv${lv}/${p.max}</span><small>ตอนนี้: ${p.d(p.v(lv))}${mx?' · เต็มแล้ว':` → ${p.d(p.v(lv+1))}<br>โอกาสสำเร็จ ${Math.round(r*100)}% · 🪷 ${c}`}</small></button>`}).join('')}
   <button class="btn" ${M.merit<80?'disabled':''} onclick="buyWard()">🧧 ยันต์กันแตก<small>ถ้าอัปพลาด เลเวลจะไม่ลด (ใช้ครั้งเดียว) · 🪷 80</small></button></div>
   <div class="card"><h3>อาชีพ</h3>${Object.entries(CLASSES).map(([k,c])=>{const own=M.classes.includes(k);return `<button class="btn" ${own||c.cost<0||M.merit<c.cost?'disabled':''} onclick="buyClass('${k}')">${c.i} ${c.n} ${own?'✓':''}<small>${c.fx} · ${own?'ปลดล็อกแล้ว':c.cost<0?c.d:'🪷 '+c.cost}</small></button>`}).join('')}</div>`;
  }
@@ -1023,6 +1024,7 @@ let pickArmed=0;
 function buyPerk(k){const p=PERKS[k],lv=M.perks[k]||0,c=perkCost(k);if(lv>=p.max||M.merit<c)return;M.merit-=c;
  if(ch(perkRate(k))){M.perks[k]=lv+1;toast('✨ อัปสำเร็จ!',p.n+' → Lv'+(lv+1))}
  else if(M.ward>0){M.ward--;toast('🧧 ยันต์กันแตกทำงาน','อัปพลาด แต่เลเวลไม่ลด')}
+ else if(lv>=3&&ch(.04+lv*.015)){M.perks[k]=0;M.st.broke=(M.st.broke||0)+1;M.st.wipe=1;toast('💀 แตกสลายหมด!',p.n+' กลับไปเหลือ Lv0')}
  else if(lv>0&&ch(lv>=6?.8:.5)){const drop=lv>=6?2:1;M.perks[k]=Math.max(0,lv-drop);M.st.broke=(M.st.broke||0)+1;toast('💥 แตก!',p.n+' ลดเหลือ Lv'+M.perks[k])}
  else toast('😓 อัปพลาด','เสียบุญฟรี แต่เลเวลยังอยู่');
  saveM();checkAch();render()}
