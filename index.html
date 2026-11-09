@@ -272,12 +272,17 @@ const CLASSES={
  sorcer:{n:'ศิษย์หมอผีแปรพักตร์',i:'🩸',cost:-1,d:'ปลดล็อกจากฉากจบ "หมอผีคนใหม่"',fx:'ท่าไสยดำ ตีแรงทุกอย่าง แต่คำสาปขึ้น · เริ่มคำสาป 20'}
 };
 const PERKS={
- hp:{n:'เลือดนักสู้',d:'ชีวิตสูงสุด +10',max:3,cost:[30,60,100]},
- pack:{n:'ย่ามใหญ่',d:'เริ่มเกมพร้อมข้าว น้ำ เกลือ +1',max:3,cost:[25,50,80]},
- ward:{n:'พระเครื่องเก่า',d:'คำสาปขึ้นช้าลง 7%',max:3,cost:[40,70,110]},
- luck:{n:'ดวงดี',d:'โอกาสเจอของ +6%',max:3,cost:[35,65,100]},
- smith:{n:'ช่างตีดาบ',d:'เริ่มเกมพร้อมดาบเหล็กน้ำพี้',max:1,cost:[150]}
+ hp:{n:'เลือดนักสู้',max:10,base:30,v:l=>10*Math.min(l,3)+5*Math.max(0,l-3),d:v=>'ชีวิตสูงสุด +'+v},
+ pack:{n:'ย่ามใหญ่',max:10,base:25,v:l=>Math.min(l,3)+Math.floor(Math.max(0,l-3)/2),d:v=>'เริ่มเกมพร้อมข้าว น้ำ เกลือ +'+v},
+ ward:{n:'พระเครื่องเก่า',max:10,base:40,v:l=>.07*Math.min(l,3)+.03*Math.max(0,l-3),d:v=>'คำสาปขึ้นช้าลง '+Math.round(v*100)+'%'},
+ luck:{n:'ดวงดี',max:10,base:35,v:l=>.06*Math.min(l,3)+.02*Math.max(0,l-3),d:v=>'โอกาสเจอของ +'+Math.round(v*100)+'%'},
+ sanity:{n:'ใจเพชร',max:10,base:30,v:l=>.04*l,d:v=>'ผีกินสติน้อยลง '+Math.round(v*100)+'%'},
+ blade:{n:'มือหนัก',max:10,base:40,v:l=>l,d:v=>'ฟันแรงขึ้น +'+v},
+ smith:{n:'ช่างตีดาบ',max:2,base:150,v:l=>l,d:v=>v>=2?'เริ่มเกมพร้อมดาบลงอาคม':v?'เริ่มเกมพร้อมดาบเหล็กน้ำพี้':'เริ่มเกมพร้อมอาวุธที่ดีกว่า'}
 };
+function pv(k){return PERKS[k].v(M.perks[k]||0)}
+function perkCost(k){const l=M.perks[k]||0;return Math.round(PERKS[k].base*Math.pow(l+1,1.35))}
+function perkRate(k){const l=M.perks[k]||0;return PERKS[k].max<=2?[.8,.5][l]:Math.max(.1,.95-l*.09)}
 
 const BOONS={
  fire:{t:'r',i:'🔥',n:'คมดาบเพลิง',d:'ฟัน +5 และฟันผีได้เต็มแรง'},
@@ -399,8 +404,9 @@ const ACH=[
  ['runs10','🔁','ไม่ยอมแพ้','เล่น 10 รอบ',st=>st.runs>=10,st=>[st.runs,10]],
  ['runs50','🕯️','วนเวียนในหนองผี','เล่น 50 รอบ',st=>st.runs>=50,st=>[st.runs,50]],
  ['daily','📅','ขยันล่าผี','ทำภารกิจรายวันครบ 3 ข้อในวันเดียว',st=>st.dailyFull],
+ ['broke','💥','ใจสลาย','อัปเกรดแตกรวม 10 ครั้ง',st=>(st.broke||0)>=10,st=>[st.broke||0,10]],
  ['rich','💰','บุญหนัก','สะสมบุญรวม 1000',()=>M.earned>=1000,()=>[M.earned,1000]],
- ['shopper','🛍️','ลงทุนกับชีวิต','อัปเกรดถาวรครบทุกอย่างระดับสูงสุด',()=>Object.keys(PERKS).every(k=>(M.perks[k]||0)>=PERKS[k].max)]
+ ['shopper','🛍️','ลงทุนกับชีวิต','อัปเกรดถาวรทุกอย่างถึงระดับสูงสุด (Lv10)',()=>Object.keys(PERKS).every(k=>(M.perks[k]||0)>=PERKS[k].max)]
 ];
 function checkAch(){
  for(const [id,i,n,d,t] of ACH){if(!M.ach[id]&&t(M.st,S)){M.ach[id]=Date.now();gain(10);toast(i+' '+n,d+' · +10 บุญ')}}
@@ -410,12 +416,12 @@ function toast(t,s){const el=document.getElementById('toast');if(!el)return;cons
 
 /* ---------- STATE ---------- */
 let S=null;
-const TUNE={hp:1.05,atk:.98,batk:1.26,curse:.575,boss:255};
+const TUNE={hp:1.3,atk:1.2,batk:1.49,curse:.71,boss:315};
 function newGame(cls){
- const P=M.perks,pk=P.pack||0;
- S={cls,day:1,cycle:0,screen:'intro',maxhp:100+(P.hp||0)*10,hp:0,food:80,wat:80,sta:100,san:100,curse:0,power:18,
+ const P=M.perks,pk=pv('pack');
+ S={cls,day:1,cycle:0,screen:'intro',maxhp:100+pv('hp'),hp:0,food:80,wat:80,sta:100,san:100,curse:0,power:18,
  inv:{rice:3+pk,water:3+pk,herb:2,salt:3+pk,candle:2,holy:1,band:2,cloth:0,med:0},
- weapon:P.smith?2:1,armor:0,relics:[],allies:{monk:0,yod:0,bua:0},aff:0,buaHostile:0,
+ weapon:[1,2,3][P.smith||0],armor:0,relics:[],allies:{monk:0,yod:0,bua:0},aff:0,buaHostile:0,
  flags:{},visits:{},disrupts:0,act:'search',loc:'market',night:'sleep',queue:[],log:[],combat:null,event:null,ending:null,
  r:{kills:0,holy:0,merit:0},boons:[]};
  rollSavers();
@@ -466,12 +472,12 @@ function petAttack(C,lg){if(!S.pets||!S.pets.length||C.hp<=0)return;for(const p 
  if(k==='stun'&&ch(.2)){C.stun=1;ex=' · ศัตรูชะงัก'}
  lg.push([`${b.i} ${b.n}(Lv${p.lvl}${rel.like?' 💞':''}) จู่โจม −${d}${ex}`,'pink'])}}
 function hb(b){return (S.boons||[]).includes(b)}
-function curseGain(n){let f=1-S.armor*.15-(M.perks.ward||0)*.07;if(has('yan'))f-=.3;if(has('bia'))f-=.15;if(hb('pure'))f-=.2;f-=rs('cres');if(S.cls==='rangsong')f-=.25;return Math.max(1,Math.round(n*Math.max(.2,f)))}
+function curseGain(n){let f=1-S.armor*.15-pv('ward');if(has('yan'))f-=.3;if(has('bia'))f-=.15;if(hb('pure'))f-=.2;f-=rs('cres');if(S.cls==='rangsong')f-=.25;return Math.max(1,Math.round(n*Math.max(.2,f)))}
 function stat(k,n){S[k]=clamp(S[k]+n,0,k==='hp'?S.maxhp:100)}
 function gotRelic(r,txt){if(S.relics.includes(r))return;S.relics.push(r);qInc('relic');if(!M.codex.includes(r)){M.codex.push(r);saveM()}if(r==='rod'){S.maxhp+=15;stat('hp',15)}if(r==='tusk'){S.maxhp+=10;stat('hp',10)}const mh=RELICS[r].e&&RELICS[r].e.maxhp;if(mh){S.maxhp+=mh;stat('hp',mh)}L((txt?txt+' ':'')+({r:'💠 ของขลังหายาก: ',l:'🌟 ของขลังระดับตำนาน: '}[RELICS[r].t]||'✨ ได้ของขลัง: ')+RELICS[r].n+' — '+RELICS[r].fx,'gold');L('📜 '+RELICS[r].st,'gold');if(RELICS[r].secret){M.st.rahu=1;toast('🌕 ปาฏิหาริย์!','เจอพระราหูอมจันทร์ โอกาส 0.001%')}}
 function secretRoll(){if(!S.relics.includes('rahu')&&Math.random()<0.00001)gotRelic('rahu','แสงจันทร์สาดลงมาจุดเดียวกลางความมืด ใต้ใบไม้แห้งมีกะลาตาเดียวที่ส่องแสงนวล...')}
 function relicFind(loc,force){if(!force&&!ch(.13+luck()*.5))return;const pool=Object.keys(RELICS).filter(k=>(RELICS[k].loc||[]).includes(loc)&&!S.relics.includes(k)&&!M.shattered.includes(k));if(!pool.length)return;const W={c:1,r:.35,l:.1};let tot=0;const ws=pool.map(k=>{const w=W[RELICS[k].t||'c'];tot+=w;return w});let x=Math.random()*tot;for(let i=0;i<pool.length;i++){x-=ws[i];if(x<=0)return gotRelic(pool[i],'')}gotRelic(pool[pool.length-1],'')}
-const luck=()=>rs('luck')+(M.perks.luck||0)*.06+(has('phong')?.05:0)+(has('skull')?.04:0)+(hb('scav')?.1:0);
+const luck=()=>rs('luck')+pv('luck')+(has('phong')?.05:0)+(has('skull')?.04:0)+(hb('scav')?.1:0);
 
 /* ---------- DAY FLOW ---------- */
 function startDay(){S.log=[];S.queue=S.mode==='mad'?['madact','madend']:S.mode==='spirit'?['spiritact','spiritend']:S.mode==='case'?['caseact','night','caseup']:['act','event','night','upkeep'];advance()}
@@ -621,7 +627,7 @@ function cAct(a){
  } else if(C.pstun){C.pstun=0;lg.push(['หัวมึนจนทำอะไรไม่ได้ (ผีในขวดทำ)','bad'])}
  else if(shaky){lg.push(['มือสั่นจนทำอะไรไม่ถูก เสียงกระซิบในหัวดังเกินไป (สติต่ำ)','bad'])}
  else if(a==='hit'){
-  const W=WEAPONS[S.weapon];dmg=R(W.d[0],W.d[1])+(S.cls==='nakleng'?4:0)+(has('beads')?3:0)+(hb('fire')?5:0)+(b.g&&has('rope')?4:0)+rs('atk')+(b.g?rs('gatk'):0);
+  const W=WEAPONS[S.weapon];dmg=R(W.d[0],W.d[1])+(S.cls==='nakleng'?4:0)+(has('beads')?3:0)+pv('blade')+(hb('fire')?5:0)+(b.g&&has('rope')?4:0)+rs('atk')+(b.g?rs('gatk'):0);
   if(S.sta<15)dmg=Math.round(dmg/2);
   if(b.g===1&&!W.holy&&!hb('fire'))dmg=Math.round(dmg*.65);
   if(hb('rage')&&S.hp<S.maxhp*.4)dmg=Math.round(dmg*1.4);
@@ -665,7 +671,7 @@ function cAct(a){
   stat('hp',-d);
   lg.push([`${enemyName()}${pick(b.g?GORE.atkG:GORE.atkM)} −${d} ชีวิต${ch(.3)?' '+pick(GORE.taunt):''}`,'bad']);
   if(b.curse)stat('curse',curseGain(Math.ceil(b.curse*TUNE.curse)));
-  if(b.san)stat('san',-Math.ceil(b.san*(hb('calm')?.25:.5)*(has('silver')?.5:1)*Math.max(.2,1-rs('sres'))*(S.mode==='mad'?2:1)));
+  if(b.san)stat('san',-Math.ceil(b.san*(hb('calm')?.25:.5)*(has('silver')?.5:1)*Math.max(.2,1-rs('sres')-pv('sanity'))*(S.mode==='mad'?2:1)));
   if(b.sp==='drain'){stat('food',-8);lg.push(['มันดูดเลือดจนตัวเบาหวิว −8 อิ่ม','bad'])}
   if(b.sp==='hex'&&ch(.4)){stat('curse',curseGain(7));lg.push(['มันเป่ามนต์ใส่หน้า คำสาปเพิ่ม','bad'])}
  }
@@ -987,7 +993,8 @@ function homeH(){
  }
  if(view==='shop'){
   return nav()+`<div class="card"><h2>ทำบุญ <span class="merit">🪷 ${M.merit}</span></h2><p class="muted">บุญได้จากทุกครั้งที่ตายหรือชนะ รวมถึง achievement และภารกิจรายวัน ใช้ซื้อของถาวรติดตัวทุกรอบ</p></div>
-  <div class="card"><h3>อัปเกรดถาวร</h3>${Object.entries(PERKS).map(([k,p])=>{const lv=M.perks[k]||0,mx=lv>=p.max,c=p.cost[lv];return `<button class="btn" ${mx||M.merit<c?'disabled':''} onclick="buyPerk('${k}')">${p.n} ${'●'.repeat(lv)}${'○'.repeat(p.max-lv)}<small>${p.d} · ${mx?'เต็มแล้ว':'🪷 '+c}</small></button>`}).join('')}</div>
+  <div class="card"><h3>อัปเกรดถาวร</h3><p class="muted" style="font-size:13px">ทุกการอัปมีโอกาสพลาด ยิ่งเลเวลสูงยิ่งเสี่ยง ถ้าพลาดอาจ<b>แตก</b>และลดเลเวลลง ซื้อ 🧧 ยันต์กันแตกไว้ก่อนได้ (มี ${M.ward||0} ใบ)</p>${Object.entries(PERKS).map(([k,p])=>{const lv=M.perks[k]||0,mx=lv>=p.max,c=perkCost(k),r=perkRate(k);return `<button class="btn" ${mx||M.merit<c?'disabled':''} onclick="buyPerk('${k}')">${p.n} <span class="merit">Lv${lv}/${p.max}</span><small>ตอนนี้: ${p.d(p.v(lv))}${mx?' · เต็มแล้ว':` → ${p.d(p.v(lv+1))}<br>โอกาสสำเร็จ ${Math.round(r*100)}% · 🪷 ${c}`}</small></button>`}).join('')}
+  <button class="btn" ${M.merit<80?'disabled':''} onclick="buyWard()">🧧 ยันต์กันแตก<small>ถ้าอัปพลาด เลเวลจะไม่ลด (ใช้ครั้งเดียว) · 🪷 80</small></button></div>
   <div class="card"><h3>อาชีพ</h3>${Object.entries(CLASSES).map(([k,c])=>{const own=M.classes.includes(k);return `<button class="btn" ${own||c.cost<0||M.merit<c.cost?'disabled':''} onclick="buyClass('${k}')">${c.i} ${c.n} ${own?'✓':''}<small>${c.fx} · ${own?'ปลดล็อกแล้ว':c.cost<0?c.d:'🪷 '+c.cost}</small></button>`}).join('')}</div>`;
  }
  if(view==='codex'){
@@ -1013,7 +1020,13 @@ function pickClass(){
  pickArmed=0;S=null;view='class';render();
 }
 let pickArmed=0;
-function buyPerk(k){const p=PERKS[k],lv=M.perks[k]||0;if(lv>=p.max||M.merit<p.cost[lv])return;M.merit-=p.cost[lv];M.perks[k]=lv+1;saveM();checkAch();render()}
+function buyPerk(k){const p=PERKS[k],lv=M.perks[k]||0,c=perkCost(k);if(lv>=p.max||M.merit<c)return;M.merit-=c;
+ if(ch(perkRate(k))){M.perks[k]=lv+1;toast('✨ อัปสำเร็จ!',p.n+' → Lv'+(lv+1))}
+ else if(M.ward>0){M.ward--;toast('🧧 ยันต์กันแตกทำงาน','อัปพลาด แต่เลเวลไม่ลด')}
+ else if(lv>0&&ch(lv>=6?.8:.5)){const drop=lv>=6?2:1;M.perks[k]=Math.max(0,lv-drop);M.st.broke=(M.st.broke||0)+1;toast('💥 แตก!',p.n+' ลดเหลือ Lv'+M.perks[k])}
+ else toast('😓 อัปพลาด','เสียบุญฟรี แต่เลเวลยังอยู่');
+ saveM();checkAch();render()}
+function buyWard(){if(M.merit<80)return;M.merit-=80;M.ward=(M.ward||0)+1;saveM();render()}
 function buyClass(k){const c=CLASSES[k];if(M.classes.includes(k)||c.cost<0||M.merit<c.cost)return;M.merit-=c.cost;M.classes.push(k);saveM();render()}
 function render(){
  if(S)checkAch();
