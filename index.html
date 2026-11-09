@@ -430,7 +430,7 @@ function toast(t,s){const el=document.getElementById('toast');if(!el)return;cons
 
 /* ---------- STATE ---------- */
 let S=null;
-const TUNE={hp:1.11,atk:1.03,batk:1.17,curse:.62,boss:242};
+const TUNE={hp:1.12,atk:1.04,batk:1.19,curse:.625,boss:247};
 function newGame(cls){
  const P=M.perks,pk=pv('pack');
  S={cls,day:1,cycle:0,screen:'intro',maxhp:100+pv('hp'),hp:0,food:80,wat:80,sta:100,san:100,curse:0,power:18,
@@ -580,6 +580,9 @@ function relicFind(loc,force){if(!force&&!ch(.13+luck()*.5))return;const pool=Ob
 const luck=()=>(S&&S.trait==='lucky'?.06:0)+(S&&moon()==='holy'?-.15:0)+rs('luck')+pv('luck')+(has('phong')?.05:0)+(has('skull')?.04:0)+(hb('scav')?.1:0);
 
 /* ---------- DAY FLOW ---------- */
+function healAmt(k){const m=(phob('blood')?.6:phobWin('blood')?1.3:1),yd=has('yadong')?1.5:1,nd=(has('needle')?5:0)+rs('heal');return k==='band'?Math.round((22*yd+nd)*m):k==='med'?Math.round((30*yd+nd)*m):Math.round((10+nd)*m)}
+function preHeal(k){if(S.healedDay===S.day+'_'+(S.cs?S.cs.day:0)||!inv(k)||S.mode==='mad'||S.mode==='spirit')return;add(k,-1);const h=healAmt(k);stat('hp',h);if(k==='med')stat('curse',-15);if(k==='herb')stat('curse',-4);qInc('heal');S.healedDay=S.day+'_'+(S.cs?S.cs.day:0);toast('🩹 ใช้'+ITEMS[k],'+'+h+' ชีวิต'+(k==='med'?' · คำสาป −15':k==='herb'?' · คำสาป −4':''));save();render()}
+function healH(){const used=S.healedDay===S.day+'_'+(S.cs?S.cs.day:0);const its=['band','herb','med'].filter(k=>inv(k));if(!its.length&&!used)return '';return `<div class="card"><h3>🩹 ใช้ยาก่อนออกเดินทาง <span class="muted" style="font-size:13px">(วันละ 1 ครั้ง)</span></h3>${used?'<p class="muted">วันนี้ใช้ไปแล้ว</p>':`<div class="grid2">${its.map(k=>`<button class="btn tile" onclick="preHeal('${k}')">${ITEMS[k]} ${inv(k)}<small>+${healAmt(k)} ชีวิต${k==='med'?' · คำสาป −15':k==='herb'?' · คำสาป −4':''}</small></button>`).join('')}</div>`}</div>`}
 function startDay(){S.log=[];S.queue=S.mode==='mad'?['madact','madend']:S.mode==='spirit'?['spiritact','spiritend']:S.mode==='case'?['caseact','night','caseup']:['act','event','night','upkeep'];advance()}
 function advance(){
  save();
@@ -1296,7 +1299,7 @@ function render(){
   const lbl=A==='rest'?'🛏️ พัก':A.startsWith('talk:')?'🗣️ คุยกับ'+c.wit[+A.slice(5)].n:'🔎 '+c.locs[A.slice(4)].n;
   const mini=(v,mx,col)=>`<div class="mtrack"><i style="width:${v/mx*100}%;background:${col}"></i></div>`;
   h=`<div class="sticky"><div class="sb-row"><button class="icon" onclick="S=null;view='home';render()">🏠</button><div class="sb-info"><b>${c.i} ${c.n} · วัน ${S.cs.day}</b><span>${lbl} · ${NT[S.night][0]} ${NT[S.night][1]}</span></div><button class="btn pri go" onclick="startDay()">ไป ▶</button></div><div class="minis"><span>❤️</span>${mini(S.hp,S.maxhp,'var(--red)')}<span>🟣</span>${mini(S.curse,100,'var(--purple)')}<span>😡</span>${mini(S.cs.rage,100,'#e0303a')}</div></div>
-  ${statsH2()}
+  ${statsH2()}${healH()}
   <div class="card"><h3>🔎 สืบที่ไหน</h3><div class="grid2">${Object.entries(c.locs).map(([k,P])=>{const rem=P.clues.filter(x=>!S.cs.clues.includes(x)).length;return `<button class="btn tile loc" aria-pressed="${A==='loc:'+k}" onclick="S.cs.act='loc:${k}';render()"><span class="li">${P.i}</span>${P.n}<small>${rem?'ยังมีเบาะแส ❓':'สืบครบแล้ว ✔️'}</small></button>`}).join('')}<button class="btn tile" aria-pressed="${A==='rest'}" onclick="S.cs.act='rest';render()">🛏️ พักทั้งวัน<small>แรง +35 ชีวิต +10</small></button></div>
   <h3>🗣️ พยาน</h3><div class="grid2">${c.wit.map((w,i)=>`<button class="btn tile" aria-pressed="${A==='talk:'+i}" onclick="S.cs.act='talk:${i}';render()">${w.i} ${w.n}<small>${S.cs.talked.includes(i)?'คุยแล้ว':'ยังไม่ได้คุย'}</small></button>`).join('')}</div></div>
   <div class="card"><h3>🌙 คืนนี้</h3><div class="seg">${Object.entries(NT).map(([k,[i,t]])=>`<button class="btn" aria-pressed="${S.night===k}" ${k==='pray'&&!inv('candle')&&!hb('monk')?'disabled':''} onclick="S.night='${k}';render()">${i} ${t}</button>`).join('')}</div></div>
@@ -1336,7 +1339,7 @@ function render(){
    <div class="sb-info"><b>${MOON[moon()][0].split(' ')[0]} คืนที่ ${Math.min(S.day,49)}/49${S.cycle?' · ♾️'+(S.cycle+1):''}</b><span>${actLbl}${S.act!=='cave'?' · '+NT[S.night][0]+' '+NT[S.night][1]:''}</span></div>
    <button class="btn pri go" onclick="startDay()">${S.act==='cave'?'เข้าถ้ำ ☠️':'เริ่มวัน ▶'}</button></div>
    <div class="minis"><span>❤️</span>${mini(S.hp,S.maxhp,'var(--red)')}<span>🟣</span>${mini(S.curse,100,'var(--purple)')}<span>🧿</span>${mini(S.power,100,'#e0303a')}</div></div>`
-  +statsH()+`<div class="card"><h3>☀️ กลางวันทำอะไร</h3><div class="grid2">${acts.map(([k,t,d])=>`<button class="btn tile ${k==='cave'?'span2':''}" aria-pressed="${S.act===k}" onclick="S.act='${k}';render()">${t}<small>${d}</small></button>`).join('')}</div>
+  +statsH()+healH()+`<div class="card"><h3>☀️ กลางวันทำอะไร</h3><div class="grid2">${acts.map(([k,t,d])=>`<button class="btn tile ${k==='cave'?'span2':''}" aria-pressed="${S.act===k}" onclick="S.act='${k}';render()">${t}<small>${d}</small></button>`).join('')}</div>
   ${S.act==='search'?`<h3>📍 ไปที่ไหน</h3><div class="grid2">${SEARCH_LOCS.map(k=>`<button class="btn tile loc" aria-pressed="${S.loc===k}" onclick="S.loc='${k}';render()"><span class="li">${LOC[k].i}</span>${LOC[k].n}<small>${LOC[k].d}</small></button>`).join('')}</div>`:''}
   </div>
   ${S.act!=='cave'?`<div class="card"><h3>🌙 คืนนี้</h3><div class="seg">${Object.entries(NT).map(([k,[i,t]])=>`<button class="btn" aria-pressed="${S.night===k}" ${k==='pray'&&!inv('candle')?'disabled':''} onclick="S.night='${k}';render()">${i} ${t}</button>`).join('')}</div><p class="muted" style="font-size:13px">${NT[S.night][2]}</p></div>`:''}
