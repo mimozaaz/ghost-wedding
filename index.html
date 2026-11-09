@@ -351,7 +351,7 @@ const ACH=[
  ['e_ghost','👁️','ทาสวิญญาณ','กลายเป็นผีรับใช้',st=>st.endings.includes('ghost')],
  ['e_mad','🌀','บ้าไปแล้ว','สติแตกจนบ้า',st=>st.endings.includes('mad')],
  ['e_wed','💒','สายเกินไป','ปล่อยให้พิธีวิวาห์ผีสำเร็จ',st=>st.endings.includes('wedding')],
- ['e_all','🏆','ครบทุกชะตา','ปลดล็อกฉากจบครบ 8 แบบ',st=>st.endings.length>=8,st=>[st.endings.length,8]],
+ ['e_all','🏆','ครบทุกชะตา','ปลดล็อกฉากจบครบ 9 แบบ',st=>st.endings.length>=9,st=>[st.endings.length,9]],
  ['relic5','✨','คลังของขลัง','มีของขลัง 8 ชิ้นในรอบเดียว',(st,S)=>S&&S.relics.length>=8],
  ['codex10','📜','นักสะสมของขลัง','บันทึกของขลังในตำนาน 10 ชิ้น',()=>M.codex.length>=10,()=>[M.codex.length,10]],
  ['codex50','📖','ครึ่งตำรา','บันทึกของขลัง 50 ชิ้น',()=>M.codex.length>=50,()=>[M.codex.length,50]],
@@ -385,6 +385,8 @@ const ACH=[
  ['mother','👵','แม่มาหา','เปิดประตูแล้วเจอแม่ตัวจริง',st=>st.mother],
  ['case1','🔎','นักสืบมือใหม่','ไขคดีผีได้ 1 คดี',st=>(st.cases||0)>=1],
  ['case5','🕵️','นักสืบวิญญาณ','ปลดปล่อยผีแบบสงบรวม 5 ครั้ง',st=>(st.peace||0)>=5,st=>[st.peace||0,5]],
+ ['act3','🌘','ศึกยังไม่จบ','เข้าสู่ภาค 3 สำนักเงาจันทร์',st=>st.act3],
+ ['legend','🌕','ตำนานผู้ปิดประตูนรก','ปราบมหาปุโรหิตเงาจันทร์',st=>st.moon],
  ['master','🔱','ปรมาจารย์หมอผี','ปราบพระครูไสยดำ ต้นสายวิชา',st=>st.grand],
  ['classes','🎭','ร้อยหน้า','เล่นครบทุกอาชีพ',st=>st.played.length>=5,st=>[st.played.length,5]],
  ['runs10','🔁','ไม่ยอมแพ้','เล่น 10 รอบ',st=>st.runs>=10,st=>[st.runs,10]],
@@ -604,7 +606,7 @@ function cAct(a){
  const shaky=S.san<25&&ch(.28);
  let dmg=0,txt='';
  const gm=x=>b.g===1?x:b.g===0?0:x*.7;
- const big=C.boss||C.id==='queen'||C.big||C.id==='grand';
+ const big=C.boss||C.id==='queen'||C.big||C.id==='grand'||C.id==='moon';
  if(a==='flee'){
   if(big){lg.push(['ไม่มีทางหนีแล้ว','bad'])}
   else if(has('compass')||ch(.3+S.sta/250+rs('flee'))){stat('sta',-10);L(`หนีจาก${b.n}มาได้ แต่ทิ้งของที่ค้นไว้หมด`,'bad');S.combat=null;S.screen='plan';return advance()}
@@ -636,6 +638,7 @@ function cAct(a){
  else if(a==='herb'){add('herb',-1);qInc('heal');stat('hp',10);stat('curse',-4);lg.push(['เคี้ยวสมุนไพรขมปี๋ +10 ชีวิต −4 คำสาป','good'])}
  else if(a==='med'){add('med',-1);qInc('heal');stat('hp',(Math.round(30*(has('yadong')?1.5:1))+(has('needle')?5:0)+rs('heal')));stat('curse',-10);lg.push(['กรอกยาผีบอกลงคอ +'+(Math.round(30*(has('yadong')?1.5:1))+(has('needle')?5:0)+rs('heal'))+' ชีวิต −10 คำสาป','good'])}
  C.hp-=dmg;
+ if(C.id==='moon'&&!C.phase2&&C.hp>0&&C.hp<C.max*.5){C.phase2=1;C.hp+=Math.round(C.max*.3);lg.push(['สาวกทั้งหมดกรีดคอตัวเองพร้อมกัน เลือดไหลเข้าหามหาปุโรหิต มันฟื้นพลังขึ้นมาและแข็งแกร่งกว่าเดิม!','bad'])}
  if(S.allies.yod&&C.hp>0&&a!=='flee'){const y=R(6,13)*(hb('ally')?2:1)+(S.flags.yodStrong?5:0);C.hp-=y;lg.push([`เสือยอดเหวี่ยงขวานใส่ "ตายซะไอ้เหี้ย!" −${y}`,'good'])}
  if(has('kuman')&&C.hp>0&&a!=='flee'){const y=R(5,10);C.hp-=y;lg.push([`กุมารทองกระโดดกัดข้อเท้ามัน −${y}`,'pink'])}
  if(a!=='flee'&&a!=='jar')petAttack(C,lg);
@@ -646,7 +649,7 @@ function cAct(a){
  if(C.stun){C.stun=0;lg.push([`${b.n}ยังชะงักอยู่`,''])}
  else{
   let d=Math.round(R(b.atk[0],b.atk[1])*(big?TUNE.batk:TUNE.atk))+Math.floor((S.ch2?28:S.day)/12)+(S.ch2?S.ch2.solved.length:S.cycle*2);
-  if((C.boss||C.id==='grand')&&C.turn%3===0){d+=8;stat('curse',curseGain(12));lg.push(['หมอผีพ่นไสยดำ หนอนไต่ออกจากแผลมึง! คำสาปพุ่ง','bad'])}
+  if((C.boss||C.id==='grand'||C.id==='moon')&&C.turn%(C.phase2?2:3)===0){d+=8;stat('curse',curseGain(12));lg.push(['หมอผีพ่นไสยดำ หนอนไต่ออกจากแผลมึง! คำสาปพุ่ง','bad'])}
   if(C.id==='queen'&&C.turn%3===0){d+=6;stat('food',-15);lg.push(['เจ้าแม่ยื่นลิ้นยาวเป็นวามาดูดเลือด −15 อิ่ม','bad'])}
   d=d-petShield();
   if(big&&S.pets&&S.pets.length&&ch(.35)){const p=pick(S.pets);p.hp=(p.hp==null?Math.round(EN[p.id].hp*.6):p.hp)-Math.round(d*.8);if(p.hp<=0){S.pets=S.pets.filter(x=>x!==p);lg.push([`${enemyName()}บีบขวดของ${EN[p.id].n}จนแตก! มันสลายไปตลอดกาล 💀`,'bad'])}else lg.push([`${enemyName()}ฟาดใส่${EN[p.id].n}ด้วย (เหลือ ${p.hp})`,'bad'])}
@@ -681,7 +684,8 @@ function winCombat(){
  if(C.after==='mad'){S.combat=null;S.screen='plan';madLoot(C.loc);return advance()}
  if(C.after==='clue'){S.combat=null;S.screen='plan';caseClue(C.loc);return advance()}
  if(C.after==='caseboss'){S.combat=null;caseDone(false);return}
- if(C.after==='grand'){S.combat=null;M.st.grand=1;saveM();endGame('master');return}
+ if(C.after==='grand'){S.combat=null;M.st.grand=1;saveM();S.event={id:'grandwin'};S.screen='event';save();render();return}
+ if(C.after==='moon'){S.combat=null;M.st.moon=1;saveM();endGame('legend');return}
  if(C.id==='queen'){M.st.queen++;S.flags.queenDead=1;add('med',3);add('holy',2);S.maxhp+=15;stat('hp',15);L('ร่างเจ้าแม่สลายเป็นแผ่นทองคำ มึงกลืนลูกแก้วปอบเข้าไป ชีวิตสูงสุด +15 ได้ยาผีบอก 3 น้ำมนต์ 2','gold')}
  if(C.id==='bandit'&&ch(.5)){add('rice',1);add('band',1);L('ค้นตัวโจรได้ข้าวกับผ้าพันแผล','good')}
  if(C.id==='butcher'&&ch(.5)){add('band',2);L('ในกระเป๋าหมอเถื่อนมีผ้าพันแผล 2 ม้วน','good')}
@@ -755,16 +759,17 @@ const ENDINGS={
  wedding:{t:'วิวาห์ผี',i:'💒',s:()=>`กลองผีดังกระหึ่มทั่วหุบเขา พิธีเสร็จสมบูรณ์ ${victim()}กลายเป็นเจ้าสาวของ${boss().n} และพลังของมันแผ่คลุมทั้งแผ่นดิน มึงมาช้าเกินไป`},
  hero:{t:'คนกล้าแห่งหนองผี',i:'🌅',s:()=>`มึงอุ้ม${victim()}ออกมาจากถ้ำตอนรุ่งสาง เธอกอดคอมึงแน่นแล้วร้องไห้ "นึกว่าจะไม่มีใครมาแล้ว" ทั้งหมู่บ้านจุดประทัดต้อนรับ ส่วนเรื่องหลังจากนั้น... อยู่ในห้องนอนของมึงสองคน`},
  bua:{t:'ชู้รักนางพราย',i:'🪷',s:()=>`มึงส่ง${victim()}กลับหมู่บ้าน แต่ตัวเองเดินกลับไปที่บึง บัวลอยรออยู่ในน้ำใต้แสงจันทร์ นางยื่นมือมา มึงจับมือนางแล้วก้าวลงไปในน้ำ... ชาวบ้านเล่าว่าคืนเดือนเพ็ญจะได้ยินเสียงหัวเราะของคนสองคนดังมาจากกลางบึง`},
+ legend:{t:'ตำนานผู้ปิดประตูนรก',i:'🌕',s:()=>`มหาปุโรหิตเงาจันทร์ล้มลงกลางวงหิน หน้ากากเงินแตกออก เบื้องหลังคือใบหน้าของ${victim()}... ไม่สิ มันแค่ภาพลวงตาสุดท้ายของไสยเวทย์ ประตูนรกที่กำลังเปิดค่อยๆ ปิดลง จันทร์สีเลือดกลับเป็นสีเงินนวล ${(S.pets||[]).length?'ผีรับใช้ในขวดของมึงพากันร้องเพลงกล่อมเบาๆ':''} ตั้งแต่คืนนั้น หมอผีทุกสำนักทั่วแผ่นดินจะเล่าขานถึงคนธรรมดาคนหนึ่ง ที่เริ่มต้นจากกระต๊อบโทรมๆ ท้ายหมู่บ้านหนองผี`},
  master:{t:'ปรมาจารย์หมอผี',i:'🔱',s:()=>`พระครูไสยดำล้มลง โซ่ที่ล่ามวิญญาณนับร้อยขาดสะบั้น ดวงวิญญาณทั้งหมดลอยขึ้นฟ้าเหมือนหิ่งห้อยนับหมื่น ${S.ch2&&S.ch2.peace>=4?'ทุกดวงหันมาไหว้มึงก่อนจากไป เพราะมึงคือคนที่เข้าใจพวกเขา':'บางดวงยังมองมึงด้วยความหวาดกลัว เพราะมึงปราบผีมากกว่าปลดปล่อย'} ${(S.pets||[]).length?`ผีรับใช้ ${S.pets.length} ตัวในขวดของมึงร้องโหยหวนเบาๆ พวกมันจะอยู่กับมึงต่อไป`:''} ชื่อของมึงถูกจารึกไว้ในตำนานหมอผีของแผ่นดินนี้ตลอดกาล`},
  dark:{t:'หมอผีคนใหม่',i:'🩸',s:()=>`มึงกรีดฝ่ามือ จุ่มลงไปในเลือดของหมอผีแล้วท่องคาถาที่จำได้ พลังดำไหลเข้าตัวจนตาแดงก่ำ ${victim()}ถอยหนีด้วยความกลัว... ทำไมต้องกลัวล่ะ ตอนนี้มึงคือเจ้าของหุบเขานี้แล้ว (ปลดล็อกอาชีพ ศิษย์หมอผีแปรพักตร์)`}
 };
-function meritOf(e){return Math.round((hb('greed')?1.3:1)*(Math.floor(S.day*1.5)+S.r.kills+S.relics.length*4+S.disrupts*3+(S.ch2?S.ch2.solved.length*50+S.ch2.peace*20:0)+({hero:40,bua:40,dark:40,master:150}[e]||0)))}
+function meritOf(e){return Math.round((hb('greed')?1.3:1)*(Math.floor(S.day*1.5)+S.r.kills+S.relics.length*4+S.disrupts*3+(S.ch2?S.ch2.solved.length*50+S.ch2.peace*20:0)+({hero:40,bua:40,dark:40,master:150,legend:300}[e]||0)+(S.act3?(S.act3Cases||[]).filter(x=>S.ch2.solved.includes(x)).length*60:0)))}
 function endGame(e){
  S.ending=e;S.screen='end';
  const m=meritOf(e);S.r.merit=m;gain(m);
  if(S.day>M.st.maxDay)M.st.maxDay=S.day;
  if(!M.st.endings.includes(e))M.st.endings.push(e);
- if(['hero','bua','dark','master'].includes(e))M.st.wins++;
+ if(['hero','bua','dark','master','legend'].includes(e))M.st.wins++;
  if(e==='dark'&&!M.classes.includes('sorcer'))M.classes.push('sorcer');
  saveM();store.del('save');checkAch();render();
 }
@@ -815,6 +820,7 @@ const CASES=[
  boss:{n:'วิญญาณเจ็ดคนงาน',i:'👥',hp:165,atk:[14,21]},freed:'มึงถอนตะปูเจ็ดดอก เผายันต์ดำ แล้วขุดศพทั้งเจ็ดที่ฝังใต้ลานตากข้าวขึ้นมาเผาตามพิธี คนงานทั้งเจ็ดยืนเรียงแถวยกมือไหว้ คนสุดท้ายกระซิบก่อนจากไป "อาจารย์ของมัน... ยังอยู่ที่ยอดเขาดำ" เถ้าแก่ถูกตำรวจจับในเช้าวันนั้น'}
 ];
 for(const c of CASES){EN['cb_'+c.id]={n:c.boss.n,i:c.boss.i,hp:c.boss.hp,atk:c.boss.atk,g:1,curse:6,san:7,sp:'boss2',d:c.intro}}
+EN.moon={n:'มหาปุโรหิตเงาจันทร์',i:'🌘',hp:330,atk:[18,27],g:.5,curse:9,san:9,sp:'boss',d:'ชายหน้ากากเงินยืนกลางวงหินใต้จันทร์เต็มดวง สาวกนับร้อยสวดพร้อมกัน "ผู้ปราบผีผู้ยิ่งใหญ่... เลือดของเอ็งคือชิ้นสุดท้ายที่จะเปิดประตูนรก"'};
 EN.grand={n:'พระครูไสยดำ ต้นสายวิชา',i:'🔱',hp:260,atk:[16,25],g:.5,curse:8,san:8,sp:'boss',d:'ชายชราร่างผอมนั่งสมาธิลอยอยู่กลางวงยันต์บนยอดเขาดำ รอบตัวมีวิญญาณนับร้อยถูกล่ามโซ่ไว้ "ศิษย์ข้าตายด้วยมือเอ็ง... ดี ข้าจะได้มีศิษย์ใหม่ที่เก่งกว่า"'};
 
 const GP={place:['ตึกแถวเก่าตลาดล่าง','หอพักหญิงร้าง','สถานีรถไฟร้างบ้านโป่ง','เหมืองดีบุกร้าง','โรงแรมม่านรูดริมทาง','บ้านไม้ริมทางรถไฟ','ไร่อ้อยท้ายหมู่บ้าน','โรงพยาบาลบ้าร้าง','โรงหนังชั้นสองเก่า','วัดร้างกลางทุ่ง'],
@@ -842,6 +848,7 @@ function genCase(hard){
 }
 function regGen(c){EN['cb_'+c.id]={n:c.boss.n,i:c.boss.i,hp:c.boss.hp,atk:c.boss.atk,g:1,curse:6,san:7,sp:'boss2',d:c.intro}}
 function allCases(){return CASES.concat(S&&S.genCases||[])}
+function startAct3(){S.act3=1;const cs=[genCase(1),genCase(1),genCase(1),genCase(1)];cs.forEach(c=>{c.n=c.n.replace('คดีสุ่ม','สำนักเงาจันทร์');c.intro='สาวกสำนักเงาจันทร์ปลุกผีที่'+c.place+'ให้คลั่ง เพื่อเก็บความแค้นไปเปิดประตูนรก หลักฐานถูกจัดฉากมากกว่าปกติ และพยานถูกข่มขู่ให้โกหก';regGen(c)});S.act3Cases=cs.map(c=>c.id);S.genCases=(S.genCases||[]).concat(cs);S.mode='hub';stat('hp',50);stat('san',30);stat('curse',-30);add('jar',1);M.st.act3=1;saveM();S.screen='act3Intro';save();render()}
 function startAct2(){S.ch2={solved:[],peace:0,wrong:0};S.genCases=[genCase(0),genCase(0)];S.genCases.forEach(regGen);S.mode='hub';S.power=25;S.cycle=1;S.combat=null;S.queue=[];stat('hp',40);stat('san',30);stat('curse',-30);stat('sta',100);add('jar',1);M.st.act2=1;saveM();S.screen='act2Intro';save();render()}
 function caseOf(){return allCases().find(c=>c.id===S.cs.id)}
 function startCase(id){const c=allCases().find(x=>x.id===id);S.mode='case';S.cycle=1+S.ch2.solved.length;S.cs={id,day:1,clues:[],talked:[],rage:10,act:'loc:'+Object.keys(c.locs)[0],ans:[null,null,null],perm:c.qs.map(q=>sh(q.o.map((x,i)=>i)))};S.log=[];S.screen='caseIntro';save();render()}
@@ -861,7 +868,7 @@ STEP.caseup=()=>{
  if(S.food<=0){stat('hp',-12);L('หิวจนท้องบิด','bad')}
  if(S.wat<=0){stat('hp',-18);L('คอแห้งผาก','bad')}
  stat('curse',curseGain(1+Math.floor(S.ch2.solved.length/2)));stat('san',-1);
- S.cs.rage=Math.min(100,S.cs.rage+7+S.ch2.solved.length);S.cs.day++;
+ S.cs.rage=Math.min(100,S.cs.rage+7+S.ch2.solved.length+(S.act3?3:0));S.cs.day++;
  L(`ความแค้นของผี +${7+S.ch2.solved.length} (ตอนนี้ ${S.cs.rage}%)`,'bad');
  if(S.cs.rage>=100){L('ความแค้นถึงขีดสุด! ผีปรากฏตัวต่อหน้ามึงโดยไม่รอให้ไขคดี','bad');caseBoss(1.45,'rage');return 'wait'}
 };
@@ -909,6 +916,7 @@ const EVENTS=[
  {id:'reborn',w:.35,when:()=>M.shattered.length>0&&S.day>8&&!S.flags.reborn,run:()=>{const r=pick(M.shattered.filter(k=>RELICS[k]));S.flags.rebornPick=S.flags.rebornPick||r;const R_=RELICS[S.flags.rebornPick];return {t:'🔮 พิธีชุบชีวิต',s:`คืนจันทร์สีเลือด พระธุดงค์ชราตาบอดเดินมาหยุดหน้ากระต๊อบ ในมือท่านกำผงสีเทาไว้กำมือหนึ่ง "นี่คือเถ้าของ${R_.n} ที่เคยสละตัวเพื่อใครคนหนึ่ง... อาตมาชุบมันให้ได้ แต่ต้องใช้น้ำมนต์ 2 เทียน 2 และสติของโยมอีกก้อนใหญ่" พิธีแบบนี้ไม่มีใครเห็นซ้ำเป็นครั้งที่สอง`,o:[[`ทำพิธี (น้ำมนต์ ${inv('holy')}/2 · เทียน ${inv('candle')}/2 · สติ −25)`,()=>{if(inv('holy')>=2&&inv('candle')>=2){add('holy',-2);add('candle',-2);stat('san',-25);S.flags.reborn=1;const k=S.flags.rebornPick;M.shattered=M.shattered.filter(x=>x!==k);M.st.reborn=1;saveM();gotRelic(k,'ผงเถ้ารวมตัวกันกลางเปลวเทียน เสียงสวดก้องไปทั้งป่า ของขลังที่เคยแตกสลายกลับคืนสู่โลกอีกครั้ง');toast('🔮 ชุบชีวิตสำเร็จ',RELICS[k].n+' กลับมาแล้ว')}else{S.flags.reborn=1;L('ของไม่พอ พระธุดงค์ส่ายหน้าแล้วเดินหายไปในหมอก โอกาสนี้ไม่มีอีกแล้วในรอบนี้','bad')}}],['ปล่อยให้เถ้าเป็นเถ้า',()=>{S.flags.reborn=1;L('พระธุดงค์โปรยเถ้าไปกับลม "ทุกสิ่งไม่เที่ยง"')}]]}}}
 ];
 const SPECIAL_EV={
+ grandwin:()=>({t:'พระครูไสยดำสิ้นแล้ว',s:'โซ่ที่ล่ามวิญญาณนับร้อยขาดสะบั้น ดวงวิญญาณลอยขึ้นฟ้าเหมือนหิ่งห้อย แต่บนร่างของพระครู มึงพบตราประทับรูปจันทร์เสี้ยวสีเงิน กับจดหมายที่เขียนว่า "ถึงศิษย์ผู้ภักดี สำนักเงาจันทร์รอเลือดของผู้ปราบผีอยู่"... ศึกครั้งนี้อาจไม่ใช่ครั้งสุดท้าย',o:[['ตามล่าสำนักเงาจันทร์ (ภาค 3) 🌘',()=>{startAct3();return 'stop'}],['พอแล้ว จบตำนานที่นี่',()=>endGame('master')]]}),
  yama:()=>{const o=[];
   if(S.relics.filter(r=>r!==S.flags.yamaUsed).length)o.push(['แลกของขลังหนึ่งชิ้น (สุ่ม)',()=>{const pool=S.relics.filter(r=>r!==S.flags.yamaUsed);const r=pick(pool);S.relics=S.relics.filter(x=>x!==r);yamaBack(`ยมบาลหยิบ${RELICS[r].n}ไปพลิกดูแล้วยิ้ม "พอใช้ได้"`)}]);
   if((S.boons||[]).length)o.push([`แลกพรทั้งหมด (${S.boons.length} ข้อ)`,()=>{S.boons=[];yamaBack('แสงพรทั้งหมดถูกดูดออกจากตัวมึงเข้าไปในสมุดดำของยมบาล')}]);
@@ -988,7 +996,7 @@ function homeH(){
  ${nav()}
  ${sv?`<button class="btn pri" onclick="contGame()">เล่นต่อ (คืนที่ ${sv.day}${sv.cycle?' · รอบ '+(sv.cycle+1):''})</button>`:''}
  <button class="btn ${sv?'':'pri'} c" onclick="pickClass()">เริ่มเกมใหม่</button>
- <div class="card"><p>🪷 บุญ <b class="merit">${M.merit}</b> · 🏆 ${na}/${ACH.length} · รอดไกลสุดคืนที่ ${M.st.maxDay}</p><p class="muted">ฆ่าไปแล้ว ${M.st.total} ตัว · เล่น ${M.st.runs} รอบ · ชนะ ${M.st.wins} · ฉากจบ ${M.st.endings.length}/8 · ไขคดี ${M.st.cases||0} · ปลดปล่อย ${M.st.peace||0}</p></div>
+ <div class="card"><p>🪷 บุญ <b class="merit">${M.merit}</b> · 🏆 ${na}/${ACH.length} · รอดไกลสุดคืนที่ ${M.st.maxDay}</p><p class="muted">ฆ่าไปแล้ว ${M.st.total} ตัว · เล่น ${M.st.runs} รอบ · ชนะ ${M.st.wins} · ฉากจบ ${M.st.endings.length}/9 · ไขคดี ${M.st.cases||0} · ปลดปล่อย ${M.st.peace||0}</p></div>
  <div class="card story"><p>หมู่บ้านหนองผีถูกสาป หมอผีแห่งเขาดำลักตัวหญิงสาวไปทำ <b>วิวาห์ผี</b> ในคืนที่ 49 ออกหาของ ขัดพิธี เก็บของขลังให้ได้ 3 ชิ้นแล้วบุกถ้ำ ปราบหมอผีได้แล้ว จะกลับบ้านหรือออกเดินทางเป็นหมอผีพเนจร สืบคดีผีเฮี้ยนตามหมู่บ้านต่างๆ ก็ได้</p></div>
  <p class="foot">มีความรุนแรง สยองขวัญ คำหยาบ และเนื้อหายั่วยวนแบบไม่โจ่งแจ้ง · เซฟในเบราว์เซอร์นี้</p>`;
 }
@@ -1019,10 +1027,23 @@ function render(){
  else if(sc==='act2Intro'){
   h=`<div class="card story" style="border-color:var(--gold)"><div style="font-size:48px;text-align:center">🧭</div><h2>ภาค 2: หมอผีพเนจร</h2><p>หลังงานศพหมอผีเขาดำ ชื่อของมึงกลายเป็นที่เล่าขานไปทั่ว คนจากหมู่บ้านไกลๆ เดินทางมาขอความช่วยเหลือ บางเรื่องคือผีร้าย บางเรื่องคือวิญญาณที่ไม่มีใครเข้าใจ</p><p>แต่ละคดี มึงต้อง<b>สืบหาเบาะแส</b> คุยกับพยาน (บางคนโกหก) แล้ว<b>ไขคดี</b>ว่าผีคือใคร ตายเพราะอะไร และต้องการอะไร ถ้าตอบถูกครบ จะได้ปลดปล่อยผีอย่างสงบโดยไม่ต้องสู้ ถ้าผิด ผีจะคลั่ง</p><p>มึงได้รับ <b>ขวดดินเผาขังผี</b> 1 ใบ ใช้จับผีที่เลือดต่ำมาเป็นผีรับใช้ได้ แต่ผีในขวดจะกินสติมึงทุกคืน</p></div><button class="btn pri" onclick="S.screen='plan';save();render()">ดูคดีที่รออยู่</button>`;
  }
+ else if(sc==='act3Intro'){
+  h=`<div class="card story" style="border-color:#8a8fbf"><div style="font-size:48px;text-align:center">🌘</div><h2>ภาค 3: สำนักเงาจันทร์</h2><p>พระครูไสยดำเป็นแค่ศิษย์คนหนึ่ง เบื้องหลังคือ<b>สำนักเงาจันทร์</b> ลัทธิที่ปลุกผีให้คลั่งทั่วแผ่นดิน เพื่อเก็บความแค้นไปเปิดประตูนรกในคืนจันทร์เต็มดวง</p><p>ไขคดีของสำนักให้ครบ 4 คดีเพื่อหาที่ซ่อนของ<b>มหาปุโรหิต</b> คดีพวกนี้ยากกว่าเดิม หลักฐานถูกจัดฉากมากขึ้น และความแค้นของผีขึ้นเร็วกว่าเดิม</p></div><button class="btn pri" onclick="S.screen='plan';save();render()">เริ่มล่า</button>`;
+ }
+ else if(sc==='plan'&&S.mode==='hub'&&S.act3){
+  const done=S.ch2.solved,a3=S.act3Cases.map(id=>allCases().find(c=>c.id===id));
+  h=`<div class="card"><h2>🌘 สำนักเงาจันทร์</h2><p class="muted">ไขแล้ว ${a3.filter(c=>done.includes(c.id)).length}/4</p></div>
+  ${a3.map(c=>`<button class="btn tile" ${done.includes(c.id)?'disabled':''} onclick="startCase('${c.id}')"><span class="li" style="font-size:26px;display:block">🌘</span>${c.n}${done.includes(c.id)?' ✅':''}<small>${c.place}</small></button>`).join('')}
+  ${a3.every(c=>done.includes(c.id))?`<button class="btn pri" onclick="startCombat('moon',{after:'moon'});save();render()">🌕 บุกวงหินใต้จันทร์เต็มดวง สู้มหาปุโรหิต</button>`:'<p class="muted" style="text-align:center">ไขครบ 4 คดีจะรู้ที่ซ่อนของมหาปุโรหิต</p>'}
+  <details class="card"><summary>🧪 ทำของ / ลงอาคม</summary>${CRAFT.map((c,i)=>`<button class="btn" ${c.ok()?'':'disabled'} onclick="doCraft(${i})">${c.n}<small>${c.d}</small></button>`).join('')}</details>
+  ${statsH2()}${invH()}
+  <button class="btn c" onclick="endGame('master')">พอแค่นี้ (จบแบบปรมาจารย์หมอผี)</button>
+  <button class="btn c" onclick="S=null;view='home';render()">กลับหน้าแรก (เซฟไว้แล้ว)</button>`;
+ }
  else if(sc==='plan'&&S.mode==='hub'){
   const done=S.ch2.solved;
   h=`<div class="card"><h2>🧭 กระดานคดี</h2><p class="muted">คดีหลัก ${CASES.filter(c=>done.includes(c.id)).length}/5 · คดีสุ่มเป็นคดีเสริม ได้บุญและของขลัง · ปลดปล่อยแบบสงบ ${S.ch2.peace}</p></div>
-  ${allCases().map(c=>`<button class="btn tile" ${done.includes(c.id)?'disabled':''} onclick="startCase('${c.id}')"><span class="li" style="font-size:26px;display:block">${c.i}</span>${c.n}${done.includes(c.id)?' ✅':''}<small>${c.place}</small></button>`).join('')}
+  ${allCases().filter(c=>!(S.act3Cases||[]).includes(c.id)).map(c=>`<button class="btn tile" ${done.includes(c.id)?'disabled':''} onclick="startCase('${c.id}')"><span class="li" style="font-size:26px;display:block">${c.i}</span>${c.n}${done.includes(c.id)?' ✅':''}<small>${c.place}</small></button>`).join('')}
   ${CASES.every(c=>done.includes(c.id))?`<button class="btn pri" onclick="startCombat('grand',{after:'grand'});save();render()">🔱 ขึ้นยอดเขาดำ สู้พระครูไสยดำ</button>`:'<p class="muted" style="text-align:center">ไขคดีหลักครบ 5 คดี จะรู้ที่อยู่ของต้นตอทั้งหมด</p>'}
   <details class="card"><summary>🧪 ทำของ / ลงอาคม</summary>${CRAFT.map((c,i)=>`<button class="btn" ${c.ok()?'':'disabled'} onclick="doCraft(${i})">${c.n}<small>${c.d}</small></button>`).join('')}</details>
   ${statsH2()}${invH()}
@@ -1110,7 +1131,7 @@ function render(){
    <button class="btn" ${inv('band')?'':'disabled'} onclick="cAct('band')">🩹 ผ้าพันแผล ${inv('band')}<small>+22 ชีวิต</small></button>
    <button class="btn" ${inv('med')||inv('herb')?'':'disabled'} onclick="cAct(inv('med')?'med':'herb')">🌿 ${inv('med')?'ยาผีบอก '+inv('med'):'สมุนไพร '+inv('herb')}<small>${inv('med')?'+30 ชีวิต −10 คำสาป':'+10 ชีวิต −4 คำสาป'}</small></button>
   </div>
-  ${C.boss||C.id==='queen'||C.big||C.id==='grand'?'':`<button class="btn c" onclick="cAct('flee')">🏃 หนี (ทิ้งของ)</button>`}`;
+  ${C.boss||C.id==='queen'||C.big||C.id==='grand'||C.id==='moon'?'':`<button class="btn c" onclick="cAct('flee')">🏃 หนี (ทิ้งของ)</button>`}`;
  }
  else if(sc==='boon'){
   h=`<div class="card story" style="text-align:center"><div style="font-size:44px">🌑</div><h2>คืนเดือนดับ</h2><p>ครบเจ็ดคืนอีกครั้ง ลมเย็นพัดผ่านกระต๊อบ เทวดาประจำหมู่บ้านกระซิบข้างหู "เลือกพรได้หนึ่งข้อ"</p></div>${(S.boonChoice||[]).map(k=>`<button class="btn tile" onclick="takeBoon('${k}')"><span class="li" style="font-size:28px;display:block">${BOONS[k].i}</span>${BOONS[k].n} ${{r:'<span class="badge" style="background:#3a6ea8">หายาก</span>',l:'<span class="badge" style="background:var(--gold);color:#1a1006">ตำนาน</span>'}[BOONS[k].t]||''}<small>${BOONS[k].d}</small></button>`).join('')}`;
@@ -1123,7 +1144,7 @@ function render(){
   h=`<button class="btn pri" onclick="S.screen='plan';craftMsg='';save();render()">${S.ch2?'ต่อไป →':'ไปคืนที่ '+S.day+' →'}</button><div class="card"><h2>สรุปวัน</h2><div class="log">${S.log.map(([t,c])=>`<p class="${c}">${t}</p>`).join('')}</div></div>`+(S.ch2?statsH2():statsH())+`<button class="btn pri" onclick="S.screen='plan';craftMsg='';save();render()">${S.ch2?'ต่อไป →':'คืนที่ '+S.day+' →'}</button>`;
  }
  else if(sc==='end'){
-  const E=ENDINGS[S.ending],good=['hero','bua','dark','master'].includes(S.ending);
+  const E=ENDINGS[S.ending],good=['hero','bua','dark','master','legend'].includes(S.ending);
   h=`<div class="title-ico">${E.i}</div><h1 style="text-align:center;color:${good?'var(--gold)':'var(--red)'}">${E.t}</h1>
   <div class="card story"><p>${E.s()}</p></div>
   <div class="card"><p class="merit" style="font-size:20px">+${S.r.merit} บุญ 🪷</p><p>คืนที่ ${Math.min(S.day,49)}${S.cycle?' · รอบไม่รู้จบ '+(S.cycle+1):''} · ฆ่า ${S.r.kills} ตัว · ของขลัง ${S.relics.length}/5 · ขัดพิธี ${S.disrupts} ครั้ง</p>${S.log.length&&!good?`<div class="log">${S.log.slice(-4).map(([t,c])=>`<p class="${c}">${t}</p>`).join('')}</div>`:''}</div>
