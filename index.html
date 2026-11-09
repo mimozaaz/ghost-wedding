@@ -426,7 +426,7 @@ function toast(t,s){const el=document.getElementById('toast');if(!el)return;cons
 
 /* ---------- STATE ---------- */
 let S=null;
-const TUNE={hp:1.3,atk:1.2,batk:1.4,curse:.71,boss:290};
+const TUNE={hp:1.3,atk:1.2,batk:1.35,curse:.71,boss:282};
 function newGame(cls){
  const P=M.perks,pk=pv('pack');
  S={cls,day:1,cycle:0,screen:'intro',maxhp:100+pv('hp'),hp:0,food:80,wat:80,sta:100,san:100,curse:0,power:18,
@@ -517,6 +517,8 @@ function bossGear(C,list){C.br=[];const lg=C.log;for(const k of list){const B=BR
  else{C.clash=1.15;lg.push([`🔮 วัดพลังของขลัง: มึง ${pp} ปะทะ มัน ${bp} — พลังมันข่มมึง มันตีแรงขึ้น 15%`,'bad'])}}
 function bhas(C,k){return C.br&&C.br.includes(k)}
 function rollBrel(n){return sh(Object.keys(BREL)).slice(0,n)}
+function addEnemy(C,id){const b=EN[id];const hp=Math.round(b.hp*.7*(TUNE.hp+.3));C.adds=C.adds||[];C.adds.push({id,hp,max:hp});C.log.push([`${b.i} ${b.n}พุ่งเข้ามาร่วมวงรุมมึง!`,'bad'])}
+const LATE=['krasue','zombie','pob','headless','phrai','krahang','ha','tayklom','asura','kongkoi'];
 function hb(b){return (S.boons||[]).includes(b)}
 function curseGain(n){let f=1-S.armor*.15-pv('ward');if(has('yan'))f-=.3;if(has('bia'))f-=.15;if(hb('pure'))f-=.2;if(S.trait==='monkheir')f-=.12;if(S.trait==='pobblood')f+=.1;if(moon()==='new')f+=.5;f-=rs('cres');if(S.cls==='rangsong')f-=.25;return Math.max(1,Math.round(n*Math.max(.2,f)))}
 function stat(k,n){S[k]=clamp(S[k]+n,0,k==='hp'?S.maxhp:100)}
@@ -660,6 +662,7 @@ function startCombat(id,opt){
  if(nem){S.combat.log.push([`"จำกูได้ไหม? กูฆ่ามึงตอนคืนที่ ${M.nemesis.day} มึงยังร้องเรียกแม่อยู่เลย" ${M.nemesis.title}กลับมาแล้ว และมันแข็งกว่าเดิม`,'bad']);S.screen='combat';return}
  S.screen='combat';
  if(id==='queen'||id==='grand'||id==='moon'||id.startsWith('cb_')){S.combat.big=1;bossGear(S.combat,rollBrel(id==='moon'?4:id==='grand'?3:id==='queen'?2:(S.act3?2:1)))}
+ if(!S.combat.big&&!opt.nem&&((S.ch2&&ch(.3))||(!S.ch2&&S.day>=25&&ch(.3))))addEnemy(S.combat,pick(LATE));
  if(opt.ambush){const d=R(b.atk[0],b.atk[1]);stat('hp',-d);S.combat.log.push([`มันโจมตีก่อนที่มึงจะทันตั้งตัว! −${d} ชีวิต`,'bad'])}
  else S.combat.log.push([b.d,'']);
 }
@@ -668,6 +671,7 @@ function startBoss(){
  const core=S.relics.filter(r=>RELICS[r].core).length,minor=S.relics.length-core;const hp=Math.max(60,Math.round(TUNE.boss+S.power*1.4-core*22-minor*4+S.cycle*45));
  const hp2=has('rahu')?1:Math.round(hp*(S.flags.bossWeak?.8:1));S.combat={id:'boss',hp:hp2,max:hp2,turn:0,stun:0,boss:1,after:'boss',log:[[B.d+` ข้างหลังมันคือ${B.v}ที่ถูกมัดในชุดเจ้าสาวสีขาว`,''],[S.relics.length?`ของขลัง ${S.relics.length} ชิ้นในย่ามส่องแสงวาบ หมอผีสะดุ้ง`:'มึงไม่มีของขลังสักชิ้น หมอผีหัวเราะก้องถ้ำ',S.relics.length?'gold':'bad'],...(has('rahu')?[['พระราหูอมจันทร์ส่องแสงนวลเต็มถ้ำ หมอผีกรีดร้อง ฤทธิ์ทั้งหมดของมันสลายไปต่อหน้า!','gold']]:[]),...(S.flags.bossWeak?[['มึงรู้จุดตายของมันจากบัวลอย (บอสเลือด −20%)','pink']]:[])]};
  bossGear(S.combat,S.bossRel||[]);
+ if(S.day>=16&&ch(.55))addEnemy(S.combat,'disciple');
  S.screen='combat';
 }
 function enemyName(){return S.combat.boss?boss().n:S.combat.nem&&M.nemesis?M.nemesis.title:EN[S.combat.id].n}
@@ -701,6 +705,7 @@ function cAct(a){
   lg.push([`${txt?pick(GORE.crit):pick(b.g?GORE.hitG:GORE.hitM)} (${W.n} −${dmg}${txt?' คริติคอล':''})${b.g===1&&!W.holy&&!hb('fire')?' · อาวุธธรรมดาตีผีเบาลง':''}`,'good']);
  } else if(a==='salt'){if(!(hb('salt')&&ch(.5)))add('salt',-1);qInc('saltUse');dmg=Math.round(gm(R(14,20)));C.stun=b.g&&!big?(last==='chant'&&S.spells.includes('chain')?2:1):0;lg.push([dmg?`สาดเกลือเสกใส่ มันกรีดร้อง −${dmg}${C.stun?' และชะงักไป 1 ตา':''}`:'สาดเกลือใส่คน มันแค่แสบตาแล้วด่ามึง',dmg?'good':'bad'])}
  else if(a==='holy'){add('holy',-1);S.r.holy++;qInc('holyUse');dmg=b.g?Math.round(gm(R(30,42)+(has('oil')?10:0)+rs('holy')+(hb('holy')?15:0))):R(4,8);lg.push([`สาดน้ำมนต์ ควันขาวพวยพุ่ง −${dmg}`,'good'])}
+ else if(a==='hitAdd'&&C.adds&&C.adds.length){const ad=C.adds[0],ab=EN[ad.id],W=WEAPONS[S.weapon];let d2=R(W.d[0],W.d[1])+pv('blade')+rs('atk')+(ab.g?rs('gatk'):0);if(ab.g===1&&!W.holy&&!hb('fire'))d2=Math.round(d2*.65);stat('sta',-4);ad.hp-=d2;lg.push([`หันไปฟัน${ab.n}ที่มาร่วมวง ${pick(ab.g?GORE.hitG:GORE.hitM)} −${d2}`,'good']);if(ad.hp<=0){C.adds.shift();kill(ad.id);lg.push([`${ab.n}ล้มลงตายคาที่!`,'gold'])}}
  else if(a==='heart'){stat('san',-8);stat('hp',18);lg.push(['ท่องคาถาหัวใจพระ แผลค่อยๆ สมานต่อหน้า +18 ชีวิต','good'])}
  else if(a==='mahaud'){stat('san',-10);C.block=1;lg.push(['ท่องคาถามหาอุด ผิวหนังแข็งเหมือนหิน กันการโจมตีครั้งหน้าได้','good'])}
  else if(a==='fireS'){dmg=22;stat('curse',curseGain(6));lg.push(['ท่องคาถาไฟบรรลัยกัลป์ ไฟลุกท่วมร่างศัตรู มันดิ้นทุรนทุรายจนเนื้อไหม้เกรียม −22','good'])}
@@ -748,6 +753,8 @@ function cAct(a){
   d=Math.max(1,d-S.armor*2-(has('takrud')?3:0)-(has('kong')?2:0)-(has('mahaud')?1:0)-rs('def')-(hb('iron')?3:0));
   if(has('pracheat')&&!C.blocked){C.blocked=1;d=0;lg.push(['ผ้าประเจียดแดงสะบัดรับการโจมตีแทน!','gold'])}
   stat('hp',-d);
+  for(const ad of C.adds||[]){const ab=EN[ad.id];let dd=Math.max(1,Math.round((ab.atk[0]+ab.atk[1])/2*.5)-S.armor-rs('def'));stat('hp',-dd);if(ab.curse)stat('curse',curseGain(Math.ceil(ab.curse*.25)));lg.push([`${ab.i} ${ab.n}รุมกัดมึงจากด้านหลัง −${dd}`,'bad'])}
+  if((C.boss)&&S.day>=16&&C.turn===3&&ch(.45))addEnemy(C,pick(LATE));
   if(bhas(C,'skullcup')&&d>0){const h=Math.round(d*.3);C.hp=Math.min(C.max,C.hp+h);lg.push([`ถ้วยกะโหลกดูดเลือดมึงไปเติมให้มัน +${h}`,'bad'])}
   if(bhas(C,'heartjar')){const h=Math.round(C.max*.05);C.hp=Math.min(C.max,C.hp+h);lg.push([`หม้อหัวใจผีเต้นตุบๆ มันฟื้นเลือด +${h}`,'bad'])}
   if(bhas(C,'cursepin')){stat('curse',curseGain(4));lg.push(['ตะปูคำสาปทิ่มเข้าเงาของมึง คำสาปเพิ่ม','bad'])}
@@ -764,6 +771,8 @@ function cAct(a){
 }
 function winCombat(){
  const C=S.combat,b=EN[C.id];
+ if(!C.boss&&!C.big&&C.adds&&C.adds.length){kill(C.id);const n=C.adds.shift();C.log.push([`ฆ่า${b.n}ได้! แต่${EN[n.id].n}ยังอยู่ มันพุ่งเข้ามาแทน`,'gold']);C.id=n.id;C.hp=n.hp;C.max=n.max;C.stun=0;save();render();return}
+ if((C.boss||C.big)&&C.adds&&C.adds.length){C.log.push(['ลูกสมุนที่เหลือแตกฮือหนีไปเมื่อเห็นนายของมันตาย','gold']);C.adds=[]}
  if(S.hp<=5)M.st.clutch=1;
  if(C.boss){
   M.st.bossKills++;qInc('boss');if(S.day<20)M.st.rush=1;if(!S.r.holy)M.st.noholy=1;
@@ -1242,9 +1251,11 @@ function render(){
   const C=S.combat,b=EN[C.id];
   const nm=enemyName();
   h=`<div class="enemy"><div class="ico">${b.i}</div><h2>${nm}</h2>${C.br&&C.br.length?`<div class="chips" style="justify-content:center;margin-top:6px">${C.br.map(k=>`<span class="chip" style="border-color:var(--red);color:#f1b7b7">${BREL[k].i} ${BREL[k].n}<br><small>${BREL[k].d}</small></span>`).join('')}</div>`:''}<div class="bar" style="margin-top:8px"><div class="lab"><span>${b.g===1?'ผี':b.g===0?'คน':'ครึ่งคนครึ่งผี'}</span><b>${Math.max(0,C.hp)} / ${C.max}</b></div><div class="track"><div class="fill" style="width:${Math.max(0,C.hp/C.max*100)}%;background:var(--red)"></div></div></div></div>
+  ${C.adds&&C.adds.length?`<div class="card" style="border-color:var(--red2)"><h3 style="color:#f3a3a3">ตัวที่มาร่วมวง ${C.adds.length}</h3>${C.adds.map(ad=>`<div class="bar"><div class="lab"><span>${EN[ad.id].i} ${EN[ad.id].n}</span><b>${Math.max(0,ad.hp)}/${ad.max}</b></div><div class="track"><div class="fill" style="width:${Math.max(0,ad.hp/ad.max*100)}%;background:#a33"></div></div></div>`).join('')}</div>`:''}
   <div class="card log">${C.log.map(([t,c])=>`<p class="${c}">${t}</p>`).join('')}</div>
   <div class="bars card">${barH('hp','var(--red)')}${barH('sta','var(--gold)')}${barH('san','var(--green)')}${barH('curse','var(--purple)')}</div>
   <div class="grid2">
+   ${C.adds&&C.adds.length?`<button class="btn" onclick="cAct('hitAdd')">🪓 ฟันตัวที่รุม<small>${EN[C.adds[0].id].n}</small></button>`:''}
    <button class="btn" onclick="cAct('hit')">⚔️ ฟัน<small>${WEAPONS[S.weapon].n}${C.last==='holy'&&S.spells.includes('purify')?' · ดาบชำระพร้อม!':''}</small></button>
    ${S.spells.includes('heart')?`<button class="btn" ${S.san>8?'':'disabled'} onclick="cAct('heart')">🙏 หัวใจพระ<small>+18 ชีวิต · สติ −8</small></button>`:''}${S.spells.includes('mahaud')?`<button class="btn" ${S.san>10?'':'disabled'} onclick="cAct('mahaud')">🛡️ มหาอุด<small>กันตีครั้งหน้า · สติ −10</small></button>`:''}${S.spells.includes('fire')?`<button class="btn" onclick="cAct('fireS')">🔥 ไฟบรรลัยกัลป์<small>22 ดาเมจ · คำสาป +6</small></button>`:''}${(S.karma||0)>=6?`<button class="btn" onclick="cAct('buddha')">☸️ แสงบุญ<small>ตีผีแรง + ฟื้นชีวิต</small></button>`:''}${(S.karma||0)<=-6?`<button class="btn" onclick="cAct('blackk')">🩸 เงาบาป<small>26–38 · คำสาป สติ</small></button>`:''}
    <button class="btn" ${inv('salt')?'':'disabled'} onclick="cAct('salt')">🧂 เกลือเสก ${inv('salt')}<small>ผีชะงัก 1 ตา</small></button>
