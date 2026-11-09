@@ -233,17 +233,27 @@ const EN={
  faceless:{n:'คนไร้หน้า',i:'😶',hp:44,atk:[6,11],g:1,curse:0,san:9,d:'ใบหน้าเรียบเหมือนไข่ แต่มึงได้ยินมันหายใจ'},
  bride:{n:'เจ้าสาวในฝันร้าย',i:'👰',hp:56,atk:[8,13],g:1,curse:0,san:11,d:'หญิงสาวที่มึงมาช่วย แต่ตาของเธอเป็นรูดำ "ทำไมมาช้า... ฉันตายไปแล้ว"'},
  self:{n:'ตัวมึงอีกคน',i:'🪞',hp:95,atk:[10,16],g:1,curse:0,san:12,d:'มันคือมึงทุกอย่าง แต่ยิ้มอยู่ตลอดเวลา "ปล่อยให้ข้าอยู่ข้างนอกแทนเถอะ ข้าเก่งกว่าเอ็ง"'},
+ krahang:{n:'ผีกระหัง',i:'🧺',hp:55,atk:[10,15],g:1,curse:4,san:4,d:'ชายแก่เปลือยท่อนบนบินมาด้วยกระด้งสองใบ ใช้สากตำข้าวเป็นหาง'},
+ kongkoi:{n:'ผีกองกอย',i:'🦶',hp:48,atk:[9,14],g:1,curse:4,san:6,d:'เสียงกระโดดขาเดียว ก๊อก ก๊อก ก๊อก ใกล้เข้ามาเรื่อยๆ'},
+ khamot:{n:'ผีโขมด',i:'💡',hp:44,atk:[8,13],g:1,curse:5,san:7,d:'ดวงไฟลอยวูบวาบกลางทุ่ง หลอกให้คนเดินตามจนจมน้ำ'},
+ takhian:{n:'นางตะเคียน',i:'🌳',hp:70,atk:[10,16],g:1,curse:6,san:6,d:'หญิงสาวชุดไทยโผล่จากต้นตะเคียน เสียงร้องไห้ปนหัวเราะ'},
+ tayklom:{n:'ผีตายทั้งกลม',i:'🤰',hp:66,atk:[11,17],g:1,curse:7,san:8,d:'หญิงท้องแก่ ผมยาวปิดหน้า ในท้องมีเสียงเด็กร้อง'},
+ ha:{n:'ผีห่า',i:'☣️',hp:58,atk:[10,16],g:1,curse:8,san:4,d:'หมอกสีเหลืองกลิ่นเหม็นเน่า ใครสูดเข้าไปไอเป็นเลือด'},
+ saptrap:{n:'ผีเฝ้าทรัพย์',i:'💰',hp:62,atk:[10,15],g:1,curse:4,san:5,d:'ตาเฒ่านั่งกอดไหทองไว้แน่น "ของข้า ห้ามแตะ!"'},
+ lukkrok:{n:'ลูกกรอก',i:'🫙',hp:40,atk:[8,13],g:1,curse:5,san:9,d:'ทารกแห้งในโหลน้ำมันพราย ลืมตาขึ้นมองมึง'},
+ nangmai:{n:'นางไม้',i:'🍃',hp:52,atk:[8,12],g:1,curse:3,san:5,d:'หญิงสาวผิวเหมือนเปลือกไม้ ส่งยิ้มหวานแต่ตาว่างเปล่า'},
+ asura:{n:'เปรตอสุรกาย',i:'👺',hp:85,atk:[13,19],g:1,curse:6,san:6,d:'ร่างใหญ่เท่าเจดีย์ ท้องป่องแต่คอเล็กเท่ารูเข็ม หิวมาพันปี'},
  boss:{n:'',i:'☠️',hp:200,atk:[14,23],g:.5,curse:7,san:6,sp:'boss',d:''}
 };
 const BOSSES=[{n:'อาจารย์เขม่า หมอผีเขาดำ',v:'ดาว',d:'ชายชราหนังเหี่ยวติดกระดูก นัยน์ตาแดงก่ำ'},{n:'แม่หมอจันทร์ดำ',v:'ใบเตย',d:'หญิงสาวหน้าสวยแต่ครึ่งหน้าเน่าเปื่อย ถือหุ่นขี้ผึ้งหน้าเหมือนมึง'},{n:'เจ้าพ่อเสือสมิง',v:'น้ำฝน',d:'ร่างคนครึ่งเสือ เขี้ยวยาวเปื้อนเลือด หางฟาดพื้นถ้ำ'},{n:'หลวงพ่อคงปลอม',v:'แพรว',d:'ห่มจีวรดำ ลูกประคำทำจากฟันคน สวดถอยหลังไม่หยุด'},{n:'ราชาปอบเขาแก้ว',v:'มิ้นท์',d:'ร่างอ้วนพองเท่าช้าง ท้องเต็มไปด้วยหน้าคนที่มันกินเข้าไป'}];
 const LOC={
- market:{n:'ตลาดเก่าร้าง',i:'🏚️',d:'ข้าว น้ำ ผ้า · โจร ผีตายโหง',danger:.36,en:['bandit','tayhong'],loot:[['rice',1,3,.75],['water',1,3,.75],['band',1,2,.4],['cloth',1,1,.35],['salt',1,2,.35]]},
- temple:{n:'วัดร้างโพธิ์ทอง',i:'🛕',d:'เทียน น้ำมนต์ สมุนไพร · ผีเฝ้าวัด',danger:.32,en:['pret','watch'],loot:[['candle',1,3,.8],['holy',1,1,.35],['herb',1,2,.5],['rice',1,1,.25],['cloth',1,1,.2]]},
- hospital:{n:'อนามัยร้าง',i:'🏥',d:'ผ้าพันแผล ยา น้ำ · ผีพยาบาล หมอเถื่อน',danger:.42,en:['nurse','butcher'],loot:[['band',1,3,.7],['med',1,1,.25],['water',1,2,.5],['cloth',1,1,.3],['herb',1,1,.3]]},
- grave:{n:'ป่าช้าหลังหมู่บ้าน',i:'⚰️',d:'สมุนไพร ของขลัง · ผีดิบ กระสือ',danger:.5,en:['zombie','krasue'],loot:[['herb',1,3,.7],['salt',1,2,.4],['candle',1,2,.35],['med',1,1,.12],['jar',1,1,.12]]},
- bamboo:{n:'ป่าไผ่ผีปอบ',i:'🎋',d:'หน่อไม้ สมุนไพร เกลือ · ปอบ ผีโพง ผีหัวขาด',danger:.5,en:['pob','phong','headless'],loot:[['rice',1,2,.6],['herb',1,3,.6],['salt',1,2,.4],['candle',1,1,.2]]},
- swamp:{n:'บึงบัวหลวง',i:'🪷',d:'น้ำ สมุนไพร · ไอ้เข้ผี นางพราย',danger:.42,en:['croc','phrai'],loot:[['water',2,4,.85],['herb',1,2,.45],['rice',1,1,.2]]},
- shrine:{n:'ศาลหมอผี',i:'🧿',d:'ขัดพิธี',danger:1,en:['disciple','kuman'],loot:[['salt',1,2,.5],['holy',1,1,.4],['candle',1,2,.4],['jar',1,1,.25]]}
+ market:{n:'ตลาดเก่าร้าง',i:'🏚️',d:'ข้าว น้ำ ผ้า · โจร ผีตายโหง',danger:.36,en:['bandit','tayhong','saptrap'],loot:[['rice',1,3,.75],['water',1,3,.75],['band',1,2,.4],['cloth',1,1,.35],['salt',1,2,.35]]},
+ temple:{n:'วัดร้างโพธิ์ทอง',i:'🛕',d:'เทียน น้ำมนต์ สมุนไพร · ผีเฝ้าวัด',danger:.32,en:['pret','watch','nangmai'],loot:[['candle',1,3,.8],['holy',1,1,.35],['herb',1,2,.5],['rice',1,1,.25],['cloth',1,1,.2]]},
+ hospital:{n:'อนามัยร้าง',i:'🏥',d:'ผ้าพันแผล ยา น้ำ · ผีพยาบาล หมอเถื่อน',danger:.42,en:['nurse','butcher','tayklom'],loot:[['band',1,3,.7],['med',1,1,.25],['water',1,2,.5],['cloth',1,1,.3],['herb',1,1,.3]]},
+ grave:{n:'ป่าช้าหลังหมู่บ้าน',i:'⚰️',d:'สมุนไพร ของขลัง · ผีดิบ กระสือ',danger:.5,en:['zombie','krasue','asura','tayklom'],loot:[['herb',1,3,.7],['salt',1,2,.4],['candle',1,2,.35],['med',1,1,.12],['jar',1,1,.12]]},
+ bamboo:{n:'ป่าไผ่ผีปอบ',i:'🎋',d:'หน่อไม้ สมุนไพร เกลือ · ปอบ ผีโพง ผีหัวขาด',danger:.5,en:['pob','phong','headless','kongkoi','takhian'],loot:[['rice',1,2,.6],['herb',1,3,.6],['salt',1,2,.4],['candle',1,1,.2]]},
+ swamp:{n:'บึงบัวหลวง',i:'🪷',d:'น้ำ สมุนไพร · ไอ้เข้ผี นางพราย',danger:.42,en:['croc','phrai','khamot'],loot:[['water',2,4,.85],['herb',1,2,.45],['rice',1,1,.2]]},
+ shrine:{n:'ศาลหมอผี',i:'🧿',d:'ขัดพิธี',danger:1,en:['disciple','kuman','lukkrok'],loot:[['salt',1,2,.5],['holy',1,1,.4],['candle',1,2,.4],['jar',1,1,.25]]}
 };
 const SEARCH_LOCS=['market','temple','hospital','grave','bamboo','swamp'];
 const STATN={hp:'ชีวิต',food:'อิ่ม',wat:'น้ำ',sta:'แรง',san:'สติ',curse:'คำสาป'};
@@ -419,8 +429,33 @@ function has(r){return S.relics.includes(r)||(r==='eye'&&S.flags.innateEye)}
 function saverHeld(t){return (S.savers&&S.savers[t]||[]).find(r=>S.relics.includes(r))}
 function rollSavers(){const pool=Object.keys(RELICS).filter(k=>!RELICS[k].core&&!RELICS[k].secret&&!RELICS[k].mad&&!M.shattered.includes(k));for(let i=pool.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[pool[i],pool[j]]=[pool[j],pool[i]]}S.savers={mad:pool.slice(0,4),curse:pool.slice(4,8),death:pool.slice(8,11)}}
 function petMax(){return S.cls==='sorcer'?5:3}
-const PETFX={krasue:'ดูดเลือดมาเติมชีวิต',pob:'ดูดเลือดมาเติมชีวิต',nurse:'รักษาแผลให้',kuman:'ขโมยของหลังชนะ',kaew:'ร้องเพลงคืนสติ'};
-function petAttack(C,lg){if(!S.pets||!S.pets.length||C.hp<=0)return;for(const p of S.pets){if(C.hp<=0)break;const b=EN[p.id];if(!b)continue;const d=Math.round((b.atk[0]+b.atk[1])/2*.32*(1+(p.lvl-1)*.25)*(1+rs('pet'))*(S.cls==='sorcer'?1.3:1));if(p.id==='nurse'){stat('hp',4+p.lvl);continue}C.hp-=d;lg.push([`${b.i} ${b.n}(Lv${p.lvl}) ของมึงจู่โจม −${d}${PETFX[p.id]&&p.id!=='kuman'?' · '+PETFX[p.id]:''}`,'pink']);if(p.id==='krasue'||p.id==='pob')stat('hp',2+p.lvl)}}
+const PET={pret:'atk',watch:'shield',tayhong:'atk',zombie:'atk',krasue:'drain',croc:'atk',phrai:'stun',kuman:'thief',pob:'drain',phong:'san',headless:'atk',nurse:'heal',faceless:'stun',bride:'san',mother:'san',krahang:'atk',kongkoi:'stun',khamot:'san',takhian:'shield',tayklom:'curse',ha:'plague',lukkrok:'thief',nangmai:'heal',asura:'atk',saptrap:'thief'};
+const PK={atk:['ช่วยตี','หันมากัดเจ้าของ'],drain:['ตีแล้วดูดเลือดมาให้','ดูดเลือดเจ้าของไปให้ศัตรู'],heal:['รักษาแผลทุกเทิร์น','กรีดแผลเจ้าของทุกเทิร์น'],stun:['ตี + ทำศัตรูชะงัก','ทำเจ้าของมึนจนพลาด'],shield:['รับดาเมจแทน −2','ทำให้โดนตีแรง +2'],san:['ตี + คืนสติ','กระซิบจนสติเจ้าของหาย'],curse:['ตี + ลดคำสาป','เพิ่มคำสาปเจ้าของ'],thief:['ตี + ขโมยของหลังชนะ','ขโมยของจากย่ามเจ้าของ'],plague:['ตีแรง ×1.3','ปล่อยโรคใส่เจ้าของ']};
+const HATE=[['nurse','krasue'],['nurse','pob'],['kuman','lukkrok'],['phrai','takhian'],['pret','asura'],['watch','saptrap'],['nangmai','kongkoi'],['ha','nurse'],['phong','khamot'],['mother','bride']];
+const LIKE=[['krasue','krahang'],['tayhong','tayklom'],['pob','phong'],['phrai','khamot'],['zombie','headless'],['kuman','nangmai']];
+function petRel(p){const ids=(S.pets||[]).map(x=>x.id);const h=HATE.find(([a,b])=>(a===p.id&&ids.includes(b))||(b===p.id&&ids.includes(a)));const l=LIKE.find(([a,b])=>(a===p.id&&ids.includes(b))||(b===p.id&&ids.includes(a)));return {hate:h?(h[0]===p.id?h[1]:h[0]):null,like:l?(l[0]===p.id?l[1]:l[0]):null}}
+function petFlip(p){return !!petRel(p).hate||(p.loy!=null&&p.loy<25&&ch(.35))}
+function petShield(){let v=0;for(const p of S.pets||[])if(PET[p.id]==='shield')v+=petRel(p).hate?-2:2;return v}
+function petAttack(C,lg){if(!S.pets||!S.pets.length||C.hp<=0)return;for(const p of S.pets){if(C.hp<=0)break;const b=EN[p.id];if(!b)continue;const k=PET[p.id]||'atk',rel=petRel(p),flip=petFlip(p);
+ let d=Math.round((b.atk[0]+b.atk[1])/2*.26*(1+(p.lvl-1)*.22)*(1+rs('pet'))*(S.cls==='sorcer'?1.3:1)*(rel.like?1.4:1)*(k==='plague'?1.3:1));
+ if(flip){const why=rel.hate?`(ทะเลาะกับ${EN[rel.hate].n})`:'(ไม่ภักดี)';
+  if(k==='heal'){stat('hp',-(4+p.lvl));lg.push([`${b.i} ${b.n}กรีดแผลมึง −${4+p.lvl} ${why}`,'bad'])}
+  else if(k==='drain'){C.hp+=d;lg.push([`${b.i} ${b.n}ดูดเลือดมึงไปให้ศัตรู ศัตรู +${d} ${why}`,'bad'])}
+  else if(k==='san'){stat('san',-6);lg.push([`${b.i} ${b.n}กระซิบในหัวมึง สติ −6 ${why}`,'bad'])}
+  else if(k==='curse'){stat('curse',curseGain(5));lg.push([`${b.i} ${b.n}พ่นคำสาปใส่มึง ${why}`,'bad'])}
+  else if(k==='stun'){C.pstun=1;lg.push([`${b.i} ${b.n}ทำมึงมึนหัว เทิร์นหน้าจะพลาด ${why}`,'bad'])}
+  else if(k==='shield'){lg.push([`${b.i} ${b.n}ผลักมึงไปรับการโจมตี ${why}`,'bad'])}
+  else if(k==='thief'){const it=pick(Object.keys(ITEMS).filter(x=>inv(x)>0));if(it){add(it,-1);lg.push([`${b.i} ${b.n}ขโมย${ITEMS[it]}จากย่ามมึงไป ${why}`,'bad'])}}
+  else{const dd=Math.round(d*.7);stat('hp',-dd);lg.push([`${b.i} ${b.n}หันมากัดมึง −${dd} ${why}`,'bad'])}
+  continue}
+ if(k==='heal'){stat('hp',4+p.lvl);lg.push([`${b.i} ${b.n}รักษาแผลให้ +${4+p.lvl}`,'pink']);continue}
+ if(k==='shield')d=Math.round(d*.6);
+ C.hp-=d;let ex='';
+ if(k==='drain'){stat('hp',2+p.lvl);ex=' · ดูดเลือดมาให้'}
+ if(k==='san'){stat('san',2);ex=' · สติ +2'}
+ if(k==='curse'){stat('curse',-2);ex=' · คำสาป −2'}
+ if(k==='stun'&&ch(.2)){C.stun=1;ex=' · ศัตรูชะงัก'}
+ lg.push([`${b.i} ${b.n}(Lv${p.lvl}${rel.like?' 💞':''}) จู่โจม −${d}${ex}`,'pink'])}}
 function hb(b){return (S.boons||[]).includes(b)}
 function curseGain(n){let f=1-S.armor*.15-(M.perks.ward||0)*.07;if(has('yan'))f-=.3;if(has('bia'))f-=.15;if(hb('pure'))f-=.2;f-=rs('cres');if(S.cls==='rangsong')f-=.25;return Math.max(1,Math.round(n*Math.max(.2,f)))}
 function stat(k,n){S[k]=clamp(S[k]+n,0,k==='hp'?S.maxhp:100)}
@@ -483,7 +518,14 @@ const STEP={
   if(S.allies.monk)stat('curse',-3);
   if(S.allies.bua)stat('san',4);
   if(has('comb'))stat('san',3);
-  if(S.pets&&S.pets.length&&S.cls!=='sorcer')stat('san',-S.pets.length);
+  if(S.pets&&S.pets.length){
+   if(S.cls!=='sorcer')stat('san',-S.pets.length);
+   const need=Math.ceil(S.pets.length/2);const fed=inv('rice')>=need;if(fed)add('rice',-need);
+   for(const p of S.pets.slice()){if(p.loy==null)p.loy=60;const mh=Math.round(EN[p.id].hp*.6);p.hp=Math.min(mh,(p.hp==null?mh:p.hp)+Math.round(mh*.2));
+    p.loy=clamp(p.loy+(fed?4:-12)-(S.san<30?8:0)-(petRel(p).hate?6:0),0,100);
+    if(!fed){stat('hp',-3);}
+    if(p.loy<=0){S.pets=S.pets.filter(x=>x!==p);L(`🏺 ขวดของ${EN[p.id].n}แตกกลางดึก! มันหลุดออกมาด้วยความแค้น`,'bad');S.queue.unshift('petrev');S.flags.petrev=p.id}}
+   L(fed?`เซ่นข้าวให้ผีในขวด ${need} ถุง`:'ไม่มีข้าวเซ่นผีในขวด มันกัดกินเลือดมึงแทน และเริ่มไม่ภักดี',fed?'':'bad')}
   if(has('balm'))stat('hp',3);
   if(has('lotus'))stat('hp',2);
   if(rs('nhp'))stat('hp',rs('nhp'));if(rs('nsan'))stat('san',rs('nsan'));
@@ -492,7 +534,7 @@ const STEP={
   if(S.curse>85&&saverHeld('curse'))L('ของขลังชิ้นหนึ่งในย่ามอุ่นขึ้นอย่างประหลาด...','pink');
   let p=.14+(S.ch2?.05:S.power/260+S.day/150+S.cycle*.04)-(n==='guard'?.12:0)-(has('sai')?.1:0)-(S.allies.bua?.06:0)-(hb('cat')?.1:0)-(has('bell')?.07:0)-rs('amb');
   if(ch(clamp(p,.05,.75))){
-   const pool=S.day<10?['pret','tayhong','kuman','phong']:(S.day<25||S.ch2)?['zombie','krasue','kuman','tayhong','pob','nurse']:['krasue','zombie','disciple','phrai','pob','headless'];
+   const pool=S.day<10?['pret','tayhong','kuman','phong','khamot']:(S.day<25||S.ch2)?['krahang','ha','zombie','krasue','kuman','tayhong','pob','nurse']:['krasue','zombie','disciple','phrai','pob','headless'];
    const e=pick(pool);
    L('ตีสาม... มีบางอย่างเคาะประตู','bad');
    startCombat(e,{after:'none',ambush:!(n==='guard'||has('eye')||hb('cat')||has('third'))});
@@ -518,6 +560,7 @@ const STEP={
  }
 };
 STEP.boon=()=>{const pool=Object.keys(BOONS).filter(k=>!hb(k));if(!pool.length)return;const W={c:1,r:.25,l:.08};const c=[];let g=0;while(c.length<3&&c.length<pool.length&&g++<200){const cand=pool.filter(k=>!c.includes(k));let tot=cand.reduce((a,k)=>a+W[BOONS[k].t||'c'],0),x=Math.random()*tot;for(const k of cand){x-=W[BOONS[k].t||'c'];if(x<=0){c.push(k);break}}}S.boonChoice=c;S.screen='boon';return 'wait'};
+STEP.petrev=()=>{const id=S.flags.petrev;if(!id)return;S.flags.petrev=null;startCombat(id,{after:'none',ambush:true});return 'wait'};
 STEP.bua1=()=>{S.event={id:'bua1'};S.screen='event';return 'wait'};
 function doLoot(loc){
  const got=[];
@@ -566,7 +609,8 @@ function cAct(a){
   if(big){lg.push(['ไม่มีทางหนีแล้ว','bad'])}
   else if(has('compass')||ch(.3+S.sta/250+rs('flee'))){stat('sta',-10);L(`หนีจาก${b.n}มาได้ แต่ทิ้งของที่ค้นไว้หมด`,'bad');S.combat=null;S.screen='plan';return advance()}
   else lg.push(['วิ่งหนีไม่พ้น มันขวางทางไว้','bad']);
- } else if(shaky){lg.push(['มือสั่นจนทำอะไรไม่ถูก เสียงกระซิบในหัวดังเกินไป (สติต่ำ)','bad'])}
+ } else if(C.pstun){C.pstun=0;lg.push(['หัวมึนจนทำอะไรไม่ได้ (ผีในขวดทำ)','bad'])}
+ else if(shaky){lg.push(['มือสั่นจนทำอะไรไม่ถูก เสียงกระซิบในหัวดังเกินไป (สติต่ำ)','bad'])}
  else if(a==='hit'){
   const W=WEAPONS[S.weapon];dmg=R(W.d[0],W.d[1])+(S.cls==='nakleng'?4:0)+(has('beads')?3:0)+(hb('fire')?5:0)+(b.g&&has('rope')?4:0)+rs('atk')+(b.g?rs('gatk'):0);
   if(S.sta<15)dmg=Math.round(dmg/2);
@@ -586,7 +630,7 @@ function cAct(a){
  else if(a==='jar'){
   const ok=b.g===1&&!big&&C.hp<=C.max*.35&&(S.pets||[]).length<petMax();
   if(!ok){lg.push(['ขังไม่ได้ ต้องเป็นผี (ไม่ใช่บอส) ที่เลือดเหลือไม่เกิน 35% และต้องมีที่ว่างในขวด','bad'])}
-  else{add('jar',-1);if(ch((S.cls==='sorcer'?.9:.65)+rs('pet')*.2)){S.pets=S.pets||[];S.pets.push({id:C.id,lvl:1,xp:0});M.st.pets=(M.st.pets||0)+1;saveM();L(`🏺 ขัง${b.n}ไว้ในขวดดินเผาได้! มันกลายเป็นผีรับใช้ของมึง`,'pink');qInc('kill');const after=C.after,loc=C.loc;S.combat=null;S.screen='plan';if(after==='loot')doLoot(loc);if(after==='clue')caseClue(loc);if(after==='mad')madLoot(loc);if(after==='disrupt')afterDisrupt();return advance()}else lg.push([`ขวดแตก! ${b.n}ดิ้นหลุดออกมาได้`,'bad'])}
+  else{add('jar',-1);if(ch((S.cls==='sorcer'?.9:.65)+rs('pet')*.2)){S.pets=S.pets||[];S.pets.push({id:C.id,lvl:1,xp:0,loy:60,hp:Math.round(EN[C.id].hp*.6)});M.st.pets=(M.st.pets||0)+1;saveM();L(`🏺 ขัง${b.n}ไว้ในขวดดินเผาได้! มันกลายเป็นผีรับใช้ของมึง`,'pink');qInc('kill');const after=C.after,loc=C.loc;S.combat=null;S.screen='plan';if(after==='loot')doLoot(loc);if(after==='clue')caseClue(loc);if(after==='mad')madLoot(loc);if(after==='disrupt')afterDisrupt();return advance()}else lg.push([`ขวดแตก! ${b.n}ดิ้นหลุดออกมาได้`,'bad'])}
  }
  else if(a==='band'){add('band',-1);qInc('heal');stat('hp',(Math.round(22*(has('yadong')?1.5:1))+(has('needle')?5:0)+rs('heal')));lg.push(['พันแผลห้ามเลือด +'+(Math.round(22*(has('yadong')?1.5:1))+(has('needle')?5:0)+rs('heal'))+' ชีวิต','good'])}
  else if(a==='herb'){add('herb',-1);qInc('heal');stat('hp',10);stat('curse',-4);lg.push(['เคี้ยวสมุนไพรขมปี๋ +10 ชีวิต −4 คำสาป','good'])}
@@ -604,6 +648,8 @@ function cAct(a){
   let d=Math.round(R(b.atk[0],b.atk[1])*(big?TUNE.batk:TUNE.atk))+Math.floor((S.ch2?28:S.day)/12)+(S.ch2?S.ch2.solved.length:S.cycle*2);
   if((C.boss||C.id==='grand')&&C.turn%3===0){d+=8;stat('curse',curseGain(12));lg.push(['หมอผีพ่นไสยดำ หนอนไต่ออกจากแผลมึง! คำสาปพุ่ง','bad'])}
   if(C.id==='queen'&&C.turn%3===0){d+=6;stat('food',-15);lg.push(['เจ้าแม่ยื่นลิ้นยาวเป็นวามาดูดเลือด −15 อิ่ม','bad'])}
+  d=d-petShield();
+  if(big&&S.pets&&S.pets.length&&ch(.35)){const p=pick(S.pets);p.hp=(p.hp==null?Math.round(EN[p.id].hp*.6):p.hp)-Math.round(d*.8);if(p.hp<=0){S.pets=S.pets.filter(x=>x!==p);lg.push([`${enemyName()}บีบขวดของ${EN[p.id].n}จนแตก! มันสลายไปตลอดกาล 💀`,'bad'])}else lg.push([`${enemyName()}ฟาดใส่${EN[p.id].n}ด้วย (เหลือ ${p.hp})`,'bad'])}
   d=Math.max(1,d-S.armor*2-(has('takrud')?3:0)-(has('kong')?2:0)-(has('mahaud')?1:0)-rs('def')-(hb('iron')?3:0));
   if(has('pracheat')&&!C.blocked){C.blocked=1;d=0;lg.push(['ผ้าประเจียดแดงสะบัดรับการโจมตีแทน!','gold'])}
   stat('hp',-d);
@@ -627,6 +673,7 @@ function winCombat(){
   saveM();S.combat=null;S.event={id:'final'};S.screen='event';save();render();return}
  kill(C.id);
  L(`ฆ่า${b.n}ได้!`,'good');
+ for(const p of S.pets||[])if(PET[p.id]==='thief'&&!petRel(p).hate&&ch(.4)){const it=pick(['rice','water','herb','salt','band','candle','holy']);add(it,1);L(`${EN[p.id].n}ขโมย${ITEMS[it]}มาให้ 1`,'pink')}
  if(hb('thief')&&ch(.4)){const k=pick(['rice','water','herb','salt','band','candle']);add(k,1);L('มือไวฉกได้'+ITEMS[k]+' 1','good')}
  if(C.id==='kuman'&&ch(.15))gotRelic('kuman','วิญญาณกุมารที่มึงปลดปล่อยไม่ยอมไปไหน');
  if(C.id==='headless'&&ch(.15))gotRelic('fang','');
@@ -885,7 +932,7 @@ function statsH2(){return `<div class="card"><div class="bars">${barH('hp','var(
 function invH(){
  const it=Object.keys(ITEMS).filter(k=>inv(k)>0).map(k=>`<span class="chip">${ITEMS[k]} ${inv(k)}</span>`).join('')||'<span class="muted">ไม่มีของ</span>';
  const rl=S.relics.map(r=>`<span class="chip relic">✨ ${RELICS[r].n}</span>`).join('');
- const pl=(S.pets||[]).map((p,i)=>`<button class="btn tile" onclick="releasePet(${i})">${EN[p.id].i} ${EN[p.id].n} Lv${p.lvl}<small>${PETFX[p.id]||'ช่วยตีทุกเทิร์น'} · แตะเพื่อปลดปล่อยไปสู่สุคติ (+สติ +บุญ)</small></button>`).join('');
+ const pl=(S.pets||[]).map((p,i)=>`<button class="btn tile" onclick="releasePet(${i})">${EN[p.id].i} ${EN[p.id].n} Lv${p.lvl}<small>${(()=>{const r=petRel(p),k=PET[p.id]||'atk';return (r.hate?`⚠️ เกลียด${EN[r.hate].n}: ${PK[k][1]}`:PK[k][0])+(r.like?` · 💞 ถูกกับ${EN[r.like].n} แรง +40%`:'')})()} · ภักดี ${p.loy==null?60:p.loy}${(p.loy||60)<25?' ⚠️':''} · ชีวิต ${p.hp==null?'เต็ม':p.hp}<br>แตะเพื่อปลดปล่อย (+สติ +บุญ)</small></button>`).join('');
  const bl=(S.boons||[]).map(b=>`<span class="chip ally">${BOONS[b].i} ${BOONS[b].n}</span>`).join('');
  const al=[S.allies.monk?'🙏 หลวงตาเปลี่ยน':'',S.allies.yod?'🪓 เสือยอด':'',S.allies.bua?'🪷 บัวลอย':''].filter(Boolean).map(a=>`<span class="chip ally">${a}</span>`).join('');
  return `<div class="card"><h3>ของในย่าม</h3><div class="chips">${it}</div>${rl?`<h3>ของขลัง ${S.relics.length}</h3><div class="chips">${rl}</div><p class="muted" style="font-size:12.5px">${S.relics.map(r=>RELICS[r].fx).join(' · ')}</p>`:''}${pl?`<h3>ผีรับใช้ ${(S.pets||[]).length}/${petMax()}</h3><div class="grid2">${pl}</div>`:''}${bl?`<h3>พร</h3><div class="chips">${bl}</div><p class="muted" style="font-size:12.5px">${S.boons.map(b=>BOONS[b].d).join(' · ')}</p>`:''}${al?`<h3>พวกพ้อง</h3><div class="chips">${al}</div>`:''}${S.aff&&!S.allies.bua&&!S.buaHostile?`<p class="muted">ความรักบัวลอย ${'♥'.repeat(S.aff)}${'♡'.repeat(5-S.aff)}</p>`:''}</div>`;
