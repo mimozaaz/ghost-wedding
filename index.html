@@ -256,6 +256,13 @@ const LOC={
  shrine:{n:'ศาลหมอผี',i:'🧿',d:'ขัดพิธี',danger:1,en:['disciple','kuman','lukkrok'],loot:[['salt',1,2,.5],['holy',1,1,.4],['candle',1,2,.4],['jar',1,1,.25]]}
 };
 const SEARCH_LOCS=['market','temple','hospital','grave','bamboo','swamp'];
+const GORE={
+ hitM:['ฟันฉับเข้าที่คอ เลือดพุ่งกระฉูดเป็นสาย','สับลงกลางกบาล กะโหลกแตกดังกร๊อบ','แทงทะลุท้อง ไส้ทะลักออกมากองที่พื้น','ฟาดจนแขนมันขาดกระเด็นไปอีกฝั่ง','เฉือนหน้ามันเปิดเห็นกระดูกแก้ม','จ้วงแทงซ้ำๆ จนอกมันเละเป็นโจ๊ก','ฟันเข่าจนขาพับผิดรูป มันล้มคว่ำร้องลั่น','เสียบเข้าตาข้างซ้ายแล้วบิดคามีด'],
+ hitG:['ฟันทะลุร่างโปร่งแสง มันกรีดร้องจนหูอื้อ','กระชากผมผีแล้วฟันคอจนหัวเอียงห้อยต่องแต่ง','ผ่าร่างผีเป็นสองซีก ควันดำพวยพุ่งออกมา','สับลงไปที่ไส้ที่ห้อยระโยงระยาง มันดิ้นพล่าน','ฟาดหน้าผีจนหน้ามันบิดเบี้ยวกลับด้าน','แทงทะลุอกผี เลือดดำเหม็นเน่าไหลออกมาเป็นทาง'],
+ crit:['ตัดหัวมันเกือบขาด! เหลือติดแค่หนังคอ','ผ่ากลางลำตัวตั้งแต่ไหล่ถึงสะโพก!','ทะลวงหัวใจคามีด!','ฟันกรามมันหลุดกระจาย ลิ้นห้อยออกมา!'],
+ atkM:['แทงสีข้างมึงลึกจนถึงซี่โครง','ฟาดไม้หน้าสามเข้ากลางหน้า ฟันมึงหักสองซี่','เตะยอดอกจนมึงอ้วกเป็นเลือด','กรีดแขนมึงเป็นแผลยาว เลือดไหลไม่หยุด','บีบคอมึงกดลงกับพื้นจนตาเหลือก'],
+ atkG:['ข่วนเนื้อหน้าอกมึงจนหนังเปิด','งับคอมึงจนเลือดทะลัก','ล้วงมือเย็นเฉียบเข้าไปในอกมึงแล้วบีบหัวใจ','กระชากผมมึงลากไปกับพื้น หนังหัวถลอก','อ้าปากกว้างเกินคนกัดไหล่มึงจนเนื้อหลุดเป็นชิ้น','เสียบเล็บดำยาวเข้าที่ท้องมึงแล้วคว้าน','กรีดร้องใส่หน้ามึงจนเลือดออกหูทั้งสองข้าง'],
+ taunt:['"ตายซะ ไอ้เหี้ย!"','"กูจะแดกตับมึง!"','"มึงไม่รอดหรอก ไอ้สัส"','"เลือดมึงหอมดีนะ..."','"อีกนิดเดียว มึงก็เป็นพวกกูแล้ว"','"ร้องสิ ร้องให้ดังๆ"']};
 const STATN={hp:'ชีวิต',food:'อิ่ม',wat:'น้ำ',sta:'แรง',san:'สติ',curse:'คำสาป'};
 const CLASSES={
  villager:{n:'ชาวบ้านธรรมดา',i:'🧑‍🌾',cost:0,d:'สมดุล ข้าวเยอะ ไม่มีจุดอ่อน',fx:'เริ่มมีข้าว น้ำ อย่างละ +2'},
@@ -624,7 +631,7 @@ function cAct(a){
   if(ch(.12+(has('fang')?.1:0)+(has('third')?.08:0)+rs('crit')+(hb('crit')?.13:0))){dmg=Math.round(dmg*(hb('crit')?2.2:1.8));txt=' คริติคอล!'}
   if(hb('vamp')){stat('hp',Math.ceil(dmg*.3))}
   stat('sta',-4);
-  lg.push([`ฟันด้วย${W.n} −${dmg}${txt}${b.g===1&&!W.holy&&!hb('fire')?' (อาวุธธรรมดาตีผีเบาลง)':''}`,'good']);
+  lg.push([`${txt?pick(GORE.crit):pick(b.g?GORE.hitG:GORE.hitM)} (${W.n} −${dmg}${txt?' คริติคอล':''})${b.g===1&&!W.holy&&!hb('fire')?' · อาวุธธรรมดาตีผีเบาลง':''}`,'good']);
  } else if(a==='salt'){if(!(hb('salt')&&ch(.5)))add('salt',-1);qInc('saltUse');dmg=Math.round(gm(R(14,20)));C.stun=b.g&&!big?1:0;lg.push([dmg?`สาดเกลือเสกใส่ มันกรีดร้อง −${dmg}${C.stun?' และชะงักไป 1 ตา':''}`:'สาดเกลือใส่คน มันแค่แสบตาแล้วด่ามึง',dmg?'good':'bad'])}
  else if(a==='holy'){add('holy',-1);S.r.holy++;qInc('holyUse');dmg=b.g?Math.round(gm(R(30,42)+(has('oil')?10:0)+rs('holy')+(hb('holy')?15:0))):R(4,8);lg.push([`สาดน้ำมนต์ ควันขาวพวยพุ่ง −${dmg}`,'good'])}
  else if(a==='chant'){const md=S.cls==='mordham';if(!hb('chant'))stat('san',md?-6:-10);dmg=Math.round(gm(R(12,20))*(md?1.7:1)*(has('staff')?1.5:1)*(1+rs('chant')));stat('curse',-5);lg.push([dmg?`ท่องคาถาพระเจ้าห้าพระองค์ −${dmg} คำสาปบนตัว −5`:'ท่องคาถาใส่คน มันไม่สะทกสะท้าน แต่คำสาปบนตัวลดลง −5',dmg?'good':''])}
@@ -656,7 +663,7 @@ function cAct(a){
   d=Math.max(1,d-S.armor*2-(has('takrud')?3:0)-(has('kong')?2:0)-(has('mahaud')?1:0)-rs('def')-(hb('iron')?3:0));
   if(has('pracheat')&&!C.blocked){C.blocked=1;d=0;lg.push(['ผ้าประเจียดแดงสะบัดรับการโจมตีแทน!','gold'])}
   stat('hp',-d);
-  lg.push([`${enemyName()}โจมตี −${d} ชีวิต`,'bad']);
+  lg.push([`${enemyName()}${pick(b.g?GORE.atkG:GORE.atkM)} −${d} ชีวิต${ch(.3)?' '+pick(GORE.taunt):''}`,'bad']);
   if(b.curse)stat('curse',curseGain(Math.ceil(b.curse*TUNE.curse)));
   if(b.san)stat('san',-Math.ceil(b.san*(hb('calm')?.25:.5)*(has('silver')?.5:1)*Math.max(.2,1-rs('sres'))*(S.mode==='mad'?2:1)));
   if(b.sp==='drain'){stat('food',-8);lg.push(['มันดูดเลือดจนตัวเบาหวิว −8 อิ่ม','bad'])}
@@ -992,13 +999,13 @@ function homeH(){
   return nav()+`<div class="card"><h2>ภารกิจวันนี้</h2><p class="muted">เปลี่ยนทุกเที่ยงคืน · ข้อละ +15 บุญ · ครบ 3 ข้อได้โบนัส +25</p>${D.ids.map(id=>{const q=QPOOL.find(x=>x.id===id),v=Math.min(D.prog[id]||0,q.n),done=D.done.includes(id);return `<div class="ach ${done?'':''}"><div class="ai">${done?'✅':'⬜'}</div><div style="flex:1"><b>${q.t}</b><div class="prog"><i style="width:${v/q.n*100}%"></i></div><span>${v}/${q.n}</span></div></div>`}).join('')}${D.bonus?'<p class="merit">ครบแล้ววันนี้! 🎉</p>':''}</div>`;
  }
  return `<div class="title-ico">💀👰</div><h1 style="text-align:center">คืนวิวาห์ผี</h1>
- <p class="muted" style="text-align:center">เอาชีวิตรอดสยองขวัญ 18+ · ตายแล้วเริ่มใหม่ แต่บุญติดตัว</p>
+ <p class="muted" style="text-align:center">เอาชีวิตรอดสยองขวัญผีไทย · ตายแล้วเริ่มใหม่ แต่บุญติดตัว</p>
  ${nav()}
  ${sv?`<button class="btn pri" onclick="contGame()">เล่นต่อ (คืนที่ ${sv.day}${sv.cycle?' · รอบ '+(sv.cycle+1):''})</button>`:''}
  <button class="btn ${sv?'':'pri'} c" onclick="pickClass()">เริ่มเกมใหม่</button>
  <div class="card"><p>🪷 บุญ <b class="merit">${M.merit}</b> · 🏆 ${na}/${ACH.length} · รอดไกลสุดคืนที่ ${M.st.maxDay}</p><p class="muted">ฆ่าไปแล้ว ${M.st.total} ตัว · เล่น ${M.st.runs} รอบ · ชนะ ${M.st.wins} · ฉากจบ ${M.st.endings.length}/9 · ไขคดี ${M.st.cases||0} · ปลดปล่อย ${M.st.peace||0}</p></div>
  <div class="card story"><p>หมู่บ้านหนองผีถูกสาป หมอผีแห่งเขาดำลักตัวหญิงสาวไปทำ <b>วิวาห์ผี</b> ในคืนที่ 49 ออกหาของ ขัดพิธี เก็บของขลังให้ได้ 3 ชิ้นแล้วบุกถ้ำ ปราบหมอผีได้แล้ว จะกลับบ้านหรือออกเดินทางเป็นหมอผีพเนจร สืบคดีผีเฮี้ยนตามหมู่บ้านต่างๆ ก็ได้</p></div>
- <p class="foot">มีความรุนแรง สยองขวัญ คำหยาบ และเนื้อหายั่วยวนแบบไม่โจ่งแจ้ง · เซฟในเบราว์เซอร์นี้</p>`;
+ <p class="foot">เซฟอัตโนมัติในเบราว์เซอร์นี้</p>`;
 }
 function pickClass(){
  const sv=store.get('save',null);
