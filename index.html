@@ -100,6 +100,7 @@ const R=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
 const ch=p=>Math.random()<p;
 const pick=a=>a[Math.floor(Math.random()*a.length)];
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+(function(){const V='reset-2026-11-09';try{if(localStorage.getItem('gw__ver')!==V){Object.keys(localStorage).filter(k=>k.startsWith('gw_')).forEach(k=>localStorage.removeItem(k));localStorage.setItem('gw__ver',V)}}catch(e){}})();
 const store={get(k,d){try{const v=localStorage.getItem('gw_'+k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem('gw_'+k,JSON.stringify(v))}catch(e){}},del(k){try{localStorage.removeItem('gw_'+k)}catch(e){}}};
 
 /* ---------- DATA ---------- */
