@@ -413,6 +413,7 @@ const ACH=[
  ['sinner','🩸','คนบาป','กรรมถึง −15 ในรอบเดียว',(st,S)=>S&&(S.karma||0)<=-15],
  ['spells','📜','จอมขมังเวทย์','เรียนวิชาอาคมครบ 5 วิชา',(st,S)=>S&&(S.spells||[]).length>=5],
  ['lineage','🌳','ตระกูลหมอผี','มีต้นตระกูลครบ 10 ชั่วคน',()=>(M.lineage||[]).length>=10],
+ ['clash','🔮','ของขลังปะทะ','ของขลังของมึงหักล้างของขลังของบอส',st=>st.clash],
  ['rich','💰','บุญหนัก','สะสมบุญรวม 1000',()=>M.earned>=1000,()=>[M.earned,1000]],
  ['shopper','🛍️','ลงทุนกับชีวิต','อัปเกรดถาวรทุกอย่างถึงระดับสูงสุด (Lv10)',()=>Object.keys(PERKS).every(k=>(M.perks[k]||0)>=PERKS[k].max)]
 ];
@@ -424,7 +425,7 @@ function toast(t,s){const el=document.getElementById('toast');if(!el)return;cons
 
 /* ---------- STATE ---------- */
 let S=null;
-const TUNE={hp:1.3,atk:1.2,batk:1.49,curse:.71,boss:315};
+const TUNE={hp:1.3,atk:1.2,batk:1.4,curse:.71,boss:290};
 function newGame(cls){
  const P=M.perks,pk=pv('pack');
  S={cls,day:1,cycle:0,screen:'intro',maxhp:100+pv('hp'),hp:0,food:80,wat:80,sta:100,san:100,curse:0,power:18,
@@ -464,7 +465,7 @@ function petRel(p){const ids=(S.pets||[]).map(x=>x.id);const h=HATE.find(([a,b])
 function petFlip(p){return !!petRel(p).hate||(p.loy!=null&&p.loy<25&&ch(.35))}
 function petShield(){let v=0;for(const p of S.pets||[])if(PET[p.id]==='shield')v+=petRel(p).hate?-2:2;return v}
 function petAttack(C,lg){if(!S.pets||!S.pets.length||C.hp<=0)return;for(const p of S.pets){if(C.hp<=0)break;const b=EN[p.id];if(!b)continue;const k=PET[p.id]||'atk',rel=petRel(p),flip=petFlip(p);
- let d=Math.round((b.atk[0]+b.atk[1])/2*.26*(1+(p.lvl-1)*.22)*(1+rs('pet'))*(S.cls==='sorcer'?1.3:1)*(rel.like?1.4:1)*(k==='plague'?1.3:1));
+ let d=Math.round((b.atk[0]+b.atk[1])/2*.26*(1+(p.lvl-1)*.22)*(1+rs('pet'))*(S.cls==='sorcer'?1.3:1)*(rel.like?1.4:1)*(k==='plague'?1.3:1)*(bhas(C,'soulchain')?.5:1));
  if(flip){const why=rel.hate?`(ทะเลาะกับ${EN[rel.hate].n})`:'(ไม่ภักดี)';
   if(k==='heal'){stat('hp',-(4+p.lvl));lg.push([`${b.i} ${b.n}กรีดแผลมึง −${4+p.lvl} ${why}`,'bad'])}
   else if(k==='drain'){C.hp+=d;lg.push([`${b.i} ${b.n}ดูดเลือดมึงไปให้ศัตรู ศัตรู +${d} ${why}`,'bad'])}
@@ -494,6 +495,27 @@ function phob(k){return S.phobia===k&&!S.phobiaWon}
 function phobWin(k){return S.phobia===k&&S.phobiaWon}
 function facePhobia(k){if(S.phobia!==k||S.phobiaWon)return;S.phobiaFace=(S.phobiaFace||0)+1;if(S.phobiaFace>=5){S.phobiaWon=1;M.st.phobia=1;saveM();L(`💪 มึงเอาชนะความ${PHOBIAS[k][0]}ได้แล้ว! ต่อจากนี้: ${PHOBIAS[k][2]}`,'gold');toast('💪 ชนะความกลัว',PHOBIAS[k][2])}}
 function karma(n,why){S.karma=(S.karma||0)+n;if(why)L(`${n>0?'☸️ บุญ +':'🩸 บาป '}${Math.abs(n)} (${why})`,n>0?'good':'bad')}
+
+const BREL={
+ skullcup:{n:'ถ้วยกะโหลกดูดวิญญาณ',i:'💀',d:'ตีแล้วดูดเลือด 30%',c:'eye'},
+ blackyan:{n:'ผ้ายันต์ดำ',i:'🏴',d:'ดาเมจที่ได้รับ −25%',c:'knife'},
+ mirror:{n:'กระจกสะท้อนคุณไสย',i:'🪞',d:'สะท้อนดาเมจกลับ 20%',c:'mirror'},
+ heartjar:{n:'หม้อหัวใจผี',i:'🫀',d:'ฟื้นเลือด 5% ทุกเทิร์น',c:'yan'},
+ cursepin:{n:'ตะปูคำสาปเจ็ดดอก',i:'📌',d:'คำสาปมึง +4 ทุกเทิร์น',c:'bia'},
+ bonebell:{n:'กระดิ่งกระดูกเรียกผี',i:'🔔',d:'ทุก 4 เทิร์นเรียกผีมาตีเพิ่ม',c:'bell'},
+ twinblade:{n:'มีดหมอคู่',i:'🗡️',d:'25% ตีสองครั้ง',c:'takrud'},
+ boiloil:{n:'น้ำมันพรายเดือด',i:'🛢️',d:'น้ำมนต์ของมึงแรงลดครึ่ง',c:'oil'},
+ soulchain:{n:'โซ่ล่ามวิญญาณ',i:'⛓️',d:'ผีรับใช้มึงตีเบาลงครึ่ง',c:'sai'},
+ demoneye:{n:'ตาทิพย์อสูร',i:'👁️',d:'มึงคริติคอลไม่ได้ และหลบ 15%',c:'third'}
+};
+function relicPow(){return S.relics.reduce((a,r)=>a+(RELICS[r].core||RELICS[r].t==='l'?3:RELICS[r].t==='r'?2:1),0)}
+function bossGear(C,list){C.br=[];const lg=C.log;for(const k of list){const B=BREL[k];if(has(B.c)){M.st.clash=1;lg.push([`⚔️ ${RELICS[B.c].n}ของมึงชนกับ${B.i} ${B.n} ของมัน ทั้งสองแตกกระจาย หักล้างกันหมด!`,'gold'])}else C.br.push(k)}
+ const bp=C.br.length*5+Math.round((S.power||0)/6)+(S.ch2?S.ch2.solved.length*3:0)+4,pp=relicPow();
+ if(C.br.length)lg.push([`มันถือของขลัง: ${C.br.map(k=>BREL[k].i+' '+BREL[k].n).join(', ')}`,'bad']);
+ if(pp>bp){C.clash=.85;lg.push([`🔮 วัดพลังของขลัง: มึง ${pp} ปะทะ มัน ${bp} — พลังของมึงกดมันไว้ มันตีเบาลง 15%`,'gold'])}
+ else{C.clash=1.15;lg.push([`🔮 วัดพลังของขลัง: มึง ${pp} ปะทะ มัน ${bp} — พลังมันข่มมึง มันตีแรงขึ้น 15%`,'bad'])}}
+function bhas(C,k){return C.br&&C.br.includes(k)}
+function rollBrel(n){return sh(Object.keys(BREL)).slice(0,n)}
 function hb(b){return (S.boons||[]).includes(b)}
 function curseGain(n){let f=1-S.armor*.15-pv('ward');if(has('yan'))f-=.3;if(has('bia'))f-=.15;if(hb('pure'))f-=.2;if(S.trait==='monkheir')f-=.12;if(S.trait==='pobblood')f+=.1;if(moon()==='new')f+=.5;f-=rs('cres');if(S.cls==='rangsong')f-=.25;return Math.max(1,Math.round(n*Math.max(.2,f)))}
 function stat(k,n){S[k]=clamp(S[k]+n,0,k==='hp'?S.maxhp:100)}
@@ -594,6 +616,7 @@ const STEP={
   stat('san',-1-(S.curse>60?3:0)-(S.cls==='rangsong'?1:0));
   const pw=2+Math.floor(S.day/14)+Math.floor(S.cycle/2);
   stat('power',pw);
+  S.bossRel=S.bossRel||[];for(const th of [30,55,80])if(S.power>=th&&!(S.flags['br'+th])){S.flags['br'+th]=1;const k=pick(Object.keys(BREL).filter(x=>!S.bossRel.includes(x)));S.bossRel.push(k);L(`🔥 ข่าวร้าย: หมอผีหลอม${BREL[k].i} ${BREL[k].n}ขึ้นมาได้ (${BREL[k].d}) ไปขัดพิธีที่ศาลเพื่อทำลายมัน`,'bad')}
   L(`พลังหมอผี +${pw} (ตอนนี้ ${S.power}%)`,'bad');
   qInc('night');
   S.day++;
@@ -616,6 +639,7 @@ function doLoot(loc){
  L(got.length?'ได้: '+got.join(', '):'ค้นจนมือพอง ไม่เจออะไรเลย',got.length?'good':'bad');
 }
 function afterDisrupt(){
+ if(S.bossRel&&S.bossRel.length&&ch(.45)){const k=pick(S.bossRel);S.bossRel=S.bossRel.filter(x=>x!==k);L(`💥 มึงทุบ${BREL[k].i} ${BREL[k].n}ของหมอผีจนแตก!`,'gold')}
  S.disrupts++;M.st.disrupts++;qInc('disrupt');
  const cut=R(14,20);stat('power',-cut);
  L(`มึงเตะกระถางธูป ฉีกผ้ายันต์ เทน้ำมันพรายลงดิน พิธีพัง! พลังหมอผี −${cut}`,'gold');
@@ -634,6 +658,7 @@ function startCombat(id,opt){
  S.combat={id,hp,max:hp,turn:0,stun:0,log:[],after:opt.after,loc:opt.loc,nem:nem?1:0};
  if(nem){S.combat.log.push([`"จำกูได้ไหม? กูฆ่ามึงตอนคืนที่ ${M.nemesis.day} มึงยังร้องเรียกแม่อยู่เลย" ${M.nemesis.title}กลับมาแล้ว และมันแข็งกว่าเดิม`,'bad']);S.screen='combat';return}
  S.screen='combat';
+ if(id==='queen'||id==='grand'||id==='moon'||id.startsWith('cb_')){S.combat.big=1;bossGear(S.combat,rollBrel(id==='moon'?4:id==='grand'?3:id==='queen'?2:(S.act3?2:1)))}
  if(opt.ambush){const d=R(b.atk[0],b.atk[1]);stat('hp',-d);S.combat.log.push([`มันโจมตีก่อนที่มึงจะทันตั้งตัว! −${d} ชีวิต`,'bad'])}
  else S.combat.log.push([b.d,'']);
 }
@@ -641,6 +666,7 @@ function startBoss(){
  const B=boss();
  const core=S.relics.filter(r=>RELICS[r].core).length,minor=S.relics.length-core;const hp=Math.max(60,Math.round(TUNE.boss+S.power*1.4-core*22-minor*4+S.cycle*45));
  const hp2=has('rahu')?1:Math.round(hp*(S.flags.bossWeak?.8:1));S.combat={id:'boss',hp:hp2,max:hp2,turn:0,stun:0,boss:1,after:'boss',log:[[B.d+` ข้างหลังมันคือ${B.v}ที่ถูกมัดในชุดเจ้าสาวสีขาว`,''],[S.relics.length?`ของขลัง ${S.relics.length} ชิ้นในย่ามส่องแสงวาบ หมอผีสะดุ้ง`:'มึงไม่มีของขลังสักชิ้น หมอผีหัวเราะก้องถ้ำ',S.relics.length?'gold':'bad'],...(has('rahu')?[['พระราหูอมจันทร์ส่องแสงนวลเต็มถ้ำ หมอผีกรีดร้อง ฤทธิ์ทั้งหมดของมันสลายไปต่อหน้า!','gold']]:[]),...(S.flags.bossWeak?[['มึงรู้จุดตายของมันจากบัวลอย (บอสเลือด −20%)','pink']]:[])]};
+ bossGear(S.combat,S.bossRel||[]);
  S.screen='combat';
 }
 function enemyName(){return S.combat.boss?boss().n:S.combat.nem&&M.nemesis?M.nemesis.title:EN[S.combat.id].n}
@@ -666,7 +692,8 @@ function cAct(a){
   if(C.boss&&has('knife'))dmg+=8;
   if(has('laugh')&&ch(.2))C.stun=1;
   if(ch(rs('stun')))C.stun=1;
-  if(last==='holy'&&S.spells.includes('purify')){dmg=Math.round(dmg*1.8);txt=' ดาบชำระ!'}
+  if(bhas(C,'demoneye')){}
+  else if(last==='holy'&&S.spells.includes('purify')){dmg=Math.round(dmg*1.8);txt=' ดาบชำระ!'}
   else if(ch(.12+(has('fang')?.1:0)+(has('third')?.08:0)+rs('crit')+(hb('crit')?.13:0))){dmg=Math.round(dmg*(hb('crit')?2.2:1.8));txt=' คริติคอล!'}
   if(hb('vamp')){stat('hp',Math.ceil(dmg*.3))}
   stat('sta',-4);
@@ -689,6 +716,10 @@ function cAct(a){
  else if(a==='herb'){add('herb',-1);qInc('heal');stat('hp',10);stat('curse',-4);lg.push(['เคี้ยวสมุนไพรขมปี๋ +10 ชีวิต −4 คำสาป','good'])}
  else if(a==='med'){add('med',-1);qInc('heal');stat('hp',Math.round((Math.round(30*(has('yadong')?1.5:1))+(has('needle')?5:0)+rs('heal'))*(phob('blood')?.6:phobWin('blood')?1.3:1)));stat('curse',-10);lg.push(['กรอกยาผีบอกลงคอ +'+Math.round((Math.round(30*(has('yadong')?1.5:1))+(has('needle')?5:0)+rs('heal'))*(phob('blood')?.6:phobWin('blood')?1.3:1))+' ชีวิต −10 คำสาป','good'])}
  if(a==='chant'&&C.yodPos){C.yodPos=0;lg.push(['มึงท่องคาถาไล่ผีออกจากร่างเสือยอดสำเร็จ เขาสะบัดหัวแล้วกลับมาเป็นปกติ','good'])}
+ if(dmg>0&&bhas(C,'demoneye')&&ch(.15)){lg.push(['มันเบี่ยงตัวหลบได้ด้วยตาทิพย์อสูร!','bad']);dmg=0}
+ if(dmg>0&&bhas(C,'blackyan'))dmg=Math.round(dmg*.75);
+ if(a==='holy'&&bhas(C,'boiloil'))dmg=Math.round(dmg/2);
+ if(dmg>0&&bhas(C,'mirror')){const r=Math.round(dmg*.2);stat('hp',-r);lg.push([`กระจกสะท้อนคุณไสยสะท้อนดาเมจกลับใส่มึง −${r}`,'bad'])}
  if(S.trait==='pobblood'&&a==='hit'&&dmg>0)stat('hp',2);
  C.hp-=dmg;
  if(C.id==='moon'&&!C.phase2&&C.hp>0&&C.hp<C.max*.5){C.phase2=1;C.hp+=Math.round(C.max*.3);lg.push(['สาวกทั้งหมดกรีดคอตัวเองพร้อมกัน เลือดไหลเข้าหามหาปุโรหิต มันฟื้นพลังขึ้นมาและแข็งแกร่งกว่าเดิม!','bad'])}
@@ -705,6 +736,9 @@ function cAct(a){
   let d=Math.round(R(b.atk[0],b.atk[1])*(big?TUNE.batk:TUNE.atk))+Math.floor((S.ch2?28:S.day)/12)+(S.ch2?S.ch2.solved.length:S.cycle*2);
   if((C.boss||C.id==='grand'||C.id==='moon')&&C.turn%(C.phase2?2:3)===0){d+=8;stat('curse',curseGain(12));lg.push(['หมอผีพ่นไสยดำ หนอนไต่ออกจากแผลมึง! คำสาปพุ่ง','bad'])}
   if(C.id==='queen'&&C.turn%3===0){d+=6;stat('food',-15);lg.push(['เจ้าแม่ยื่นลิ้นยาวเป็นวามาดูดเลือด −15 อิ่ม','bad'])}
+  if(C.clash)d=Math.round(d*C.clash);
+  if(bhas(C,'bonebell')&&C.turn%4===0){d+=10;lg.push(['กระดิ่งกระดูกดังกังวาน ผีตัวเล็กๆ นับสิบพุ่งออกมากัดมึง +10','bad'])}
+  if(bhas(C,'twinblade')&&ch(.25)){d=Math.round(d*1.8);lg.push(['มันจ้วงมีดหมอคู่ฟันซ้ำสองครั้ง!','bad'])}
   d=d-petShield();
   if(C.block){C.block=0;d=0;lg.push(['คาถามหาอุดรับการโจมตีไว้หมด!','gold'])}
   if(b.g&&!big&&ch(.06)&&S.san<70){if(S.allies.yod&&ch(.5)&&!C.yodPos){C.yodPos=2;lg.push(['ผีกระโจนเข้าสิงร่างเสือยอด! ตาเขาขาวโพลน','bad'])}else{C.possessed=1;lg.push(['ผีกระโจนเข้าสิงร่างมึง! เทิร์นหน้ามึงจะควบคุมตัวเองไม่ได้','bad'])}}
@@ -713,6 +747,9 @@ function cAct(a){
   d=Math.max(1,d-S.armor*2-(has('takrud')?3:0)-(has('kong')?2:0)-(has('mahaud')?1:0)-rs('def')-(hb('iron')?3:0));
   if(has('pracheat')&&!C.blocked){C.blocked=1;d=0;lg.push(['ผ้าประเจียดแดงสะบัดรับการโจมตีแทน!','gold'])}
   stat('hp',-d);
+  if(bhas(C,'skullcup')&&d>0){const h=Math.round(d*.3);C.hp=Math.min(C.max,C.hp+h);lg.push([`ถ้วยกะโหลกดูดเลือดมึงไปเติมให้มัน +${h}`,'bad'])}
+  if(bhas(C,'heartjar')){const h=Math.round(C.max*.05);C.hp=Math.min(C.max,C.hp+h);lg.push([`หม้อหัวใจผีเต้นตุบๆ มันฟื้นเลือด +${h}`,'bad'])}
+  if(bhas(C,'cursepin')){stat('curse',curseGain(4));lg.push(['ตะปูคำสาปทิ่มเข้าเงาของมึง คำสาปเพิ่ม','bad'])}
   lg.push([`${enemyName()}${pick(b.g?GORE.atkG:GORE.atkM)} −${d} ชีวิต${ch(.3)?' '+pick(GORE.taunt):''}`,'bad']);
   if(b.curse)stat('curse',curseGain(Math.ceil(b.curse*TUNE.curse)));
   if(b.san)stat('san',-Math.ceil((KIDS.includes(C.id)&&phob('kids')?2:1)*b.san*(hb('calm')?.25:.5)*(has('silver')?.5:1)*Math.max(.2,1-rs('sres')-pv('sanity'))*(S.mode==='mad'?2:1)));
@@ -1030,7 +1067,7 @@ function statsH(){
 }
 function statsH2(){return `<div class="card"><div class="bars">${barH('hp','var(--red)')}${barH('sta','var(--gold)')}${barH('food','#c98a3c')}${barH('wat','var(--blue)')}${barH('san','var(--green)')}${barH('curse','var(--purple)')}</div><p class="muted" style="font-size:13px">${CLASSES[S.cls].i} ${CLASSES[S.cls].n} · ${WEAPONS[S.weapon].n} · ผ้ายันต์ ${S.armor}/3</p></div>`}
 function learnSpell(k){if(!S.spt||S.spells.includes(k))return;S.spt--;S.spells.push(k);save();render()}
-function extraH(){const m=moon();return `<div class="card"><h3>ตัวตน</h3><p style="font-size:14px">🧬 สายเลือด: <b>${TRAITS[S.trait][0]}</b> — ${TRAITS[S.trait][1]}<br>😨 ${S.phobiaWon?'💪 เคย':''}${PHOBIAS[S.phobia][0]} — ${S.phobiaWon?PHOBIAS[S.phobia][2]:PHOBIAS[S.phobia][1]+` (เผชิญ ${S.phobiaFace||0}/5 เพื่อเอาชนะ)`}<br>☸️ กรรม: <b>${S.karma||0}</b> ${(S.karma||0)>=6?'· ปลดล็อกแสงบุญ':(S.karma||0)<=-6?'· ปลดล็อกเงาบาป':'· ถึง +6 ได้วิชาสายขาว ถึง −6 ได้วิชาสายดำ'}<br>${MOON[m][0]} ${MOON[m][1]?'— '+MOON[m][1]:''}${M.nemesis&&!S.flags.nemDone?`<br>👹 ผีคู่แค้น: <b>${M.nemesis.title}</b> กำลังตามหามึง`:''}</p></div>
+function extraH(){const m=moon();return `<div class="card"><h3>ตัวตน</h3><p style="font-size:14px">🧬 สายเลือด: <b>${TRAITS[S.trait][0]}</b> — ${TRAITS[S.trait][1]}<br>😨 ${S.phobiaWon?'💪 เคย':''}${PHOBIAS[S.phobia][0]} — ${S.phobiaWon?PHOBIAS[S.phobia][2]:PHOBIAS[S.phobia][1]+` (เผชิญ ${S.phobiaFace||0}/5 เพื่อเอาชนะ)`}<br>☸️ กรรม: <b>${S.karma||0}</b> ${(S.karma||0)>=6?'· ปลดล็อกแสงบุญ':(S.karma||0)<=-6?'· ปลดล็อกเงาบาป':'· ถึง +6 ได้วิชาสายขาว ถึง −6 ได้วิชาสายดำ'}<br>${MOON[m][0]} ${MOON[m][1]?'— '+MOON[m][1]:''}${S.bossRel&&S.bossRel.length&&!S.ch2?`<br>🔥 ของขลังของหมอผี: ${S.bossRel.map(k=>BREL[k].i+' '+BREL[k].n).join(', ')}`:''}${M.nemesis&&!S.flags.nemDone?`<br>👹 ผีคู่แค้น: <b>${M.nemesis.title}</b> กำลังตามหามึง`:''}</p></div>
  <details class="card" ${S.spt?'open':''}><summary>📜 วิชาอาคม ${S.spt?`<span class="badge">${S.spt}</span>`:''}</summary><p class="muted" style="font-size:13px">ฆ่าศัตรูครบ 5 ตัวได้ 1 แต้ม (ฆ่าไปแล้ว ${S.kp||0})</p>${Object.entries(SPELLS).map(([k,[n,d]])=>`<button class="btn" ${S.spells.includes(k)||!S.spt?'disabled':''} onclick="learnSpell('${k}')">${n} ${S.spells.includes(k)?'✓':''}<small>${d}</small></button>`).join('')}</details>`}
 function invH(){
  const it=Object.keys(ITEMS).filter(k=>inv(k)>0).map(k=>`<span class="chip">${ITEMS[k]} ${inv(k)}</span>`).join('')||'<span class="muted">ไม่มีของ</span>';
@@ -1203,7 +1240,7 @@ function render(){
  else if(sc==='combat'){
   const C=S.combat,b=EN[C.id];
   const nm=enemyName();
-  h=`<div class="enemy"><div class="ico">${b.i}</div><h2>${nm}</h2><div class="bar" style="margin-top:8px"><div class="lab"><span>${b.g===1?'ผี':b.g===0?'คน':'ครึ่งคนครึ่งผี'}</span><b>${Math.max(0,C.hp)} / ${C.max}</b></div><div class="track"><div class="fill" style="width:${Math.max(0,C.hp/C.max*100)}%;background:var(--red)"></div></div></div></div>
+  h=`<div class="enemy"><div class="ico">${b.i}</div><h2>${nm}</h2>${C.br&&C.br.length?`<div class="chips" style="justify-content:center;margin-top:6px">${C.br.map(k=>`<span class="chip" style="border-color:var(--red);color:#f1b7b7">${BREL[k].i} ${BREL[k].n}<br><small>${BREL[k].d}</small></span>`).join('')}</div>`:''}<div class="bar" style="margin-top:8px"><div class="lab"><span>${b.g===1?'ผี':b.g===0?'คน':'ครึ่งคนครึ่งผี'}</span><b>${Math.max(0,C.hp)} / ${C.max}</b></div><div class="track"><div class="fill" style="width:${Math.max(0,C.hp/C.max*100)}%;background:var(--red)"></div></div></div></div>
   <div class="card log">${C.log.map(([t,c])=>`<p class="${c}">${t}</p>`).join('')}</div>
   <div class="bars card">${barH('hp','var(--red)')}${barH('sta','var(--gold)')}${barH('san','var(--green)')}${barH('curse','var(--purple)')}</div>
   <div class="grid2">
