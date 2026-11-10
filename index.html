@@ -270,10 +270,12 @@ const GORE={
  atkG:['ข่วนเนื้อหน้าอกมึงจนหนังเปิด','งับคอมึงจนเลือดทะลัก','ล้วงมือเย็นเฉียบเข้าไปในอกมึงแล้วบีบหัวใจ','กระชากผมมึงลากไปกับพื้น หนังหัวถลอก','อ้าปากกว้างเกินคนกัดไหล่มึงจนเนื้อหลุดเป็นชิ้น','เสียบเล็บดำยาวเข้าที่ท้องมึงแล้วคว้าน','กรีดร้องใส่หน้ามึงจนเลือดออกหูทั้งสองข้าง'],
  taunt:['"ตายซะ ไอ้เหี้ย!"','"กูจะแดกตับมึง!"','"มึงไม่รอดหรอก ไอ้สัส"','"เลือดมึงหอมดีนะ..."','"อีกนิดเดียว มึงก็เป็นพวกกูแล้ว"','"ร้องสิ ร้องให้ดังๆ"']};
 const ITEMINFO={rice:'กินอัตโนมัติตอนอิ่มต่ำกว่า 60 · ใช้เซ่นผีรับใช้ · ทำเกลือเสก',water:'ดื่มอัตโนมัติตอนน้ำต่ำกว่า 60 · ทำน้ำมนต์ · ทำยา',herb:'ใช้ตอนสู้หรือก่อนเริ่มวัน +10 ชีวิต −4 คำสาป · ทำยาผีบอก · ทำผ้าพันแผล',salt:'สาดใส่ผี ทำให้ชะงัก 1 ตา',candle:'ใช้สวดมนต์ตอนกลางคืน · ทำน้ำมนต์ เกลือ ผ้ายันต์',holy:'สาดใส่ผีแรงมาก · ทำผ้ายันต์ ลงอาคมดาบ ขวดขังผี',band:'+22 ชีวิต ใช้ตอนสู้หรือก่อนเริ่มวัน',cloth:'ทำผ้ายันต์ ผ้าพันแผล ขวดขังผี',med:'+30 ชีวิต ลดคำสาป ใช้ตอนสู้หรือก่อนเริ่มวัน',jar:'ใช้ขังผีที่เลือดเหลือไม่เกิน 35% มาเป็นผีรับใช้'};
-const ARTDEF=`<defs><radialGradient id="bg" cx="50%" cy="45%" r="70%"><stop offset="0" stop-color="#3a0b0d"/><stop offset=".55" stop-color="#140506"/><stop offset="1" stop-color="#000"/></radialGradient><filter id="gl" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter><filter id="sm"><feGaussianBlur stdDeviation="6"/></filter><filter id="gr"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .55 0"/></filter><linearGradient id="fog" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".9"/></linearGradient><linearGradient id="skin" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#cfc6b8"/><stop offset="1" stop-color="#6b625a"/></linearGradient></defs>`;
+const ARTDEF=`<defs><radialGradient id="bg" cx="50%" cy="45%" r="70%"><stop offset="0" stop-color="#3a0b0d"/><stop offset=".55" stop-color="#140506"/><stop offset="1" stop-color="#000"/></radialGradient><filter id="gl" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter><filter id="rim" x="-20%" y="-20%" width="140%" height="140%"><feMorphology in="SourceAlpha" operator="dilate" radius="1.6" result="d"/><feFlood flood-color="#ff2a1f" flood-opacity=".55"/><feComposite in2="d" operator="in" result="c"/><feGaussianBlur in="c" stdDeviation="2.4" result="cb"/><feMerge><feMergeNode in="cb"/><feMergeNode in="SourceGraphic"/></feMerge></filter><filter id="sm"><feGaussianBlur stdDeviation="6"/></filter><filter id="gr"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .55 0"/></filter><linearGradient id="fog" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".9"/></linearGradient><linearGradient id="skin" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#cfc6b8"/><stop offset="1" stop-color="#6b625a"/></linearGradient></defs>`;
 const EYES=(x1,y1,x2,y2,r,c)=>`<g filter="url(#gl)" fill="${c||'#ff2a1f'}"><circle cx="${x1}" cy="${y1}" r="${r||2.4}"/><circle cx="${x2}" cy="${y2}" r="${r||2.4}"/></g>`;
 const HAIR=(x,y,w,len,n,col,cover)=>{let p='';for(let i=0;i<n;i++){const f=i/(n-1);if(!cover&&f>.3&&f<.7)continue;const sx=x-w/2+w*f+(f<.5?-4:4),dx=(Math.sin(i*1.7)*7),ey=y+len*(0.8+((i*37)%25)/100);p+=`M${sx} ${y} C${sx+dx} ${y+len*.35},${sx-dx} ${y+len*.65},${sx+dx*.6+(f<.5?-6:6)} ${ey} `}return `<path d="${p}" stroke="${col||'#050203'}" stroke-width="3.6" fill="none" stroke-linecap="round"/>`};
-const W=(inner)=>`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">${ARTDEF}<rect width="200" height="200" fill="url(#bg)"/>${inner}<rect width="200" height="200" fill="url(#fog)" opacity=".55"/><rect width="200" height="200" filter="url(#gr)" opacity=".5"/></svg>`;
+const DRIP=`<g fill="#5a0610" opacity=".85"><path d="M0 0 H200 V6 C190 6,188 22,184 22 C180 22,180 8,170 8 C160 8,158 30,152 30 C146 30,146 10,130 10 C118 10,118 16,110 16 C100 16,100 40,94 40 C88 40,90 12,70 12 C56 12,58 26,50 26 C42 26,44 9,30 9 C20 9,20 18,12 18 C6 18,6 6,0 6 Z"/></g>`;
+const MIST=`<g filter="url(#sm)" fill="#2a1416" opacity=".55"><ellipse cx="40" cy="196" rx="60" ry="12"/><ellipse cx="150" cy="192" rx="70" ry="14"/></g>`;
+const W=(inner)=>`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">${ARTDEF}<rect width="200" height="200" fill="url(#bg)"/><g filter="url(#rim)">${inner}</g>${MIST}${DRIP}<rect width="200" height="200" fill="url(#fog)" opacity=".55"/><rect width="200" height="200" filter="url(#gr)" opacity=".5"/></svg>`;
 const ART={
 krasue:W(`<ellipse cx="100" cy="60" rx="34" ry="12" fill="#5a0d10" opacity=".35" filter="url(#sm)"/>
 ${HAIR(100,38,62,70,14)}
@@ -414,6 +416,176 @@ moon:W(`<circle cx="100" cy="70" r="58" fill="#c9c6bf" opacity=".9"/><circle cx=
 <g fill="#040203">${[0,1,2,3,4,5,6].map(i=>`<path d="M${8+i*30} 200 C${8+i*30} 186,${14+i*30} 178,${20+i*30} 178 C${26+i*30} 178,${32+i*30} 186,${32+i*30} 200 Z"/>`).join('')}</g>`)
 };
 
+Object.assign(ART,{
+watch:W(`<rect x="50" y="30" width="100" height="170" fill="#0c0607"/><path d="M50 30 L100 6 L150 30 Z" fill="#140809"/><rect x="62" y="44" width="76" height="156" fill="#000"/>
+<path d="M76 200 C76 150,82 110,100 104 C118 110,124 150,124 200 Z" fill="#070304"/><ellipse cx="100" cy="84" rx="18" ry="22" fill="#070304"/>
+<path d="M82 74 C82 56,118 56,118 74" fill="#050203"/><ellipse cx="100" cy="88" rx="9" ry="11" fill="#000"/>
+<g fill="#b8862a" opacity=".55" filter="url(#gl)"><circle cx="56" cy="196" r="3"/><path d="M56 193 q-2 -6 0 -10 q2 4 0 10"/><circle cx="144" cy="196" r="3"/><path d="M144 193 q-2 -6 0 -10 q2 4 0 10"/></g>`),
+bandit:W(`<path d="M44 200 C50 150,70 118,100 112 C130 118,150 150,156 200 Z" fill="#0a0606"/>
+<path d="M78 76 C78 50,122 50,122 76 L120 104 Q100 120 80 104 Z" fill="#6a5442"/>
+<path d="M76 80 L124 80 L124 96 L76 96 Z" fill="#1a0a0a"/><path d="M78 60 C80 44,120 44,122 60 L124 70 L76 70 Z" fill="#2a1414"/>
+<ellipse cx="90" cy="76" rx="5" ry="3" fill="#fff" opacity=".85"/><ellipse cx="110" cy="76" rx="5" ry="3" fill="#fff" opacity=".85"/><circle cx="90" cy="76" r="1.8" fill="#300"/><circle cx="110" cy="76" r="1.8" fill="#300"/>
+<path d="M130 130 L178 40" stroke="#9a9a96" stroke-width="7" stroke-linecap="round"/><path d="M130 130 L178 40" stroke="#e0e0dc" stroke-width="1.5"/><path d="M124 140 L136 120" stroke="#2a1a10" stroke-width="10" stroke-linecap="round"/>
+<g fill="#7a0610"><path d="M168 58 l2 10 l2 -6 Z"/><path d="M160 74 l1 8 l2 -5 Z"/></g>`),
+croc:W(`<g opacity=".7" stroke="#3a1013" fill="none"><ellipse cx="100" cy="130" rx="90" ry="12"/><ellipse cx="100" cy="140" rx="98" ry="18" opacity=".5"/></g>
+<path d="M10 128 C40 100,90 98,120 104 L192 112 C196 118,190 124,184 124 L120 128 C90 136,40 140,10 128 Z" fill="#0c0a08"/>
+<path d="M120 104 L192 112 M120 128 L184 124" stroke="#2a2420" stroke-width="2"/>
+<g fill="#d6cfc2">${[0,1,2,3,4,5,6,7].map(i=>`<path d="M${126+i*8} 112 l3 6 l3 -6 Z"/><path d="M${128+i*7} 124 l3 -6 l3 6 Z"/>`).join('')}</g>
+<g fill="#0c0a08">${[0,1,2,3,4,5].map(i=>`<path d="M${30+i*14} 104 l6 -10 l6 10 Z"/>`).join('')}</g>
+<ellipse cx="104" cy="100" rx="9" ry="6" fill="#d8cfc4"/><circle cx="104" cy="100" r="3.6" fill="#3a1a08"/><circle cx="104" cy="100" r="1.6" fill="#000"/><path d="M95 98 q9 -6 18 0" stroke="#0c0a08" stroke-width="2.5" fill="none"/>
+<g fill="#5a0d10" opacity=".6" filter="url(#sm)"><ellipse cx="150" cy="140" rx="40" ry="8"/></g>`),
+disciple:W(`<path d="M40 200 C46 148,68 116,100 110 C132 116,154 148,160 200 Z" fill="#5b4a3c"/>
+<g stroke="#120806" stroke-width="1.4" fill="none" opacity=".9">${[0,1,2,3,4].map(i=>`<path d="M${62+i*19} 130 l6 10 l-6 10 l6 10 M${66+i*19} 128 q6 6 0 12"/>`).join('')}<circle cx="100" cy="150" r="14"/><path d="M86 150 h28 M100 136 v28"/></g>
+<path d="M80 74 C80 50,120 50,120 74 L118 100 Q100 116 82 100 Z" fill="#6a5644"/><path d="M80 66 C82 46,118 46,120 66" fill="#0a0505"/>
+<path d="M86 76 q6 -3 11 1 M103 77 q6 -4 11 -1" stroke="#0a0404" stroke-width="2.4" fill="none"/>${EYES(91,80,109,80,1.8)}
+<path d="M90 98 q10 4 20 0" stroke="#2a0606" stroke-width="2" fill="none"/>
+<g stroke="#120806" stroke-width="1" opacity=".8"><path d="M96 60 l4 6 l4 -6 M92 104 l-4 8 M108 104 l4 8"/></g>
+<g filter="url(#gl)" fill="none" stroke="#a30d18" stroke-width="1.2" opacity=".75"><path d="M110 96 q20 -4 34 -20 q10 -14 26 -10"/><path d="M112 100 q22 4 40 -6 q14 -8 26 0"/></g>`),
+phong:W(`<g filter="url(#sm)" fill="#2aff5a" opacity=".25"><circle cx="100" cy="90" r="50"/></g>
+<g filter="url(#gl)"><circle cx="100" cy="90" r="30" fill="#5cff7a" opacity=".35"/><circle cx="100" cy="90" r="18" fill="#b8ffc4" opacity=".55"/></g>
+<path d="M88 84 C88 70,112 70,112 84 L110 98 Q100 106 90 98 Z" fill="#050203" opacity=".85"/>
+<ellipse cx="95" cy="86" rx="3.5" ry="4.5" fill="#d7ffde"/><ellipse cx="105" cy="86" rx="3.5" ry="4.5" fill="#d7ffde"/><path d="M96 98 h8" stroke="#d7ffde" stroke-width="1.4"/>
+<g stroke="#0a0403" stroke-width="3" fill="none"><path d="M20 200 C30 150,26 110,40 60"/><path d="M180 200 C170 150,176 110,160 60"/><path d="M60 200 C62 170,58 150,66 120"/><path d="M140 200 C138 170,142 150,134 120"/></g>
+<g filter="url(#gl)" fill="#5cff7a" opacity=".7"><circle cx="40" cy="140" r="1.6"/><circle cx="160" cy="130" r="1.4"/><circle cx="70" cy="40" r="1.2"/></g>`),
+butcher:W(`<path d="M44 200 C50 150,70 118,100 112 C130 118,150 150,156 200 Z" fill="#a39c90"/>
+<g fill="#6d0610" opacity=".9"><ellipse cx="88" cy="150" rx="16" ry="22"/><path d="M76 160 l-4 34 M96 166 l2 30"/><ellipse cx="124" cy="140" rx="8" ry="12"/></g>
+<path d="M80 72 C80 48,120 48,120 72 L118 100 Q100 116 82 100 Z" fill="#7a6a5a"/>
+<path d="M80 86 L120 86 L118 104 Q100 116 82 104 Z" fill="#c9c2b6"/><path d="M84 92 h32 M84 98 h32" stroke="#9a9286" stroke-width="1"/><g fill="#6d0610"><circle cx="96" cy="96" r="3"/><circle cx="106" cy="100" r="2"/></g>
+<ellipse cx="91" cy="74" rx="5" ry="3" fill="#fff" opacity=".9"/><ellipse cx="109" cy="74" rx="5" ry="3" fill="#fff" opacity=".9"/><circle cx="91" cy="74" r="2" fill="#000"/><circle cx="109" cy="74" r="2" fill="#000"/>
+<path d="M78 62 C80 44,120 44,122 62" fill="#c9c2b6"/>
+<g transform="rotate(-25 160 110)"><rect x="128" y="104" width="60" height="16" fill="#8a8a86"/><path d="M128 120 ${[0,1,2,3,4,5,6,7,8,9].map(i=>`l3 4 l3 -4`).join(' ')}" fill="#8a8a86"/><rect x="118" y="102" width="12" height="22" fill="#2a1a10"/><path d="M140 110 l6 2 M160 108 l4 3" stroke="#6d0610" stroke-width="2"/></g>`),
+mother:W(`<rect x="40" y="10" width="120" height="190" fill="#070303"/><rect x="40" y="10" width="120" height="190" fill="none" stroke="#2a1410" stroke-width="5"/>
+<path d="M62 200 C64 154,78 126,100 120 C122 126,136 154,138 200 Z" fill="#3a2e28"/>
+<path d="M80 80 C80 56,120 56,120 80 L118 108 Q100 122 82 108 Z" fill="url(#skin)"/>
+${HAIR(100,62,46,40,10,'#bdb6aa')}
+<path d="M84 82 q6 -4 12 0 M104 82 q6 -4 12 0" stroke="#2a1a14" stroke-width="2" fill="none"/>${EYES(90,84,110,84,1.4,'#ffffff')}
+<path d="M78 96 Q100 126 122 96 Q100 110 78 96 Z" fill="#120203"/><g stroke="#e8e0d0" stroke-width="1.4">${[0,1,2,3,4,5,6,7,8].map(i=>`<path d="M${82+i*4.5} ${99+Math.sin(i/8*Math.PI)*8} l0 4"/>`).join('')}</g>
+<path d="M60 140 C50 150,44 170,46 190" stroke="#3a2e28" stroke-width="9" stroke-linecap="round" fill="none"/><path d="M46 190 l-6 6 M46 190 l0 9 M46 190 l6 6" stroke="#cfc6b8" stroke-width="2"/>`),
+faceless:W(`<path d="M50 200 C56 150,74 120,100 114 C126 120,144 150,150 200 Z" fill="#1a1414"/>
+<ellipse cx="100" cy="78" rx="26" ry="34" fill="url(#skin)"/><ellipse cx="94" cy="66" rx="8" ry="12" fill="#fff" opacity=".18"/>
+<path d="M74 70 C72 40,128 40,126 70 C120 54,80 54,74 70 Z" fill="#050203"/>
+<g opacity=".25" stroke="#3a3028" fill="none"><path d="M88 80 q4 2 8 0 M104 80 q4 2 8 0 M94 96 q6 3 12 0"/></g>
+<g fill="#0a0606">${[0,1,2,3].map(i=>`<ellipse cx="${20+i*54}" cy="190" rx="14" ry="24" opacity=".7"/><ellipse cx="${20+i*54}" cy="160" rx="9" ry="12" opacity=".7"/>`).join('')}</g>`),
+bride:W(`<path d="M30 200 C44 140,66 104,100 96 C134 104,156 140,170 200 Z" fill="#d8d2c6"/>
+<path d="M30 200 C44 140,66 104,100 96 C134 104,156 140,170 200 Z" fill="url(#fog)" opacity=".7"/>
+<path d="M64 60 C60 20,140 20,136 60 C150 110,160 160,170 200 L30 200 C40 160,50 110,64 60 Z" fill="#e8e4dc" opacity=".35"/>
+<path d="M82 66 C82 44,118 44,118 66 L116 94 Q100 108 84 94 Z" fill="#bdb4a8"/>
+${HAIR(100,48,44,70,10)}
+<ellipse cx="92" cy="72" rx="6" ry="8" fill="#000"/><ellipse cx="108" cy="72" rx="6" ry="8" fill="#000"/>
+<path d="M92 80 l-1 26 M108 80 l1 22" stroke="#6d0610" stroke-width="2.4"/><path d="M94 96 q6 3 12 0" stroke="#3a0404" stroke-width="2" fill="none"/>
+<g fill="#c42a3a" opacity=".85"><circle cx="72" cy="150" r="4"/><circle cx="86" cy="140" r="3"/><circle cx="76" cy="138" r="2.4"/></g>
+<path d="M70 120 l-14 30 M130 120 l14 30" stroke="#8a2a20" stroke-width="2" stroke-dasharray="2 3"/>`),
+self:W(`<g stroke="#9a9a9e" stroke-width="1.2" fill="none" opacity=".6"><path d="M20 20 L90 110 L40 190"/><path d="M180 30 L100 100 L170 180"/><path d="M90 110 L100 100"/><path d="M30 80 L90 110 L120 200"/></g>
+<path d="M54 200 C60 150,76 122,100 116 C124 122,140 150,146 200 Z" fill="#0a0808"/>
+<path d="M80 72 C80 48,120 48,120 72 L118 100 Q100 116 82 100 Z" fill="url(#skin)"/>
+<path d="M78 64 C80 40,120 40,122 64 C114 52,86 52,78 64 Z" fill="#0a0606"/>
+<ellipse cx="90" cy="74" rx="5" ry="5" fill="#000"/><ellipse cx="110" cy="74" rx="5" ry="5" fill="#000"/>${EYES(90,74,110,74,1.3,'#ffffff')}
+<path d="M80 90 Q100 112 120 90 Q100 100 80 90 Z" fill="#120203"/><g stroke="#e8e0d0" stroke-width="1.3">${[0,1,2,3,4,5,6,7].map(i=>`<path d="M${84+i*4.6} ${92+Math.sin(i/7*Math.PI)*7} l0 4"/>`).join('')}</g>
+<g fill="#c9c9cc" opacity=".35"><path d="M140 40 l18 -6 l-4 20 Z"/><path d="M30 130 l14 -4 l-2 16 Z"/><path d="M160 150 l12 2 l-8 10 Z"/></g>`),
+krahang:W(`<g fill="#2a1a10" stroke="#5a3a20" stroke-width="1.5"><ellipse cx="46" cy="96" rx="40" ry="26" transform="rotate(-20 46 96)"/><ellipse cx="154" cy="96" rx="40" ry="26" transform="rotate(20 154 96)"/></g>
+<g stroke="#5a3a20" stroke-width="1" opacity=".7" fill="none">${[0,1,2,3].map(i=>`<ellipse cx="46" cy="96" rx="${32-i*8}" ry="${20-i*5}" transform="rotate(-20 46 96)"/><ellipse cx="154" cy="96" rx="${32-i*8}" ry="${20-i*5}" transform="rotate(20 154 96)"/>`).join('')}</g>
+<path d="M78 170 C76 130,84 106,100 102 C116 106,124 130,122 170 Z" fill="#4a3c30"/>
+<path d="M100 170 C104 186,120 194,140 196" stroke="#3a2a1a" stroke-width="7" stroke-linecap="round" fill="none"/>
+<path d="M84 74 C84 52,116 52,116 74 L114 98 Q100 110 86 98 Z" fill="#6a5a4a"/><path d="M84 66 C86 50,114 50,116 66" fill="#0a0505"/>
+${EYES(93,76,107,76,2)}<path d="M92 92 q8 6 16 0" stroke="#2a0606" stroke-width="2" fill="none"/><path d="M94 98 l-1 10 M106 98 l1 10" stroke="#cfc6b8" stroke-width="1"/>`),
+kongkoi:W(`<g stroke="#0a0504" stroke-width="5" fill="none"><path d="M10 200 C20 140,14 90,30 20"/><path d="M190 200 C180 140,186 90,170 20"/><path d="M40 200 C46 160,40 130,52 90"/><path d="M160 200 C154 160,160 130,148 90"/></g>
+<path d="M100 196 L100 150" stroke="#060304" stroke-width="9" stroke-linecap="round"/><path d="M92 196 L112 196" stroke="#060304" stroke-width="6" stroke-linecap="round"/>
+<path d="M80 152 C76 120,84 96,100 92 C116 96,124 120,120 152 Z" fill="#060304"/>
+<path d="M82 100 C70 110,60 128,58 146" stroke="#060304" stroke-width="6" stroke-linecap="round" fill="none"/><path d="M118 100 C130 110,140 128,142 146" stroke="#060304" stroke-width="6" stroke-linecap="round" fill="none"/>
+<ellipse cx="100" cy="74" rx="16" ry="20" fill="#080405"/>${HAIR(100,58,36,40,9,'#1a0d0a')}${EYES(94,74,106,74,2.2)}
+<g fill="#3a1013" opacity=".7"><path d="M60 196 q2 -6 6 0 Z"/><path d="M130 190 q2 -6 6 0 Z"/><path d="M150 196 q2 -6 6 0 Z"/></g>`),
+khamot:W(`<rect y="140" width="200" height="60" fill="#050303"/><g stroke="#140808" stroke-width="1">${[0,1,2,3,4,5,6,7,8,9,10,11].map(i=>`<path d="M${i*18} 200 l4 -50 M${i*18+8} 200 l-2 -46"/>`).join('')}</g>
+<g filter="url(#gl)">${[[50,80,6],[96,60,9],[150,90,7],[124,120,4],[70,120,5],[170,50,4],[30,50,3]].map(([x,y,r])=>`<circle cx="${x}" cy="${y}" r="${r*2.4}" fill="#4aff7a" opacity=".18"/><circle cx="${x}" cy="${y}" r="${r}" fill="#b8ffc4" opacity=".85"/>`).join('')}</g>
+<g fill="#050203" opacity=".9"><circle cx="93" cy="58" r="1.6"/><circle cx="99" cy="58" r="1.6"/></g>
+<path d="M20 160 C60 150,120 156,180 148" stroke="#3a1013" stroke-width="1" fill="none" opacity=".7"/>`),
+tayklom:W(`<path d="M40 200 C46 150,64 120,100 114 C136 120,154 150,160 200 Z" fill="#cbc4b8" opacity=".9"/>
+<ellipse cx="100" cy="158" rx="38" ry="34" fill="#bdb6aa"/><ellipse cx="100" cy="158" rx="38" ry="34" fill="#7a0610" opacity=".25"/>
+<g filter="url(#gl)" opacity=".75"><path d="M92 150 c-6 -6 -2 -16 8 -14 c10 -2 14 8 8 14 c-4 6 -12 8 -16 0 Z" fill="#c42a3a"/><circle cx="96" cy="150" r="1.4" fill="#ff2a1f"/><circle cx="104" cy="150" r="1.4" fill="#ff2a1f"/></g>
+<path d="M60 200 C62 186,70 180,80 184 M140 200 C138 186,130 180,120 184" stroke="#6d0610" stroke-width="3" fill="none"/>
+<ellipse cx="100" cy="78" rx="20" ry="24" fill="#060304"/>
+<path d="M76 66 C74 36,126 36,124 66 C130 100,136 130,132 160 C124 140,118 110,112 96 C106 110,104 130,100 140 C96 130,94 110,88 96 C82 110,76 140,68 160 C64 130,70 100,76 66 Z" fill="#030102"/>
+${HAIR(100,48,48,100,14,'#0b0607',1)}<path d="M95 84 l1 5 M105 85 l-1 4" stroke="#ff2a1f" stroke-width="1.6" filter="url(#gl)"/>`),
+ha:W(`<g filter="url(#sm)" fill="#b8a020" opacity=".35"><ellipse cx="60" cy="120" rx="60" ry="40"/><ellipse cx="140" cy="100" rx="70" ry="44"/><ellipse cx="100" cy="160" rx="90" ry="36"/></g>
+<g filter="url(#sm)" fill="#6a5a10" opacity=".35"><ellipse cx="100" cy="70" rx="80" ry="30"/></g>
+${[[60,100,1],[132,86,1.2],[100,140,.9],[40,150,.7],[160,150,.8]].map(([x,y,s])=>`<g transform="translate(${x} ${y}) scale(${s})" opacity=".85"><path d="M-14 -4 C-14 -22,14 -22,14 -4 L12 10 Q0 18 -12 10 Z" fill="#2a2410"/><ellipse cx="-6" cy="-4" rx="4" ry="5" fill="#050203"/><ellipse cx="6" cy="-4" rx="4" ry="5" fill="#050203"/><path d="M-2 4 l2 3 l2 -3" fill="#050203"/><path d="M-6 10 h12" stroke="#050203" stroke-width="2"/></g>`).join('')}
+${EYES(56,96,64,96,1.2,'#ffe14a')}${EYES(126,82,138,82,1.4,'#ffe14a')}`),
+saptrap:W(`<g filter="url(#sm)" fill="#d9a441" opacity=".35"><ellipse cx="100" cy="160" rx="50" ry="30"/></g>
+<path d="M66 196 C66 168,76 150,100 146 C124 150,134 168,134 196 Z" fill="#5a3a10"/><path d="M76 150 C76 138,124 138,124 150 L120 158 L80 158 Z" fill="#3a240a"/>
+<g fill="#ffd56a" filter="url(#gl)">${[0,1,2,3,4,5].map(i=>`<circle cx="${82+i*7}" cy="${148-(i%2)*3}" r="3"/>`).join('')}</g>
+<path d="M40 196 C44 150,62 120,92 112 C80 130,70 160,72 196 Z" fill="#060304"/><path d="M160 196 C156 150,138 120,108 112 C120 130,130 160,128 196 Z" fill="#060304"/>
+<path d="M60 140 C70 160,80 168,92 168" stroke="#060304" stroke-width="9" stroke-linecap="round" fill="none"/><path d="M140 140 C130 160,120 168,108 168" stroke="#060304" stroke-width="9" stroke-linecap="round" fill="none"/>
+<path d="M80 78 C80 54,120 54,120 78 L118 106 Q100 120 82 106 Z" fill="#6a5e50"/>${HAIR(100,62,46,36,8,'#bdb6aa')}
+<path d="M84 80 q6 -3 11 1 M105 81 q6 -4 11 -1" stroke="#0a0404" stroke-width="2.4" fill="none"/>${EYES(90,84,110,84,2,'#ffcf3a')}
+<path d="M88 100 Q100 94 112 100" stroke="#1a0606" stroke-width="2.4" fill="none"/>`),
+lukkrok:W(`<path d="M60 40 L140 40 L146 60 L146 186 Q100 200 54 186 L54 60 Z" fill="#3a2a10" opacity=".45"/><path d="M60 40 L140 40 L146 60 L146 186 Q100 200 54 186 L54 60 Z" fill="none" stroke="#b8a070" stroke-width="2" opacity=".6"/>
+<rect x="64" y="28" width="72" height="14" rx="3" fill="#2a1a0a"/><path d="M58 66 L142 66" stroke="#b8a070" stroke-width="1" opacity=".5"/>
+<g fill="#5a4630"><ellipse cx="100" cy="136" rx="30" ry="34"/><circle cx="100" cy="98" r="22"/></g>
+<path d="M78 136 C70 120,72 106,80 104 M122 136 C130 120,128 106,120 104" stroke="#5a4630" stroke-width="8" stroke-linecap="round" fill="none"/>
+<path d="M84 160 C80 172,90 180,96 172 M116 160 C120 172,110 180,104 172" stroke="#5a4630" stroke-width="8" stroke-linecap="round" fill="none"/>
+<g stroke="#3a2a18" stroke-width="1" fill="none" opacity=".8"><path d="M88 120 q12 6 24 0 M86 130 q14 6 28 0 M88 140 q12 6 24 0"/></g>
+<ellipse cx="92" cy="96" rx="5" ry="6" fill="#050203"/><ellipse cx="108" cy="96" rx="5" ry="6" fill="#050203"/>${EYES(92,97,108,97,1.8)}
+<path d="M94 110 q6 4 12 0" stroke="#1a0606" stroke-width="2" fill="none"/>
+<g fill="#b8a070" opacity=".35"><circle cx="72" cy="80" r="2"/><circle cx="128" cy="170" r="2.4"/><circle cx="70" cy="160" r="1.6"/></g>`),
+nangmai:W(`<g fill="#0a1a0c">${[0,1,2,3,4,5,6,7,8].map(i=>`<ellipse cx="${20+i*20}" cy="${30+(i%3)*12}" rx="22" ry="12" transform="rotate(${i*20} ${20+i*20} ${30+(i%3)*12})"/>`).join('')}</g>
+<path d="M58 200 C62 150,78 118,100 112 C122 118,138 150,142 200 Z" fill="#2a3a26"/>
+<g stroke="#1a2618" stroke-width="2" fill="none"><path d="M70 200 C76 170,74 140,86 120"/><path d="M130 200 C124 170,126 140,114 120"/><path d="M100 200 C100 170,98 150,100 120"/></g>
+<path d="M82 74 C82 50,118 50,118 74 L116 100 Q100 114 84 100 Z" fill="#8a8a6a"/>
+<g fill="#1a3a1c">${[0,1,2,3,4,5,6].map(i=>`<ellipse cx="${80+i*7}" cy="${52-(i%2)*4}" rx="8" ry="4" transform="rotate(${-40+i*13} ${80+i*7} ${52-(i%2)*4})"/>`).join('')}</g>
+${HAIR(100,58,48,70,10,'#0e1a0c')}
+<ellipse cx="92" cy="78" rx="5" ry="3" fill="#000"/><ellipse cx="108" cy="78" rx="5" ry="3" fill="#000"/>${EYES(92,78,108,78,1.3,'#9aff6a')}
+<path d="M92 94 Q100 100 108 94" stroke="#1a0606" stroke-width="1.6" fill="none"/>
+<g stroke="#2a3a26" stroke-width="2" stroke-linecap="round"><path d="M60 140 C44 136,30 128,22 116 M60 142 C40 144,26 140,16 132"/><path d="M140 140 C156 136,170 128,178 116 M140 142 C160 144,174 140,184 132"/></g>`),
+asura:W(`<path d="M10 200 C14 120,40 60,100 50 C160 60,186 120,190 200 Z" fill="#070304"/>
+<ellipse cx="100" cy="150" rx="70" ry="52" fill="#0b0506"/><g stroke="#2a0d0e" stroke-width="1.6" fill="none"><path d="M40 150 q60 20 120 0"/><path d="M46 132 q54 16 108 0"/><path d="M50 168 q50 14 100 0"/></g>
+<path d="M88 50 L86 30 L114 30 L112 50 Z" fill="#070304"/>
+<ellipse cx="100" cy="20" rx="12" ry="14" fill="#0b0506"/>${EYES(95,18,105,18,2.4)}<circle cx="100" cy="27" r="1" fill="#ff2a1f" filter="url(#gl)"/>
+<path d="M30 110 C10 120,4 150,8 180" stroke="#070304" stroke-width="14" stroke-linecap="round" fill="none"/><path d="M170 110 C190 120,196 150,192 180" stroke="#070304" stroke-width="14" stroke-linecap="round" fill="none"/>
+<g fill="#5a0d10" opacity=".55" filter="url(#sm)"><circle cx="100" cy="150" r="20"/></g>`),
+kaew:W(`<circle cx="100" cy="110" r="70" fill="#1a3a5a" opacity=".22" filter="url(#sm)"/>
+<path d="M74 196 C74 160,82 136,100 132 C118 136,126 160,126 196 Z" fill="#d8d6d0"/><path d="M74 196 C74 160,82 136,100 132 C118 136,126 160,126 196 Z" fill="#2a4a6a" opacity=".35"/>
+<path d="M84 150 L116 150 L118 196 L82 196 Z" fill="#1a2a4a"/>
+<ellipse cx="100" cy="102" rx="22" ry="26" fill="#b8b8b0"/>
+${HAIR(100,82,52,60,12,'#050608')}
+<ellipse cx="92" cy="104" rx="5" ry="6" fill="#000"/><ellipse cx="108" cy="104" rx="5" ry="6" fill="#000"/>${EYES(92,105,108,105,1.2,'#9ad6ff')}
+<path d="M94 118 q6 -3 12 0" stroke="#1a2a3a" stroke-width="1.6" fill="none"/>
+<g stroke="#6a8aaa" stroke-width="1.2" opacity=".8">${[0,1,2,3,4,5].map(i=>`<path d="M${80+i*8} ${150+i*6} l0 8"/>`).join('')}</g>
+<path d="M126 160 L150 170 L146 196 L128 196 Z" fill="#4a3a2a"/><path d="M126 160 C130 150,146 150,150 170" stroke="#2a1a10" stroke-width="2" fill="none"/>`),
+daoruang:W(`<g filter="url(#gl)" opacity=".85"><path d="M40 200 C50 160,40 140,60 110 C62 140,76 150,70 200 Z" fill="#ff6a1a"/><path d="M160 200 C150 160,160 140,140 110 C138 140,124 150,130 200 Z" fill="#ff6a1a"/><path d="M80 200 C84 170,70 150,90 124 C96 150,104 160,100 200 Z" fill="#ffb02a" opacity=".7"/></g>
+<path d="M66 200 C70 150,80 120,100 116 C120 120,130 150,134 200 Z" fill="#1a0a06"/><path d="M80 130 L120 130 L114 170 L86 170 Z" fill="#b8862a" opacity=".8"/>
+<path d="M100 20 L106 40 L102 42 L108 56 L92 56 L98 42 L94 40 Z" fill="#b8862a"/>
+<path d="M84 64 C84 50,116 50,116 64 L114 90 Q100 102 86 90 Z" fill="#3a2a20"/>
+${EYES(93,72,107,72,2,'#ffcf3a')}<path d="M92 88 Q100 82 108 88" stroke="#000" stroke-width="2" fill="none"/>
+<path d="M84 96 C70 90,56 80,46 64 M116 96 C130 90,144 80,154 64" stroke="#1a0a06" stroke-width="6" stroke-linecap="round" fill="none"/><path d="M46 64 C40 58,44 50,52 54 M154 64 C160 58,156 50,148 54" stroke="#b8862a" stroke-width="3" fill="none"/>`),
+yamada:W(`<g stroke="#2a1a14" stroke-width="3" fill="none"><path d="M0 40 C40 20,60 60,100 30 C140 0,170 40,200 20"/></g>
+<path d="M46 200 C52 150,70 120,100 114 C130 120,148 150,154 200 Z" fill="#3a3a26"/>
+<path d="M78 72 C78 50,122 50,122 72 L120 100 Q100 116 80 100 Z" fill="#5a5044"/>
+<path d="M72 66 C72 36,128 36,128 66 L132 70 L68 70 Z" fill="#2a2a1a"/><circle cx="100" cy="52" r="4" fill="#b8862a"/>
+<g fill="#000"><circle cx="86" cy="58" r="2.4"/><circle cx="110" cy="48" r="2"/><circle cx="118" cy="62" r="2.6"/></g>
+<ellipse cx="91" cy="80" rx="5" ry="5" fill="#050203"/><ellipse cx="109" cy="80" rx="5" ry="5" fill="#050203"/>${EYES(91,80,109,80,1.6)}
+<path d="M92 96 h16" stroke="#1a0a06" stroke-width="2"/>
+<path d="M146 200 L164 40" stroke="#3a2a1a" stroke-width="4"/><path d="M164 40 L168 10 L160 38 Z" fill="#9a9a96"/>
+<path d="M60 150 C50 140,46 128,50 118 M140 150 C150 140,154 128,150 118" stroke="#2a1a10" stroke-width="2" stroke-dasharray="4 2" fill="none"/>`),
+boat:W(`<g opacity=".7" stroke="#3a1013" fill="none"><ellipse cx="100" cy="176" rx="96" ry="14"/><ellipse cx="100" cy="184" rx="110" ry="18" opacity=".5"/></g>
+<path d="M0 170 C60 176,140 176,200 160 L196 150 C140 164,60 164,4 158 Z" fill="#2a1a10"/>
+<path d="M196 150 C196 110,184 80,170 60" stroke="#2a1a10" stroke-width="9" stroke-linecap="round" fill="none"/>
+<g fill="none" stroke-width="3">${['#c42a3a','#e8a020','#3aa04a','#2a6ac4','#e8e0d0','#a040c0','#e86a20'].map((c,i)=>`<path d="M172 ${66+i*4} C160 ${80+i*6},150 ${84+i*6},140 ${96+i*6}" stroke="${c}" opacity=".75"/>`).join('')}</g>
+<path d="M86 160 C88 120,96 100,110 96 C124 100,130 120,132 160 Z" fill="#d8d2c6" opacity=".85"/>
+<path d="M98 70 C98 52,124 52,124 70 L122 92 Q111 102 100 92 Z" fill="#bdb6aa"/>
+<path d="M104 34 L110 52 L106 54 L112 66 L98 66 L104 54 L100 52 Z" fill="#b8862a"/>
+${HAIR(111,60,30,60,8)}<ellipse cx="105" cy="76" rx="4" ry="5" fill="#000"/><ellipse cx="117" cy="76" rx="4" ry="5" fill="#000"/>${EYES(105,77,117,77,1.3,'#9ad6ff')}
+<path d="M106 88 q5 -2 10 0" stroke="#1a0a06" stroke-width="1.5" fill="none"/>`),
+mill:W(`<g fill="#0a0606">${[0,1,2,3,4,5,6].map(i=>{const x=22+i*26,h=120+((i*37)%30);return `<path d="M${x-12} 200 C${x-12} ${200-h*.6},${x-8} ${200-h*.85},${x} ${200-h*.85} C${x+8} ${200-h*.85},${x+12} ${200-h*.6},${x+12} 200 Z"/><ellipse cx="${x}" cy="${200-h}" rx="9" ry="11"/>`}).join('')}</g>
+<g filter="url(#gl)" fill="#ff2a1f">${[0,1,2,3,4,5,6].map(i=>{const x=22+i*26,h=120+((i*37)%30);return `<circle cx="${x-3}" cy="${200-h}" r="1.4"/><circle cx="${x+3}" cy="${200-h}" r="1.4"/>`}).join('')}</g>
+<g stroke="#5a5048" stroke-width="2" fill="none" opacity=".7">${[0,1,2,3,4,5,6].map(i=>`<circle cx="${100+Math.cos(i/7*Math.PI*2)*30}" cy="${40+Math.sin(i/7*Math.PI*2)*12}" r="3"/>`).join('')}<ellipse cx="100" cy="40" rx="30" ry="12"/></g>
+<g fill="#7a0610" opacity=".8"><path d="M96 40 l-2 30 l4 -10 l2 14 Z"/></g>`),
+genghost:W(`<path d="M50 200 C54 150,70 112,100 106 C130 112,146 150,150 200 Z" fill="#070304"/>
+<ellipse cx="100" cy="74" rx="22" ry="28" fill="#0a0506"/>
+<path d="M74 64 C72 32,128 32,126 64 C132 100,138 140,134 180 C126 150,118 120,112 100 C106 116,104 150,100 170 C96 150,94 116,88 100 C82 120,74 150,66 180 C62 140,68 100,74 64 Z" fill="#030102"/>
+${HAIR(100,44,50,110,16,'#0b0607',1)}${EYES(94,74,106,74,2)}
+<g fill="#5a0d10" opacity=".6" filter="url(#sm)"><ellipse cx="100" cy="196" rx="70" ry="10"/></g>`)
+});
+
+function artKey(C){if(C.boss)return 'boss';const m={cb_school:'kaew',cb_likay:'daoruang',cb_cave:'yamada',cb_boat:'boat',cb_mill:'mill'};if(m[C.id])return m[C.id];if(C.id.startsWith('cb_'))return 'genghost';return C.id}
 const STATN={hp:'ชีวิต',food:'อิ่ม',wat:'น้ำ',sta:'แรง',san:'สติ',curse:'คำสาป'};
 const CLASSES={
  villager:{n:'ชาวบ้านธรรมดา',i:'🧑‍🌾',cost:0,d:'สมดุล ข้าวเยอะ ไม่มีจุดอ่อน',fx:'เริ่มมีข้าว น้ำ อย่างละ +2'},
@@ -1525,7 +1697,7 @@ function render(){
  else if(sc==='combat'){
   const C=S.combat,b=EN[C.id];
   const nm=enemyName();
-  h=`<div class="enemy" style="position:relative"><button class="icon" style="position:absolute;right:8px;top:8px;width:36px;height:36px;font-size:15px" onclick="toggleSnd()">${SND.on?'🔊':'🔇'}</button>${ART[C.boss?'boss':C.id]?`<div class="art">${ART[C.boss?'boss':C.id]}</div>`:`<div class="ico">${b.i}</div>`}<h2>${nm}${skOf(C)&&SK[skOf(C)]?` <span title="มีวิชา">🌀${SK[skOf(C)].i}</span>`:''}</h2>${C.br&&C.br.length?`<div class="chips" style="justify-content:center;margin-top:6px">${C.br.map(k=>`<span class="chip" style="border-color:var(--red);color:#f1b7b7">${BREL[k].i} ${BREL[k].n}<br><small>${BREL[k].d}</small></span>`).join('')}</div>`:''}<div class="bar" style="margin-top:8px"><div class="lab"><span>${b.g===1?'ผี':b.g===0?'คน':'ครึ่งคนครึ่งผี'}</span><b>${Math.max(0,C.hp)} / ${C.max}</b></div><div class="track"><div class="fill" style="width:${Math.max(0,C.hp/C.max*100)}%;background:var(--red)"></div></div></div></div>
+  h=`<div class="enemy" style="position:relative"><button class="icon" style="position:absolute;right:8px;top:8px;width:36px;height:36px;font-size:15px" onclick="toggleSnd()">${SND.on?'🔊':'🔇'}</button>${ART[artKey(C)]?`<div class="art">${ART[artKey(C)]}</div>`:`<div class="ico">${b.i}</div>`}<h2>${nm}${skOf(C)&&SK[skOf(C)]?` <span title="มีวิชา">🌀${SK[skOf(C)].i}</span>`:''}</h2>${C.br&&C.br.length?`<div class="chips" style="justify-content:center;margin-top:6px">${C.br.map(k=>`<span class="chip" style="border-color:var(--red);color:#f1b7b7">${BREL[k].i} ${BREL[k].n}<br><small>${BREL[k].d}</small></span>`).join('')}</div>`:''}<div class="bar" style="margin-top:8px"><div class="lab"><span>${b.g===1?'ผี':b.g===0?'คน':'ครึ่งคนครึ่งผี'}</span><b>${Math.max(0,C.hp)} / ${C.max}</b></div><div class="track"><div class="fill" style="width:${Math.max(0,C.hp/C.max*100)}%;background:var(--red)"></div></div></div></div>
   ${C.adds&&C.adds.length?`<div class="card" style="border-color:var(--red2)"><h3 style="color:#f3a3a3">ตัวที่มาร่วมวง ${C.adds.length}</h3>${C.adds.map(ad=>`<div class="bar"><div class="lab"><span>${EN[ad.id].i} ${EN[ad.id].n}</span><b>${Math.max(0,ad.hp)}/${ad.max}</b></div><div class="track"><div class="fill" style="width:${Math.max(0,ad.hp/ad.max*100)}%;background:#a33"></div></div></div>`).join('')}</div>`:''}
   <div class="card log">${C.log.map(([t,c])=>`<p class="${c}">${t}</p>`).join('')}</div>
   <div class="cstats"><span class="${isLow('hp')?'low':''}">❤️ ${S.hp}/${S.maxhp}</span><span class="${isLow('san')?'low':''}">🧠 ${S.san}</span><span class="${isLow('curse')?'low':''}">🟣 ${S.curse}</span><span class="${isLow('sta')?'low':''}">💪 ${S.sta}</span></div>
