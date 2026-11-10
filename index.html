@@ -1277,7 +1277,7 @@ function render(){
   ${allCases().filter(c=>!(S.act3Cases||[]).includes(c.id)).map(c=>`<button class="btn tile" ${done.includes(c.id)?'disabled':''} onclick="startCase('${c.id}')"><span class="li" style="font-size:26px;display:block">${c.i}</span>${c.n}${done.includes(c.id)?' ✅':''}<small>${c.place}</small></button>`).join('')}
   ${CASES.every(c=>done.includes(c.id))?`<button class="btn pri" onclick="startCombat('grand',{after:'grand'});save();render()">🔱 ขึ้นยอดเขาดำ สู้พระครูไสยดำ</button>`:'<p class="muted" style="text-align:center">ไขคดีหลักครบ 5 คดี จะรู้ที่อยู่ของต้นตอทั้งหมด</p>'}
   <details class="card"><summary>🧪 ทำของ / ลงอาคม</summary>${CRAFT.map((c,i)=>`<button class="btn" ${c.ok()?'':'disabled'} onclick="doCraft(${i})">${c.n}<small>${c.d}</small></button>`).join('')}</details>
-  ${statsH2()}${extraH()}${invH()}
+  ${invH()}${statsH2()}${extraH()}
   <button class="btn c" onclick="endGame('hero')">วางมือ กลับบ้านไปใช้ชีวิตธรรมดา (จบเกม)</button>
   <button class="btn c" onclick="S=null;view='home';render()">กลับหน้าแรก (เซฟไว้แล้ว)</button>`;
  }
@@ -1344,7 +1344,7 @@ function render(){
   </div>
   ${S.act!=='cave'?`<div class="card"><h3>🌙 คืนนี้</h3><div class="seg">${Object.entries(NT).map(([k,[i,t]])=>`<button class="btn" aria-pressed="${S.night===k}" ${k==='pray'&&!inv('candle')?'disabled':''} onclick="S.night='${k}';render()">${i} ${t}</button>`).join('')}</div><p class="muted" style="font-size:13px">${NT[S.night][2]}</p></div>`:''}
   <details class="card" ${craftMsg?'open':''}><summary>🧪 ทำของ / ลงอาคม ${CRAFT.filter(c=>c.ok()).length?`<span class="badge">${CRAFT.filter(c=>c.ok()).length}</span>`:''}</summary>${CRAFT.map((c,i)=>`<button class="btn" ${c.ok()?'':'disabled'} onclick="doCraft(${i})">${c.n}<small>${c.d}</small></button>`).join('')}${craftMsg?`<p style="color:#bfe3bb">${craftMsg}</p>`:''}</details>
-  ${extraH()}${invH()}`;
+  ${invH()}${extraH()}`;
  }
  else if(sc==='combat'){
   const C=S.combat,b=EN[C.id];
