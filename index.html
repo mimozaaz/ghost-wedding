@@ -29,7 +29,11 @@ p{margin:0}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .top{display:flex;justify-content:space-between;align-items:flex-end;gap:8px}
 .day{font-family:var(--display);font-size:24px;color:var(--gold)}
-.bars{display:grid;grid-template-columns:1fr 1fr;gap:6px 12px}
+.bars{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px 10px}
+.bar.low .lab b{color:#ff6b6b}.bar.low .track{box-shadow:0 0 0 1px #ff4d4d;animation:pl 1s infinite}@keyframes pl{50%{opacity:.55}}
+.warns{display:flex;gap:4px;flex-wrap:wrap}.warn{background:#5a1218;color:#ffd0d0;border-radius:8px;padding:1px 7px;font-size:12px;animation:pl 1.2s infinite}
+.cstats{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}.cstats span{background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:4px 10px;font-size:14px;font-variant-numeric:tabular-nums}.cstats span.low{border-color:#ff4d4d;color:#ffb3b3}
+.chip.tap{cursor:pointer}
 .bar{display:flex;flex-direction:column;gap:2px;font-size:12.5px}
 .bar .lab{display:flex;justify-content:space-between;color:var(--muted)}
 .bar .lab b{color:var(--ink);font-variant-numeric:tabular-nums}
@@ -264,6 +268,7 @@ const GORE={
  atkM:['แทงสีข้างมึงลึกจนถึงซี่โครง','ฟาดไม้หน้าสามเข้ากลางหน้า ฟันมึงหักสองซี่','เตะยอดอกจนมึงอ้วกเป็นเลือด','กรีดแขนมึงเป็นแผลยาว เลือดไหลไม่หยุด','บีบคอมึงกดลงกับพื้นจนตาเหลือก'],
  atkG:['ข่วนเนื้อหน้าอกมึงจนหนังเปิด','งับคอมึงจนเลือดทะลัก','ล้วงมือเย็นเฉียบเข้าไปในอกมึงแล้วบีบหัวใจ','กระชากผมมึงลากไปกับพื้น หนังหัวถลอก','อ้าปากกว้างเกินคนกัดไหล่มึงจนเนื้อหลุดเป็นชิ้น','เสียบเล็บดำยาวเข้าที่ท้องมึงแล้วคว้าน','กรีดร้องใส่หน้ามึงจนเลือดออกหูทั้งสองข้าง'],
  taunt:['"ตายซะ ไอ้เหี้ย!"','"กูจะแดกตับมึง!"','"มึงไม่รอดหรอก ไอ้สัส"','"เลือดมึงหอมดีนะ..."','"อีกนิดเดียว มึงก็เป็นพวกกูแล้ว"','"ร้องสิ ร้องให้ดังๆ"']};
+const ITEMINFO={rice:'กินอัตโนมัติตอนอิ่มต่ำกว่า 60 · ใช้เซ่นผีรับใช้ · ทำเกลือเสก',water:'ดื่มอัตโนมัติตอนน้ำต่ำกว่า 60 · ทำน้ำมนต์ · ทำยา',herb:'ใช้ตอนสู้หรือก่อนเริ่มวัน +10 ชีวิต −4 คำสาป · ทำยาผีบอก · ทำผ้าพันแผล',salt:'สาดใส่ผี ทำให้ชะงัก 1 ตา',candle:'ใช้สวดมนต์ตอนกลางคืน · ทำน้ำมนต์ เกลือ ผ้ายันต์',holy:'สาดใส่ผีแรงมาก · ทำผ้ายันต์ ลงอาคมดาบ ขวดขังผี',band:'+22 ชีวิต ใช้ตอนสู้หรือก่อนเริ่มวัน',cloth:'ทำผ้ายันต์ ผ้าพันแผล ขวดขังผี',med:'+30 ชีวิต ลดคำสาป ใช้ตอนสู้หรือก่อนเริ่มวัน',jar:'ใช้ขังผีที่เลือดเหลือไม่เกิน 35% มาเป็นผีรับใช้'};
 const STATN={hp:'ชีวิต',food:'อิ่ม',wat:'น้ำ',sta:'แรง',san:'สติ',curse:'คำสาป'};
 const CLASSES={
  villager:{n:'ชาวบ้านธรรมดา',i:'🧑‍🌾',cost:0,d:'สมดุล ข้าวเยอะ ไม่มีจุดอ่อน',fx:'เริ่มมีข้าว น้ำ อย่างละ +2'},
@@ -1163,7 +1168,9 @@ let craftMsg='';
 function doCraft(i){const c=CRAFT[i];if(!c.ok())return;c.do();M.st.crafts++;qInc('craft');craftMsg='ทำ'+c.n+'แล้ว';save();checkAch();render();const d=document.querySelector('details');if(d)d.open=true}
 
 /* ---------- RENDER ---------- */
-function barH(k,col){const v=S[k],mx=k==='hp'?S.maxhp:100;return `<div class="bar"><div class="lab"><span>${k==='san'&&S.mode==='mad'?'ความจริง':STATN[k]}</span><b>${v}${k==='hp'?'/'+mx:''}</b></div><div class="track"><div class="fill" style="width:${v/mx*100}%;background:${col}"></div></div></div>`}
+function isLow(k){const v=S[k];return k==='hp'?v<S.maxhp*.3:k==='curse'?v>=75:v<=25}
+function warnH(){const w=[];if(isLow('hp'))w.push('❤️ เลือดน้อย');if(isLow('food'))w.push('🍚 หิว');if(isLow('wat'))w.push('💧 กระหาย');if(isLow('san'))w.push('🧠 สติจะแตก');if(isLow('curse'))w.push('🟣 คำสาปใกล้เต็ม');if(isLow('sta'))w.push('💪 หมดแรง');if(S.power>=80&&!S.ch2)w.push('🧿 พิธีใกล้เสร็จ');return w.length?`<div class="warns">${w.map(x=>`<span class="warn">${x}</span>`).join('')}</div>`:''}
+function barH(k,col){const v=S[k],mx=k==='hp'?S.maxhp:100;return `<div class="bar${isLow(k)?' low':''}"><div class="lab"><span>${k==='san'&&S.mode==='mad'?'ความจริง':STATN[k]}</span><b>${v}${k==='hp'?'/'+mx:''}</b></div><div class="track"><div class="fill" style="width:${v/mx*100}%;background:${col}"></div></div></div>`}
 function statsH(){
  return `<div class="card"><div class="top"><div><div class="day">คืนที่ ${Math.min(S.day,49)} / 49${S.cycle?` <span style="font-size:14px">· ♾️ รอบ ${S.cycle+1}</span>`:''}</div><span class="muted">เหลือ ${Math.max(0,49-S.day)} คืนก่อนวิวาห์ผี · ${CLASSES[S.cls].i} ${CLASSES[S.cls].n}</span></div><div class="muted" style="text-align:right">${WEAPONS[S.weapon].n}<br>ผ้ายันต์ ${S.armor}/3</div></div>
  <div class="bars">${barH('hp','var(--red)')}${barH('sta','var(--gold)')}${barH('food','#c98a3c')}${barH('wat','var(--blue)')}${barH('san','var(--green)')}${barH('curse','var(--purple)')}</div>
@@ -1174,7 +1181,7 @@ function learnSpell(k){if(!S.spt||S.spells.includes(k))return;S.spt--;S.spells.p
 function extraH(){const m=moon();return `<div class="card"><h3>ตัวตน</h3><p style="font-size:14px">🧬 สายเลือด: <b>${TRAITS[S.trait][0]}</b> — ${TRAITS[S.trait][1]}<br>😨 ${S.phobiaWon?'💪 เคย':''}${PHOBIAS[S.phobia][0]} — ${S.phobiaWon?PHOBIAS[S.phobia][2]:PHOBIAS[S.phobia][1]+` (เผชิญ ${S.phobiaFace||0}/5 เพื่อเอาชนะ)`}<br>☸️ กรรม: <b>${S.karma||0}</b> ${(S.karma||0)>=6?'· ปลดล็อกแสงบุญ':(S.karma||0)<=-6?'· ปลดล็อกเงาบาป':'· ถึง +6 ได้วิชาสายขาว ถึง −6 ได้วิชาสายดำ'}<br>${MOON[m][0]} ${MOON[m][1]?'— '+MOON[m][1]:''}${S.bossRel&&S.bossRel.length&&!S.ch2?`<br>🔥 ของขลังของหมอผี: ${S.bossRel.map(k=>BREL[k].i+' '+BREL[k].n).join(', ')}`:''}${M.nemesis&&!S.flags.nemDone?`<br>👹 ผีคู่แค้น: <b>${M.nemesis.title}</b> กำลังตามหามึง`:''}</p></div>
  <div class="card"><h3>🌀 วิชาที่ดูดมา ${(S.skills||[]).length}/2</h3>${(S.skills||[]).length?S.skills.map(k=>`<p style="font-size:14px">${SK[k.id].i} <b>${SK[k.id].n}</b> ขั้น ${skLv(k)}${k.bad?' ⚠️ เพี้ยน':''}${k.inh?' 🧬 จากบรรพบุรุษ':''} — ${SK[k.id].d(skLv(k))} <span class="muted">(ใช้ ${k.uses||0} ครั้ง)</span></p>`).join(''):'<p class="muted" style="font-size:13px">ยังไม่มีวิชา ศัตรูที่มี 🌀 ดูดวิชามาได้ ตีให้เลือดเหลือไม่เกิน 30% แล้วกดดูดวิชา</p>'}</div>`}
 function invH(){
- const it=Object.keys(ITEMS).filter(k=>inv(k)>0).map(k=>`<span class="chip">${ITEMS[k]} ${inv(k)}</span>`).join('')||'<span class="muted">ไม่มีของ</span>';
+ const it=Object.keys(ITEMS).filter(k=>inv(k)>0).map(k=>`<span class="chip tap" onclick="toast('${ITEMS[k]}','${ITEMINFO[k]||''}')">${ITEMS[k]} ${inv(k)} ⓘ</span>`).join('')||'<span class="muted">ไม่มีของ</span>';
  const rl=S.relics.map(r=>`<span class="chip relic">✨ ${RELICS[r].n}</span>`).join('');
  const pl=(S.pets||[]).map((p,i)=>`<button class="btn tile" onclick="releasePet(${i})">${EN[p.id].i} ${EN[p.id].n} Lv${p.lvl}<small>${(()=>{const r=petRel(p),k=PET[p.id]||'atk';return (r.hate?`⚠️ เกลียด${EN[r.hate].n}: ${PK[k][1]}`:PK[k][0])+(r.like?` · 💞 ถูกกับ${EN[r.like].n} แรง +40%`:'')})()} · ภักดี ${p.loy==null?60:p.loy}${(p.loy||60)<25?' ⚠️':''} · ชีวิต ${p.hp==null?'เต็ม':p.hp}<br>แตะเพื่อปลดปล่อย (+สติ +บุญ)</small></button>`).join('');
  const bl=(S.boons||[]).filter(b=>BOONS[b]).map(b=>`<span class="chip ally">${BOONS[b].i} ${BOONS[b].n}</span>`).join('');
@@ -1298,7 +1305,7 @@ function render(){
   const c=caseOf(),A=S.cs.act;const NT={sleep:['😴','นอน'],guard:['👁️','เฝ้ายาม'],pray:['🕯️','สวดมนต์']};
   const lbl=A==='rest'?'🛏️ พัก':A.startsWith('talk:')?'🗣️ คุยกับ'+c.wit[+A.slice(5)].n:'🔎 '+c.locs[A.slice(4)].n;
   const mini=(v,mx,col)=>`<div class="mtrack"><i style="width:${v/mx*100}%;background:${col}"></i></div>`;
-  h=`<div class="sticky"><div class="sb-row"><button class="icon" onclick="S=null;view='home';render()">🏠</button><div class="sb-info"><b>${c.i} ${c.n} · วัน ${S.cs.day}</b><span>${lbl} · ${NT[S.night][0]} ${NT[S.night][1]}</span></div><button class="btn pri go" onclick="startDay()">ไป ▶</button></div><div class="minis"><span>❤️</span>${mini(S.hp,S.maxhp,'var(--red)')}<span>🟣</span>${mini(S.curse,100,'var(--purple)')}<span>😡</span>${mini(S.cs.rage,100,'#e0303a')}</div></div>
+  h=`<div class="sticky"><div class="sb-row"><button class="icon" onclick="S=null;view='home';render()">🏠</button><div class="sb-info"><b>${c.i} ${c.n} · วัน ${S.cs.day}</b><span>${lbl} · ${NT[S.night][0]} ${NT[S.night][1]}</span></div><button class="btn pri go" onclick="startDay()">ไป ▶</button></div><div class="minis"><span>❤️</span>${mini(S.hp,S.maxhp,'var(--red)')}<span>🟣</span>${mini(S.curse,100,'var(--purple)')}<span>😡</span>${mini(S.cs.rage,100,'#e0303a')}</div>${warnH()}</div>
   ${statsH2()}${healH()}
   <div class="card"><h3>🔎 สืบที่ไหน</h3><div class="grid2">${Object.entries(c.locs).map(([k,P])=>{const rem=P.clues.filter(x=>!S.cs.clues.includes(x)).length;return `<button class="btn tile loc" aria-pressed="${A==='loc:'+k}" onclick="S.cs.act='loc:${k}';render()"><span class="li">${P.i}</span>${P.n}<small>${rem?'ยังมีเบาะแส ❓':'สืบครบแล้ว ✔️'}</small></button>`}).join('')}<button class="btn tile" aria-pressed="${A==='rest'}" onclick="S.cs.act='rest';render()">🛏️ พักทั้งวัน<small>แรง +35 ชีวิต +10</small></button></div>
   <h3>🗣️ พยาน</h3><div class="grid2">${c.wit.map((w,i)=>`<button class="btn tile" aria-pressed="${A==='talk:'+i}" onclick="S.cs.act='talk:${i}';render()">${w.i} ${w.n}<small>${S.cs.talked.includes(i)?'คุยแล้ว':'ยังไม่ได้คุย'}</small></button>`).join('')}</div></div>
@@ -1338,7 +1345,7 @@ function render(){
   h=`<div class="sticky"><div class="sb-row"><button class="icon" aria-label="หน้าแรก" onclick="S=null;view='home';render()">🏠</button>
    <div class="sb-info"><b>${MOON[moon()][0].split(' ')[0]} คืนที่ ${Math.min(S.day,49)}/49${S.cycle?' · ♾️'+(S.cycle+1):''}</b><span>${actLbl}${S.act!=='cave'?' · '+NT[S.night][0]+' '+NT[S.night][1]:''}</span></div>
    <button class="btn pri go" onclick="startDay()">${S.act==='cave'?'เข้าถ้ำ ☠️':'เริ่มวัน ▶'}</button></div>
-   <div class="minis"><span>❤️</span>${mini(S.hp,S.maxhp,'var(--red)')}<span>🟣</span>${mini(S.curse,100,'var(--purple)')}<span>🧿</span>${mini(S.power,100,'#e0303a')}</div></div>`
+   <div class="minis"><span>❤️</span>${mini(S.hp,S.maxhp,'var(--red)')}<span>🟣</span>${mini(S.curse,100,'var(--purple)')}<span>🧿</span>${mini(S.power,100,'#e0303a')}</div>${warnH()}</div>`
   +statsH()+healH()+`<div class="card"><h3>☀️ กลางวันทำอะไร</h3><div class="grid2">${acts.map(([k,t,d])=>`<button class="btn tile ${k==='cave'?'span2':''}" aria-pressed="${S.act===k}" onclick="S.act='${k}';render()">${t}<small>${d}</small></button>`).join('')}</div>
   ${S.act==='search'?`<h3>📍 ไปที่ไหน</h3><div class="grid2">${SEARCH_LOCS.map(k=>`<button class="btn tile loc" aria-pressed="${S.loc===k}" onclick="S.loc='${k}';render()"><span class="li">${LOC[k].i}</span>${LOC[k].n}<small>${LOC[k].d}</small></button>`).join('')}</div>`:''}
   </div>
@@ -1352,7 +1359,7 @@ function render(){
   h=`<div class="enemy"><div class="ico">${b.i}</div><h2>${nm}${skOf(C)&&SK[skOf(C)]?` <span title="มีวิชา">🌀${SK[skOf(C)].i}</span>`:''}</h2>${C.br&&C.br.length?`<div class="chips" style="justify-content:center;margin-top:6px">${C.br.map(k=>`<span class="chip" style="border-color:var(--red);color:#f1b7b7">${BREL[k].i} ${BREL[k].n}<br><small>${BREL[k].d}</small></span>`).join('')}</div>`:''}<div class="bar" style="margin-top:8px"><div class="lab"><span>${b.g===1?'ผี':b.g===0?'คน':'ครึ่งคนครึ่งผี'}</span><b>${Math.max(0,C.hp)} / ${C.max}</b></div><div class="track"><div class="fill" style="width:${Math.max(0,C.hp/C.max*100)}%;background:var(--red)"></div></div></div></div>
   ${C.adds&&C.adds.length?`<div class="card" style="border-color:var(--red2)"><h3 style="color:#f3a3a3">ตัวที่มาร่วมวง ${C.adds.length}</h3>${C.adds.map(ad=>`<div class="bar"><div class="lab"><span>${EN[ad.id].i} ${EN[ad.id].n}</span><b>${Math.max(0,ad.hp)}/${ad.max}</b></div><div class="track"><div class="fill" style="width:${Math.max(0,ad.hp/ad.max*100)}%;background:#a33"></div></div></div>`).join('')}</div>`:''}
   <div class="card log">${C.log.map(([t,c])=>`<p class="${c}">${t}</p>`).join('')}</div>
-  <div class="bars card">${barH('hp','var(--red)')}${barH('sta','var(--gold)')}${barH('san','var(--green)')}${barH('curse','var(--purple)')}</div>
+  <div class="cstats"><span class="${isLow('hp')?'low':''}">❤️ ${S.hp}/${S.maxhp}</span><span class="${isLow('san')?'low':''}">🧠 ${S.san}</span><span class="${isLow('curse')?'low':''}">🟣 ${S.curse}</span><span class="${isLow('sta')?'low':''}">💪 ${S.sta}</span></div>
   <div class="grid2">
    ${C.adds&&C.adds.length?`<button class="btn" onclick="cAct('hitAdd')">🪓 ฟันตัวที่รุม<small>${EN[C.adds[0].id].n}</small></button>`:''}
    <button class="btn" onclick="cAct('hit')">⚔️ ฟัน<small>${WEAPONS[S.weapon].n}${C.last==='holy'&&S.spells.includes('purify')?' · ดาบชำระพร้อม!':''}</small></button>
