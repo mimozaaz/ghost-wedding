@@ -1055,7 +1055,7 @@ function afterDisrupt(){
 /* ---------- COMBAT ---------- */
 function startCombat(id,opt){
  const b=EN[id];
- const dEff=S.ch2?28:S.day;const sc=TUNE.hp+dEff/55+(S.ch2?S.ch2.solved.length*.12:S.cycle*.35);
+ const dEff=S.ch2?28:S.day;const sc=S.ch2?.95+S.ch2.solved.length*.07:TUNE.hp+dEff/55+S.cycle*.35;
  let hp=Math.round(b.hp*(id==='queen'?1+S.cycle*.3:sc)*(moon()==='full'&&b.g?1.3:1));
  const nem=opt.nem&&M.nemesis;if(nem)hp=Math.round(hp*1.35);
  S.combat={id,hp,max:hp,turn:0,stun:0,log:[],after:opt.after,loc:opt.loc,nem:nem?1:0};
@@ -1350,8 +1350,8 @@ const CASES=[
  boss:{n:'วิญญาณเจ็ดคนงาน',i:'👥',hp:165,atk:[14,21]},freed:'มึงถอนตะปูเจ็ดดอก เผายันต์ดำ แล้วขุดศพทั้งเจ็ดที่ฝังใต้ลานตากข้าวขึ้นมาเผาตามพิธี คนงานทั้งเจ็ดยืนเรียงแถวยกมือไหว้ คนสุดท้ายกระซิบก่อนจากไป "อาจารย์ของมัน... ยังอยู่ที่ยอดเขาดำ" เถ้าแก่ถูกตำรวจจับในเช้าวันนั้น'}
 ];
 for(const c of CASES){EN['cb_'+c.id]={n:c.boss.n,i:c.boss.i,hp:c.boss.hp,atk:c.boss.atk,g:1,curse:6,san:7,sp:'boss2',d:c.intro}}
-EN.moon={n:'มหาปุโรหิตเงาจันทร์',i:'🌘',hp:330,atk:[18,27],g:.5,curse:9,san:9,sp:'boss',d:'ชายหน้ากากเงินยืนกลางวงหินใต้จันทร์เต็มดวง สาวกนับร้อยสวดพร้อมกัน "ผู้ปราบผีผู้ยิ่งใหญ่... เลือดของเอ็งคือชิ้นสุดท้ายที่จะเปิดประตูนรก"'};
-EN.grand={n:'พระครูไสยดำ ต้นสายวิชา',i:'🔱',hp:260,atk:[16,25],g:.5,curse:8,san:8,sp:'boss',d:'ชายชราร่างผอมนั่งสมาธิลอยอยู่กลางวงยันต์บนยอดเขาดำ รอบตัวมีวิญญาณนับร้อยถูกล่ามโซ่ไว้ "ศิษย์ข้าตายด้วยมือเอ็ง... ดี ข้าจะได้มีศิษย์ใหม่ที่เก่งกว่า"'};
+EN.moon={n:'มหาปุโรหิตเงาจันทร์',i:'🌘',hp:270,atk:[16,24],g:.5,curse:9,san:9,sp:'boss',d:'ชายหน้ากากเงินยืนกลางวงหินใต้จันทร์เต็มดวง สาวกนับร้อยสวดพร้อมกัน "ผู้ปราบผีผู้ยิ่งใหญ่... เลือดของเอ็งคือชิ้นสุดท้ายที่จะเปิดประตูนรก"'};
+EN.grand={n:'พระครูไสยดำ ต้นสายวิชา',i:'🔱',hp:210,atk:[14,22],g:.5,curse:8,san:8,sp:'boss',d:'ชายชราร่างผอมนั่งสมาธิลอยอยู่กลางวงยันต์บนยอดเขาดำ รอบตัวมีวิญญาณนับร้อยถูกล่ามโซ่ไว้ "ศิษย์ข้าตายด้วยมือเอ็ง... ดี ข้าจะได้มีศิษย์ใหม่ที่เก่งกว่า"'};
 
 const GP={place:['ตึกแถวเก่าตลาดล่าง','หอพักหญิงร้าง','สถานีรถไฟร้างบ้านโป่ง','เหมืองดีบุกร้าง','โรงแรมม่านรูดริมทาง','บ้านไม้ริมทางรถไฟ','ไร่อ้อยท้ายหมู่บ้าน','โรงพยาบาลบ้าร้าง','โรงหนังชั้นสองเก่า','วัดร้างกลางทุ่ง'],
  who:[['นวล สาวโรงงาน',['บัตรพนักงานโรงงานทอผ้า ชื่อ "นวล"','ชุดยูนิฟอร์มโรงงานปักชื่อนวล เปื้อนเลือดแห้ง']],['ลุงเปี๊ยก คนขายก๋วยเตี๋ยว',['รถเข็นก๋วยเตี๋ยวขึ้นสนิม เขียนว่า "เจ๊กเปี๊ยก"','ทัพพีทองเหลืองสลักชื่อเปี๊ยก']],['น้องฝน นักเรียนพยาบาล',['หมวกพยาบาลปักชื่อ "ฝน"','บัตรนักศึกษาพยาบาลรูปเด็กสาวยิ้มแฉ่ง']],['พ่อใหญ่สม คนงานเหมือง',['หมวกนิรภัยเขียนชื่อ "สม"','ตะเกียงคาไบด์ที่ภรรยาสลักชื่อสมให้']],['แม่ทองใบ หมอตำแย',['มีดตอกด้ามไม้สลัก "ทองใบ"','ตลับหมากเงินมีชื่อทองใบ']],['ไอ้หนุ่ม นายสถานี',['หมวกนายสถานีชื่อ "หนุ่ม"','นาฬิกาพกที่เข็มหยุดเวลาตีสามสิบห้า สลักชื่อหนุ่ม']],['คุณนายเยื้อน เจ้าของบ้าน',['ภาพถ่ายขาวดำหญิงสูงศักดิ์ เขียนหลังรูปว่า "เยื้อน"','แหวนเพชรสลัก "ย."']],['เด็กชายโต้ง',['ลูกแก้วกับหนังสติ๊กเขียนว่า "ของโต้ง"','สมุดระบายสีชื่อโต้ง']]],
@@ -1401,13 +1401,16 @@ function qteHold(){const b=document.getElementById('holdb'),bar=document.getElem
 let holdT=0;
 function caseOf(){return allCases().find(c=>c.id===S.cs.id)}
 function startCase(id){const c=allCases().find(x=>x.id===id);S.mode='case';S.cycle=1+S.ch2.solved.length;S.cs={id,day:1,clues:[],talked:[],rage:10,act:'loc:'+Object.keys(c.locs)[0],ans:[null,null,null],perm:c.qs.map(q=>sh(q.o.map((x,i)=>i)))};S.log=[];S.screen='caseIntro';save();render()}
-function caseClue(loc){const c=caseOf(),L_=c.locs[loc];const rem=L_.clues.filter(k=>!S.cs.clues.includes(k));if(rem.length&&ch(.55+rs('clue')+(S.cls==='rangsong'?.1:0))){const k=rem[0];S.cs.clues.push(k);L('🔎 เบาะแส: '+c.clues[k],'gold')}else{L(rem.length?'ค้นทั่วแล้วยังไม่เจออะไร แต่รู้สึกว่ามีบางอย่างซ่อนอยู่ที่นี่':'ที่นี่ไม่มีอะไรให้สืบแล้ว','bad');if(ch(.5)){const k=pick(['rice','water','herb','salt','candle']);add(k,1);L('เก็บ'+ITEMS[k]+'ติดมือมา 1','good')}}relicFind('case')}
+function elimHint(why){const c=caseOf();S.cs.elim=S.cs.elim||[];const cand=[];c.qs.forEach((q,qi)=>{const rem=q.o.map((x,oi)=>oi).filter(oi=>oi!==q.a&&!S.cs.elim.includes(qi+':'+oi));if(rem.length>1)rem.forEach(oi=>cand.push([qi,oi]))});if(!cand.length){L('🔮 ข้อสังเกต: มึงตัดตัวเลือกที่ผิดออกไปจนเหลือน้อยที่สุดแล้ว','pink');return}const [qi,oi]=pick(cand);S.cs.elim.push(qi+':'+oi);L(`🔮 ${why}: ข้อ "${c.qs[qi].q}" ไม่ใช่ "${c.qs[qi].o[oi]}" แน่นอน`,'gold')}
+function witGift(){const r=Math.random();if(r<.08){const pool=Object.keys(RELICS).filter(k=>!RELICS[k].core&&!RELICS[k].secret&&!RELICS[k].mad&&!S.relics.includes(k)&&!M.shattered.includes(k)&&(RELICS[k].t||'c')!=='l');if(pool.length){gotRelic(pick(pool),'พยานยื่นของเก่าให้ "เก็บไว้ป้องกันตัวเถอะ"');return}}if(r<.75){const k=pick(['rice','rice','water','water','herb','band','candle','holy','salt']);const n=k==='rice'||k==='water'?R(1,2):1;add(k,n);L(`🎁 พยานแบ่ง${ITEMS[k]}ให้ ×${n}`,'good')}}
+function caseClue(loc){const c=caseOf(),L_=c.locs[loc];const rem=L_.clues.filter(k=>!S.cs.clues.includes(k));if(rem.length&&ch(.72+rs('clue')+(S.cls==='rangsong'?.1:0))){const k=rem[0];S.cs.clues.push(k);L('🔎 เบาะแส: '+c.clues[k],'gold');if(S.cs.clues.length%2===0)elimHint('ปะติดปะต่อเบาะแสแล้ว')}else{L(rem.length?'ค้นทั่วแล้วยังไม่เจออะไร แต่รู้สึกว่ามีบางอย่างซ่อนอยู่ที่นี่':'ที่นี่ไม่มีอะไรให้สืบแล้ว','bad');if(ch(.5)){const k=pick(['rice','water','herb','salt','candle']);add(k,1);L('เก็บ'+ITEMS[k]+'ติดมือมา 1','good')}}relicFind('case')}
 STEP.caseact=()=>{
  const a=S.cs.act,c=caseOf();
  if(a==='rest'){stat('sta',35);stat('hp',10);stat('san',4);L('นอนพักที่บ้านผู้ใหญ่บ้าน ไม่ได้สืบอะไรวันนี้','good');return}
- if(a.startsWith('talk:')){const i=+a.slice(5),w=c.wit[i];if(!S.cs.talked.includes(i))S.cs.talked.push(i);L(`🗣️ ${w.i} ${w.n}: ${w.say}`,'pink');stat('sta',-5);return}
+ if(a==='seer'){if(inv('candle')){add('candle',-1);stat('sta',-5);L('🕯️ จุดเทียนเสี่ยงทายกับหมอดูประจำหมู่บ้าน');elimHint('หมอดูทำนาย');elimHint('หมอดูทำนาย')}else L('ไม่มีเทียนไปไหว้หมอดู','bad');return}
+ if(a.startsWith('talk:')){const i=+a.slice(5),w=c.wit[i];const again=S.cs.talked.includes(i);if(!again)S.cs.talked.push(i);if(!again||ch(.5))witGift();else L('พยานส่ายหน้า ไม่มีอะไรจะให้แล้ว');L(`🗣️ ${w.i} ${w.n}: ${w.say}`,'pink');stat('sta',-5);return}
  const loc=a.slice(4),P=c.locs[loc];stat('sta',-15);L(`ไปสืบที่${P.n} ${P.i}`);
- if(ch(.33+S.ch2.solved.length*.03)){startCombat(pick(P.en),{after:'clue',loc});return 'wait'}
+ if(ch(.27+S.ch2.solved.length*.02)){startCombat(pick(P.en),{after:'clue',loc});return 'wait'}
  caseClue(loc);
 };
 STEP.caseup=()=>{
@@ -1417,12 +1420,12 @@ STEP.caseup=()=>{
  if(S.food<=0){stat('hp',-12);L('หิวจนท้องบิด','bad')}
  if(S.wat<=0){stat('hp',-18);L('คอแห้งผาก','bad')}
  stat('curse',curseGain(1+Math.floor(S.ch2.solved.length/2)));stat('san',-1);
- S.cs.rage=Math.min(100,S.cs.rage+7+S.ch2.solved.length+(S.act3?3:0));S.cs.day++;
- L(`ความแค้นของผี +${7+S.ch2.solved.length} (ตอนนี้ ${S.cs.rage}%)`,'bad');
+ const rg=4+Math.floor(S.ch2.solved.length/2)+(S.act3?2:0);S.cs.rage=Math.min(100,S.cs.rage+rg);S.cs.day++;
+ L(`😡 ความแค้นของผี +${rg} (ตอนนี้ ${S.cs.rage}%)`,'bad');
  if(S.cs.rival==='race'&&S.cs.day>7){const c=caseOf();L('ศักดิ์ไขคดีนี้ได้ก่อนมึง! มันขึ้นรถกระบะไปพร้อมค่าจ้างและของขลัง','bad');S.ch2.solved.push(c.id);S.caseEnd={peace:0,t:'หมอผีศักดิ์ชิงคดีนี้ไป มึงกลับมามือเปล่า'};S.mode='hub';S.cs=null;S.queue=[];S.screen='caseEnd';return 'wait'}
  if(S.cs.rage>=100){L('ความแค้นถึงขีดสุด! ผีปรากฏตัวต่อหน้ามึงโดยไม่รอให้ไขคดี','bad');caseBoss(1.45,'rage');return 'wait'}
 };
-function caseBoss(mul,why){const c=caseOf();startCombat('cb_'+c.id,{after:'caseboss'});const C=S.combat;C.max=C.hp=Math.round(c.boss.hp*mul*(TUNE.hp+.3)*(1+S.ch2.solved.length*.12));C.big=1;C.log=[[why==='rage'?`${c.boss.n}คลั่งเพราะไม่มีใครเข้าใจ มันพุ่งเข้าใส่มึงด้วยความแค้นทั้งหมด`:why==='wrong'?`มึงตอบผิด... ${c.boss.n}กรีดร้องด้วยความเจ็บปวดที่ไม่มีใครเข้าใจ แล้วกลายร่างเป็นผีร้าย`:`มึงเกือบเข้าใจมันแล้ว แต่ยังไม่ทั้งหมด ${c.boss.n}ยังสับสนและโจมตีมึง`,'bad']]}
+function caseBoss(mul,why){const c=caseOf();startCombat('cb_'+c.id,{after:'caseboss'});const C=S.combat;C.max=C.hp=Math.round(c.boss.hp*mul*(1+S.ch2.solved.length*.08));C.big=1;C.log=[[why==='rage'?`${c.boss.n}คลั่งเพราะไม่มีใครเข้าใจ มันพุ่งเข้าใส่มึงด้วยความแค้นทั้งหมด`:why==='wrong'?`มึงตอบผิด... ${c.boss.n}กรีดร้องด้วยความเจ็บปวดที่ไม่มีใครเข้าใจ แล้วกลายร่างเป็นผีร้าย`:`มึงเกือบเข้าใจมันแล้ว แต่ยังไม่ทั้งหมด ${c.boss.n}ยังสับสนและโจมตีมึง`,'bad']]}
 function submitDeduce(){
  const c=caseOf();const n=c.qs.filter((q,i)=>S.cs.ans[i]===q.a).length;S.log=[];
  if(n===3){caseDone(true);return}
@@ -1639,17 +1642,17 @@ function render(){
   const c=caseOf();
   h=`<div class="card"><h2>🧠 ไขคดี</h2><p class="muted">ตอบถูกครบ 3 ข้อ = ปลดปล่อยอย่างสงบ · ถูก 2 = ต้องสู้ · ถูกน้อยกว่านั้น = ผีคลั่ง</p></div>
   <details class="card" open><summary>📓 สมุดจด (${S.cs.clues.length} เบาะแส)</summary><div class="log">${S.cs.clues.map(k=>`<p class="gold">${c.clues[k]}</p>`).join('')}${S.cs.talked.map(i=>`<p class="pink">${c.wit[i].i} ${c.wit[i].n}: ${c.wit[i].say}</p>`).join('')}</div></details>
-  ${c.qs.map((q,qi)=>`<div class="card"><h3>${qi+1}. ${q.q}</h3>${(S.cs.perm?S.cs.perm[qi]:q.o.map((x,i)=>i)).map(oi=>`<button class="btn" aria-pressed="${S.cs.ans[qi]===oi}" onclick="S.cs.ans[${qi}]=${oi};render()">${q.o[oi]}</button>`).join('')}</div>`).join('')}
+  ${c.qs.map((q,qi)=>`<div class="card"><h3>${qi+1}. ${q.q}</h3>${(S.cs.perm?S.cs.perm[qi]:q.o.map((x,i)=>i)).map(oi=>(S.cs.elim||[]).includes(qi+':'+oi)?`<button class="btn" disabled style="text-decoration:line-through">❌ ${q.o[oi]}</button>`:`<button class="btn" aria-pressed="${S.cs.ans[qi]===oi}" onclick="S.cs.ans[${qi}]=${oi};render()">${q.o[oi]}</button>`).join('')}</div>`).join('')}
   <button class="btn pri" ${S.cs.ans.includes(null)?'disabled':''} onclick="submitDeduce()">ยืนยันคำตอบ</button><button class="btn c" onclick="S.screen='plan';render()">ยังไม่แน่ใจ กลับไปสืบต่อ</button>`;
  }
  else if(sc==='plan'&&S.mode==='case'){
   const c=caseOf(),A=S.cs.act;const NT={sleep:['😴','นอน'],guard:['👁️','เฝ้ายาม'],pray:['🕯️','สวดมนต์']};
-  const lbl=A==='rest'?'🛏️ พัก':A.startsWith('talk:')?'🗣️ คุยกับ'+c.wit[+A.slice(5)].n:'🔎 '+c.locs[A.slice(4)].n;
+  const lbl=A==='seer'?'🔮 ถามหมอดู':A==='rest'?'🛏️ พัก':A.startsWith('talk:')?'🗣️ คุยกับ'+c.wit[+A.slice(5)].n:'🔎 '+c.locs[A.slice(4)].n;
   const mini=(v,mx,col)=>`<div class="mtrack"><i style="width:${v/mx*100}%;background:${col}"></i></div>`;
-  h=`<div class="sticky"><div class="sb-row"><button class="icon" onclick="S=null;view='home';render()">🏠</button><div class="sb-info"><b>${c.i} ${c.n} · วัน ${S.cs.day}</b><span>${lbl} · ${NT[S.night][0]} ${NT[S.night][1]}</span></div><button class="btn pri go" onclick="startDay()">ไป ▶</button></div><div class="minis"><span>❤️</span>${mini(S.hp,S.maxhp,'var(--red)')}<span>🟣</span>${mini(S.curse,100,'var(--purple)')}<span>😡</span>${mini(S.cs.rage,100,'#e0303a')}</div>${warnH()}</div>
+  h=`<div class="sticky"><div class="sb-row"><button class="icon" onclick="S=null;view='home';render()">🏠</button><div class="sb-info"><b>${c.i} ${c.n} · วัน ${S.cs.day}</b><span style="color:${S.cs.rage>=70?'#ff6b6b':'#e8b4b4'}">😡 แค้น ${S.cs.rage}%${S.cs.rage>=70?' ⚠️ ใกล้คลั่ง':''} · 🔮 ตัดแล้ว ${(S.cs.elim||[]).length}</span><span>${lbl} · ${NT[S.night][0]} ${NT[S.night][1]}</span></div><button class="btn pri go" onclick="startDay()">ไป ▶</button></div><div class="minis"><span>❤️</span>${mini(S.hp,S.maxhp,'var(--red)')}<span>🟣</span>${mini(S.curse,100,'var(--purple)')}<span>😡</span>${mini(S.cs.rage,100,'#e0303a')}</div>${warnH()}</div>
   ${statsH2()}${healH()}
-  <div class="card"><h3>🔎 สืบที่ไหน</h3><div class="grid2">${Object.entries(c.locs).map(([k,P])=>{const rem=P.clues.filter(x=>!S.cs.clues.includes(x)).length;return `<button class="btn tile loc" aria-pressed="${A==='loc:'+k}" onclick="S.cs.act='loc:${k}';render()"><span class="li">${P.i}</span>${P.n}<small>${rem?'ยังมีเบาะแส ❓':'สืบครบแล้ว ✔️'}</small></button>`}).join('')}<button class="btn tile" aria-pressed="${A==='rest'}" onclick="S.cs.act='rest';render()">🛏️ พักทั้งวัน<small>แรง +35 ชีวิต +10</small></button></div>
-  <h3>🗣️ พยาน</h3><div class="grid2">${c.wit.map((w,i)=>`<button class="btn tile" aria-pressed="${A==='talk:'+i}" onclick="S.cs.act='talk:${i}';render()">${w.i} ${w.n}<small>${S.cs.talked.includes(i)?'คุยแล้ว':'ยังไม่ได้คุย'}</small></button>`).join('')}</div></div>
+  <div class="card"><h3>🔎 สืบที่ไหน</h3><div class="grid2">${Object.entries(c.locs).map(([k,P])=>{const rem=P.clues.filter(x=>!S.cs.clues.includes(x)).length;return `<button class="btn tile loc" aria-pressed="${A==='loc:'+k}" onclick="S.cs.act='loc:${k}';render()"><span class="li">${P.i}</span>${P.n}<small>${rem?'ยังมีเบาะแส ❓':'สืบครบแล้ว ✔️'}</small></button>`}).join('')}<button class="btn tile" aria-pressed="${A==='rest'}" onclick="S.cs.act='rest';render()">🛏️ พักทั้งวัน<small>แรง +35 ชีวิต +10</small></button><button class="btn tile" aria-pressed="${A==='seer'}" ${inv('candle')?'':'disabled'} onclick="S.cs.act='seer';render()">🔮 ถามหมอดู<small>ใช้เทียน 1 · ตัดตัวเลือกผิดทิ้ง 2 ข้อ</small></button></div>
+  <h3>🗣️ พยาน</h3><div class="grid2">${c.wit.map((w,i)=>`<button class="btn tile" aria-pressed="${A==='talk:'+i}" onclick="S.cs.act='talk:${i}';render()">${w.i} ${w.n}<small>${S.cs.talked.includes(i)?'คุยแล้ว · คุยซ้ำอาจได้ของ':'ยังไม่ได้คุย · มักแบ่งของให้'}</small></button>`).join('')}</div></div>
   <div class="card"><h3>🌙 คืนนี้</h3><div class="seg">${Object.entries(NT).map(([k,[i,t]])=>`<button class="btn" aria-pressed="${S.night===k}" ${k==='pray'&&!inv('candle')&&!hb('monk')?'disabled':''} onclick="S.night='${k}';render()">${i} ${t}</button>`).join('')}</div></div>
   <button class="btn pri" style="background:#6b3fa0" ${S.cs.clues.length+S.cs.talked.length<2?'disabled':''} onclick="S.screen='deduce';save();render()">🧠 ไขคดี (${S.cs.clues.length} เบาะแส · ${S.cs.talked.length} พยาน)</button>
   ${extraH()}<details class="card"><summary>📓 สมุดจด</summary><div class="log">${S.cs.clues.map(k=>`<p class="gold">${c.clues[k]}</p>`).join('')||'<p>ยังไม่มีเบาะแส</p>'}${S.cs.talked.map(i=>`<p class="pink">${c.wit[i].i} ${c.wit[i].n}: ${c.wit[i].say}</p>`).join('')}</div></details>
