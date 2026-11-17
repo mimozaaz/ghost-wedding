@@ -94,7 +94,7 @@ details summary{cursor:pointer;color:var(--gold);font-family:var(--display)}
 .tabs{display:grid;grid-template-columns:.6fr 1fr 1fr 1fr 1fr;gap:6px}
 .tabs .btn{text-align:center;padding:8px 2px;font-size:13px}
 </style>
-</head>
+<link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-180.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="theme-color" content="#140d1c"></head>
 <body>
 <div id="toast"></div>
 <div class="wrap" id="app"></div>
@@ -1741,5 +1741,5 @@ function render(){
 function contGame(){S=store.get('save',null);if(!S){render();return}if(!S.r)S.r={kills:0,holy:0,merit:0};if(!S.maxhp)S.maxhp=100;if(!S.cls)S.cls='villager';if(S.cycle==null)S.cycle=0;if(S.mode==='endless')S.mode=null;if(!S.trait){S.trait='merchant';S.phobia='dark';S.karma=0;S.kp=0;S.spt=0;S.spells=[]}if(S.screen==='qte')S.screen='plan';if(!S.skills)S.skills=[];if(S.screen==='skswap'&&!S.pendSk)S.screen='plan';(S.genCases||[]).forEach(regGen);render()}
 daily();render();
 </script>
-</body>
+<script>if("serviceWorker" in navigator)window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));</script></body>
 </html>
